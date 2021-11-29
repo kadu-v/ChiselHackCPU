@@ -6,7 +6,7 @@ ThisBuild / organization := "com.github.kaduv"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "ChiselBlink",
+    name := "ChiselHackCPU",
     libraryDependencies ++= Seq(
       "edu.berkeley.cs" %% "chisel3" % "3.4.3",
       "edu.berkeley.cs" %% "chiseltest" % "0.3.3" % "test"
