@@ -1,12 +1,37 @@
-package blink
+package top
 
+import core.Core
+import memory.{RAM, ROM}
 import chisel3._
 
 class Top extends Module {
   val io = IO(new Bundle {
-    val PIO0 = Output(Bool())
+    val GPIO = Output(Bool())
   })
-  io.PIO0 := false.B
+
+  // Hack CPU core
+  val core = Module(new Core())
+
+  // RAM
+  val ram = Module(new RAM)
+
+  // ROM
+  val rom = Module(new ROM("hack/sample.hack"))
+
+  // core
+  core.io.inst := rom.io.out
+  core.io.in_m := ram.io.out
+
+  // ram
+  ram.io.in := core.io.out_m
+  ram.io.addr := core.io.addr_m
+  ram.io.write_en := core.io.write_m
+
+  // rom
+  rom.io.addr := core.io.pc
+
+  io.GPIO := core.io.write_m
+
 }
 
 object Elaborate extends App {

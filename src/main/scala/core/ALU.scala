@@ -3,7 +3,7 @@ package core
 import chisel3._
 
 class ALU extends Module {
-  val io = new Bundle {
+  val io = IO(new Bundle {
     val in1 = Input(UInt(16.W))
     val in2 = Input(UInt(16.W))
     val zx = Input(Bool())
@@ -13,10 +13,10 @@ class ALU extends Module {
     val f = Input(Bool())
     val no = Input(Bool())
 
-    val zr = Input(Bool())
-    val ng = Input(Bool())
-    val out = Input(UInt(16.W))
-  }
+    val out = Output(UInt(16.W))
+    val zr = Output(Bool())
+    val ng = Output(Bool())
+  })
 
   val x0 = Mux(io.zx, 0.asUInt(), io.in1)
   val x1 = Mux(io.nx, ~x0, x0)
