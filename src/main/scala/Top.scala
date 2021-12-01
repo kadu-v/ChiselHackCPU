@@ -16,7 +16,7 @@ class Top extends Module {
   val ram = Module(new RAM)
 
   // ROM
-  val rom = Module(new ROM("hack/sample.hack"))
+  val rom = Module(new ROM("hack/sample.hex"))
 
   // core
   core.io.inst := rom.io.out

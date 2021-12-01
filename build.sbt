@@ -8,8 +8,8 @@ lazy val root = (project in file("."))
   .settings(
     name := "ChiselHackCPU",
     libraryDependencies ++= Seq(
-      "edu.berkeley.cs" %% "chisel3" % "3.4.3",
-      "edu.berkeley.cs" %% "chiseltest" % "0.3.3" % "test"
+      "edu.berkeley.cs" %% "chisel3" % "3.4.4",
+      "edu.berkeley.cs" %% "chiseltest" % "0.3.4" % "test"
     ),
     scalacOptions ++= Seq(
       "-Xsource:2.11",
