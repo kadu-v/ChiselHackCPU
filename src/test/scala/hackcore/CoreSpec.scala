@@ -1,4 +1,4 @@
-package core
+package hackcore
 
 import chiseltest._
 import org.scalatest._

@@ -1,6 +1,6 @@
 package top
 
-import core.Core
+import hackcore.Core
 import memory.{RAM, ROM}
 import chisel3._
 

@@ -8,3 +8,7 @@ out/
 .metals/
 project/
 .DS_Store
+*.fir
+*.v
+*.f
+*.json
