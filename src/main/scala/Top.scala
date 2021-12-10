@@ -35,5 +35,6 @@ class Top extends Module {
 }
 
 object Elaborate extends App {
-  (new chisel3.stage.ChiselStage).emitVerilog(new Top(), args)
+  val argsx = args :+ "--target-dir" :+ "out"
+  (new chisel3.stage.ChiselStage).emitVerilog(new Top(), argsx)
 }
