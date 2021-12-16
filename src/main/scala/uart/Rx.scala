@@ -37,9 +37,9 @@ class Rx(freq: Int, baudRate: Int) extends Module {
   switch(state) {
     is(sIDLE) {
       when(io.cbf) {
-        buff(15) := 1.asUInt() // change data to invalid data!!
+        buff := Cat(1.U, buff(14, 0)) // change data to invalid data!!
       }.elsewhen(detedge0.io.negdet) {
-        buff(15) := 1.asUInt()
+        buff := Cat(1.U, buff(14, 0))
         state := sWAIT
         rts := true.B
       }
