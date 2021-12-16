@@ -4,8 +4,9 @@ import chisel3._
 import chisel3.util.experimental.{loadMemoryFromFileInline, loadMemoryFromFile}
 import chisel3.experimental.{annotate, ChiselAnnotation}
 import firrtl.annotations.MemorySynthInit
+import firrtl.annotations.MemoryLoadFileType
 
-class ROM(file: String = "") extends Module {
+class ROM(file: String) extends Module {
   val io = IO(new Bundle {
     val addr = Input(UInt(16.W))
 
@@ -16,7 +17,7 @@ class ROM(file: String = "") extends Module {
     override def toFirrtl = MemorySynthInit
   })
 
-  val mem = Mem(16384, UInt(16.W))
-  loadMemoryFromFileInline(mem, file)
-  io.out := mem(io.addr)
+  val mem = Mem(2048, UInt(16.W))
+  loadMemoryFromFile(mem, file, MemoryLoadFileType.Binary)
+  io.out := mem(io.addr(10, 0))
 }

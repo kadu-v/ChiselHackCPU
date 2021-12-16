@@ -11,9 +11,9 @@ class RAM extends Module {
     val out = Output(UInt(16.W))
   })
 
-  val mem = Mem(16384, UInt(16.W))
+  val mem = Mem(2048, UInt(16.W))
   when(io.write_en) {
     mem(io.addr) := io.in
   }
-  io.out := mem(io.addr)
+  io.out := mem(io.addr(10, 0))
 }

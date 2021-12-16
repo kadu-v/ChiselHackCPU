@@ -24,9 +24,10 @@ class ALU extends Module {
   val y0 = Mux(io.zy, 0.asUInt(), io.in2)
   val y1 = Mux(io.ny, ~y0, y0)
 
-  val z0 = Mux(io.f, x1 + y1, x1 | y1)
-  io.out := Mux(io.no, ~z0, z0)
+  val z0 = Mux(io.f, x1 + y1, x1 & y1)
+  val out = Mux(io.no, ~z0, z0)
+  io.out := out
 
-  io.zr := Mux(z0 === 0.asUInt(), true.B, false.B)
-  io.ng := Mux(z0 < 0.asUInt(), true.B, false.B)
+  io.zr := Mux(out === 0.asUInt(), true.B, false.B)
+  io.ng := Mux(out < 0.asUInt(), true.B, false.B)
 }
