@@ -9,7 +9,7 @@ class HackCoreSpec extends FlatSpec with ChiselScalatestTester with Matchers {
   behavior of "HackCPU"
   it should "test bin.hex" in {
     test(new Top("./hack/bin.hack")) { c =>
-      c.clock.step(1000)
+      c.clock.step(500)
     }
   }
 }
