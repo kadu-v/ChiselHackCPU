@@ -21,7 +21,7 @@ class ROM(file: String) extends Module {
     override def toFirrtl = MemorySynthInit
   })
 
-  val mem = Mem(2048, UInt(16.W))
+  val mem = SyncReadMem(6, UInt(16.W))
   loadMemoryFromFileInline(mem, file, MemoryLoadFileType.Binary)
   io.out := mem(io.addr(10, 0))
 }
