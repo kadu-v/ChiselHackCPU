@@ -1,10 +1,14 @@
 package memory
 
 import chisel3._
-import chisel3.util.experimental.{loadMemoryFromFileInline, loadMemoryFromFile}
+import chisel3.util.experimental.{loadMemoryFromFileInline}
 import chisel3.experimental.{annotate, ChiselAnnotation}
 import firrtl.annotations.MemorySynthInit
 import firrtl.annotations.MemoryLoadFileType
+
+/** document about initialization of memory
+  * https://www.chisel-lang.org/chisel3/docs/appendix/experimental-features#loading-memories
+  */
 
 class ROM(file: String) extends Module {
   val io = IO(new Bundle {
@@ -18,6 +22,6 @@ class ROM(file: String) extends Module {
   })
 
   val mem = Mem(2048, UInt(16.W))
-  loadMemoryFromFile(mem, file, MemoryLoadFileType.Binary)
+  loadMemoryFromFileInline(mem, file, MemoryLoadFileType.Binary)
   io.out := mem(io.addr(10, 0))
 }
