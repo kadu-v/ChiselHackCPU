@@ -12,3 +12,4 @@ project/
 *.v
 *.f
 *.json
+test_run_dir

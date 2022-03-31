@@ -16,4 +16,5 @@ class RAM extends Module {
     mem(io.addr) := io.in
   }
   io.out := mem(io.addr(10, 0))
+
 }
