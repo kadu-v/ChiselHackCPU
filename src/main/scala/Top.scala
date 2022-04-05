@@ -39,5 +39,5 @@ class Top(filename: String) extends Module {
 
 object Elaborate extends App {
   val argsx = args :+ "--target-dir" :+ "out"
-  (new chisel3.stage.ChiselStage).emitVerilog(new Top("./hack/bin.hack"), argsx)
+  (new chisel3.stage.ChiselStage).emitVerilog(new Top("./bin.hack"), argsx)
 }
