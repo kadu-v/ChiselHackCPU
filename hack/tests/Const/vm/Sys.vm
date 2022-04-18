@@ -1,0 +1,7 @@
+function Sys.init 0
+push constant 1024
+pop pointer 1
+push constant 15
+pop that 0
+label WHILE
+goto WHILE        

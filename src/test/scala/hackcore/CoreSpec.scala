@@ -14,7 +14,7 @@ class HackCoreSpec
   behavior of "HackCPU"
 
   it should "test constants" in {
-    test(new Top("./hack/tests/const.hack"))
+    test(new Top("./hack/tests/Const/vm.hack"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.step(500)
         c.io.debug.expect(15.asUInt())
@@ -30,7 +30,7 @@ class HackCoreSpec
   }
 
   it should "test add" in {
-    test(new Top("./hack/tests/add.hack"))
+    test(new Top("./hack/tests/Add/vm.hack"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.step(500)
         c.io.debug.expect(16.asUInt())
