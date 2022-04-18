@@ -17,10 +17,10 @@ class MMIO extends Module {
     // Output
     val out = Output(UInt(16.W))
 
+    // Debug signal
+    val debug = Output(UInt(16.W))
+    val debug2 = Output(UInt(16.W))
   })
-
-  val buff = RegInit(0.U)
-  io.out := buff
 
   // Random Access Memory
   // negedge clock!!!
@@ -45,4 +45,8 @@ class MMIO extends Module {
 
   // Multiplexer
   io.out := MuxCase(ram.io.out, Seq((io.addr_m(13) === 1.U) -> rx.io.dout))
+
+  // Debug signal
+  io.debug := ram.io.debug
+  io.debug2 := ram.io.debug2
 }

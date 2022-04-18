@@ -12,10 +12,28 @@ class HackCoreSpec
     with ChiselScalatestTester
     with Matchers {
   behavior of "HackCPU"
-  it should "test bin.hex" in {
-    test(new Top("./hack/bin.hack")).withAnnotations(Seq(WriteVcdAnnotation)) {
-      c =>
+
+  it should "test constants" in {
+    test(new Top("./hack/tests/const.hack"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.step(500)
-    }
+        c.io.debug.expect(15.asUInt())
+      }
+  }
+
+  it should "test sadd" in {
+    test(new Top("./hack/tests/sadd.hack"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.step(500)
+        c.io.debug2.expect(5.asUInt())
+      }
+  }
+
+  it should "test add" in {
+    test(new Top("./hack/tests/add.hack"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.step(500)
+        c.io.debug.expect(16.asUInt())
+      }
   }
 }
