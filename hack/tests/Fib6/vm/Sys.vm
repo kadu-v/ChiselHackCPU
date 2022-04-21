@@ -1,0 +1,8 @@
+function Sys.init 0
+push constant 1024
+pop pointer 1
+push constant 6
+call Main.fibonacci 4   // computes the 4'th fibonacci element
+pop that 0
+label WHILE
+goto WHILE        
