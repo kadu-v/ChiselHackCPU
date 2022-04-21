@@ -5,7 +5,7 @@ import memory.RAM
 import uart.Rx
 import chisel3.util.MuxCase
 
-class MMIO extends Module {
+class MMIO(init: String) extends Module {
   val io = IO(new Bundle {
     val addr_m = Input(UInt(16.W))
     val write_m = Input(Bool())
@@ -25,7 +25,7 @@ class MMIO extends Module {
   // Random Access Memory
   // negedge clock!!!
   // val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM()) }
-  val ram = Module(new RAM())
+  val ram = Module(new RAM(init))
   ram.io.addr := io.addr_m
   ram.io.in := io.in_m
   ram.io.write_m := Mux(

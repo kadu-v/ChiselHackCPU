@@ -6,7 +6,7 @@ import memory.ROM
 import chisel3._
 import mmio.MMIO
 
-class Top(filename: String) extends Module {
+class Top(filename: String, init: String) extends Module {
   val io = IO(new Bundle {
     val GPIO = Output(Bool())
 
@@ -19,7 +19,7 @@ class Top(filename: String) extends Module {
   val core = Module(new Core())
 
   // MMIO
-  val mem = Module(new MMIO())
+  val mem = Module(new MMIO(init))
 
   // ROM
   val rom = Module(new ROM(filename))
@@ -48,5 +48,6 @@ class Top(filename: String) extends Module {
 
 object Elaborate extends App {
   val argsx = args :+ "--target-dir" :+ "out"
-  (new chisel3.stage.ChiselStage).emitVerilog(new Top("./bin.hack"), argsx)
+  (new chisel3.stage.ChiselStage)
+    .emitVerilog(new Top("./bin.hack", "./init.bin"), argsx)
 }
