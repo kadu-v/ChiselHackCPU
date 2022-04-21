@@ -29,5 +29,5 @@ class ALU extends Module {
   io.out := out
 
   io.zr := Mux(out === 0.asUInt(), true.B, false.B)
-  io.ng := Mux(out < 0.asUInt(), true.B, false.B)
+  io.ng := Mux(out.asSInt() < 0.asSInt(), true.B, false.B)
 }
