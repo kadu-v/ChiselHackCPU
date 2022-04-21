@@ -33,7 +33,7 @@ class Decode extends Module {
   io.j3 := io.inst(0)
   io.write_m := io.inst(3) & io.inst(15)
   io.load_d := io.inst(4) & io.inst(15)
-  io.load_a := io.inst(5) | ~io.inst(15)
+  io.load_a := (io.inst(5) & io.inst(15)) | ~io.inst(15)
   io.no := io.inst(6)
   io.f := io.inst(7)
   io.ny := io.inst(8)
