@@ -31,13 +31,13 @@ class Top(filename: String, init: String) extends Module {
 
   // core
   core.io.inst := rom.io.out
-  core.io.in_m := mem.io.out
+  core.io.inM := mem.io.out
 
   // Memory mapped IO
   // hack cpu core
-  mem.io.in_m := core.io.out_m
-  mem.io.addr_m := core.io.addr_m
-  mem.io.write_m := core.io.write_m
+  mem.io.inM := core.io.outM
+  mem.io.addrM := core.io.addrM
+  mem.io.writeM := core.io.writeM
 
   // UART Rx
   //        io.rx
@@ -60,7 +60,7 @@ class Top(filename: String, init: String) extends Module {
   // rom
   rom.io.addr := core.io.pc
 
-  io.GPIO := core.io.write_m
+  io.GPIO := core.io.writeM
 
 }
 

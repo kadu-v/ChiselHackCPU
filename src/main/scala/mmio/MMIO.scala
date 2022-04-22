@@ -7,9 +7,9 @@ import chisel3.util.MuxCase
 
 class MMIO(init: String) extends Module {
   val io = IO(new Bundle {
-    val addr_m = Input(UInt(16.W))
-    val write_m = Input(Bool())
-    val in_m = Input(UInt(16.W))
+    val addrM = Input(UInt(16.W))
+    val writeM = Input(Bool())
+    val inM = Input(UInt(16.W))
 
     // Uart Input
     val rx = Input(Bool())
@@ -28,10 +28,10 @@ class MMIO(init: String) extends Module {
   // negedge clock!!!
   // val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM()) }
   val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM(init)) }
-  ram.io.addr := io.addr_m
-  ram.io.in := io.in_m
-  ram.io.write_m := Mux(
-    io.write_m && io.addr_m(13) === 0.U,
+  ram.io.addr := io.addrM
+  ram.io.in := io.inM
+  ram.io.writeM := Mux(
+    io.writeM && io.addrM(13) === 0.U,
     true.B,
     false.B
   )
@@ -65,16 +65,16 @@ class MMIO(init: String) extends Module {
   stCtlReg(1) := rx.io.recieved // recieved flag
 
   // write data to controll register
-  when(io.addr_m === 8192.asUInt() && io.write_m) {
-    stCtlReg := VecInit(io.in_m.asBools) // clear buffer flag
+  when(io.addrM === 8192.asUInt() && io.writeM) {
+    stCtlReg := VecInit(io.inM.asBools) // clear buffer flag
   }
 
   // Multiplexer
   io.out := MuxCase(
     ram.io.out,
     Seq(
-      (io.addr_m === 8192.asUInt()) -> stCtlReg.asUInt(),
-      (io.addr_m === 8193.asUInt()) -> rx.io.dout
+      (io.addrM === 8192.asUInt()) -> stCtlReg.asUInt(),
+      (io.addrM === 8193.asUInt()) -> rx.io.dout
     )
   )
 

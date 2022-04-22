@@ -10,7 +10,7 @@ class RAM(init: String) extends Module {
   val io = IO(new Bundle {
     val in = Input(UInt(16.W))
     val addr = Input(UInt(16.W))
-    val write_m = Input(Bool())
+    val writeM = Input(Bool())
 
     // Output
     val out = Output(UInt(16.W))
@@ -25,12 +25,12 @@ class RAM(init: String) extends Module {
   })
 
   val mem = Mem(2048, UInt(16.W))
-  when(io.write_m) {
+  when(io.writeM) {
     mem(io.addr) := io.in
   }
   loadMemoryFromFileInline(mem, init, MemoryLoadFileType.Binary)
 
-  io.out := mem(io.addr(10, 0))
+  io.out := mem(io.addr(12, 0))
 
   // Debug signal
   io.debug := mem(1024)
