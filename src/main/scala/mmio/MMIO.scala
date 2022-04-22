@@ -27,7 +27,7 @@ class MMIO(init: String) extends Module {
   // Random Access Memory
   // negedge clock!!!
   // val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM()) }
-  val ram = Module(new RAM(init))
+  val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM(init)) }
   ram.io.addr := io.addr_m
   ram.io.in := io.in_m
   ram.io.write_m := Mux(
