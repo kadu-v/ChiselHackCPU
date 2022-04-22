@@ -9,7 +9,7 @@ class Core extends Module {
 
     val out_m = Output(UInt(16.W))
     val write_m = Output(Bool())
-    val addr_m = Output(UInt(13.W))
+    val addr_m = Output(UInt(16.W))
     val pc = Output(UInt(16.W))
   })
 

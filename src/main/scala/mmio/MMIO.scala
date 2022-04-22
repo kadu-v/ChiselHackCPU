@@ -13,13 +13,15 @@ class MMIO(init: String) extends Module {
 
     // Uart Input
     val rx = Input(Bool())
+    val rts = Output(Bool())
 
-    // Output
+    // Output to core
     val out = Output(UInt(16.W))
 
     // Debug signal
     val debug = Output(UInt(16.W))
     val debug2 = Output(UInt(16.W))
+    val rxdebug = Output(UInt(16.W))
   })
 
   // Random Access Memory
@@ -34,19 +36,50 @@ class MMIO(init: String) extends Module {
     false.B
   )
 
+  // UART
+  // staus and controll register
+  val stCtlReg = RegInit(
+    VecInit(Seq.fill(16)(false.B))
+  )
+
   // Uart RX
   val rx = Module(new Rx(12, 115200))
   rx.io.rx := io.rx
-  rx.io.cbf := Mux(
-    io.write_m && io.addr_m(13) === 1.U && io.addr_m(3, 0) === "b0000".U,
-    true.B,
-    false.B
-  )
+  io.rts := rx.io.rts
+  rx.io.cbf := stCtlReg(5)
+
+  // status register
+  //  15       Tx          8  7         4 Rx        0
+  // |-----------------------------------------------|
+  // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
+  // |-----------------------------------------------|
+  //                                 C  R        R B
+  //                                 L  E        E U
+  //                                 E  S        C S
+  //                                 A  E        I Y
+  //                                 R  T        E
+  //                                             V
+  //                                             E
+
+  stCtlReg(0) := rx.io.busy // busy flag
+  stCtlReg(1) := rx.io.recieved // recieved flag
+
+  // write data to controll register
+  when(io.addr_m === 8192.asUInt() && io.write_m) {
+    stCtlReg := VecInit(io.in_m.asBools) // clear buffer flag
+  }
 
   // Multiplexer
-  io.out := MuxCase(ram.io.out, Seq((io.addr_m(13) === 1.U) -> rx.io.dout))
+  io.out := MuxCase(
+    ram.io.out,
+    Seq(
+      (io.addr_m === 8192.asUInt()) -> stCtlReg.asUInt(),
+      (io.addr_m === 8193.asUInt()) -> rx.io.dout
+    )
+  )
 
   // Debug signal
   io.debug := ram.io.debug
   io.debug2 := ram.io.debug2
+  io.rxdebug := rx.io.dout
 }

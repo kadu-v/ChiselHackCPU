@@ -1,6 +1,6 @@
 package hackcore
 
-import Chisel._
+import chisel3._
 
 class PC extends Module {
   val io = IO(new Bundle {
