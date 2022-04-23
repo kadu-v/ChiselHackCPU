@@ -21,14 +21,6 @@ class HackCoreSpec
       }
   }
 
-  it should "test sadd" in {
-    test(new Top("./hack/tests/sadd.hack", "./hack/init.bin"))
-      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
-        c.clock.step(500)
-        c.io.debug2.expect(5.asUInt())
-      }
-  }
-
   it should "test add (8 + 8 = 16)" in {
     test(new Top("./hack/tests/Add/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>

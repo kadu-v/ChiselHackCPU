@@ -12,12 +12,22 @@ class Top(filename: String, init: String) extends Module {
     val rx = Input(Bool())
     val rts = Output(Bool())
 
-    val GPIO = Output(Bool())
+    //
+    // val PIO0 = Output(UInt(8.W))
+    //
+    // val PIO1 = Output(UInt(8.W))
+
+    // LED
+    val GLED = Output(Bool())
+    val RLED1 = Output(Bool())
+    val RLED2 = Output(Bool())
+    val RLED3 = Output(Bool())
+    val RLED4 = Output(Bool())
 
     // Debug signal
     val debug = Output(UInt(16.W))
-    val debug2 = Output(UInt(16.W))
-    val rxdebug = Output(UInt(16.W))
+    // val debug2 = Output(UInt(16.W))
+    // val rxdebug = Output(UInt(16.W))
   })
 
   // Hack CPU core
@@ -52,16 +62,24 @@ class Top(filename: String, init: String) extends Module {
   mem.io.rx := io.rx
   io.rts := mem.io.rts
 
-  // Debug signal
-  io.debug := mem.io.debug
-  io.debug2 := mem.io.debug2
-  io.rxdebug := mem.io.rxdebug
-
   // rom
   rom.io.addr := core.io.pc
 
-  io.GPIO := core.io.writeM
+  // Debug
 
+  // LED
+  val debug = mem.io.debug === 8.asUInt()
+
+  io.debug := mem.io.debug
+  // io.debug2 := mem.io.debug2
+  // io.rxdebug := mem.io.rxdebug
+
+  // LED
+  io.GLED := reset.asBool() // reset
+  io.RLED1 := debug
+  io.RLED2 := false.B
+  io.RLED3 := false.B
+  io.RLED4 := false.B
 }
 
 object Elaborate extends App {
