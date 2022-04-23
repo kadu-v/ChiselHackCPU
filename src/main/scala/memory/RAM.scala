@@ -14,10 +14,6 @@ class RAM(init: String) extends Module {
 
     // Output
     val out = Output(UInt(16.W))
-
-    // Debug
-    val debug = Output(UInt(16.W))
-    val debug2 = Output(UInt(16.W))
   })
 
   annotate(new ChiselAnnotation {
@@ -31,8 +27,4 @@ class RAM(init: String) extends Module {
   loadMemoryFromFileInline(mem, init, MemoryLoadFileType.Binary)
 
   io.out := mem(io.addr(12, 0))
-
-  // Debug signal
-  io.debug := mem(1024)
-  io.debug2 := mem(0)
 }

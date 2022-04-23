@@ -20,13 +20,11 @@ class MMIO(init: String) extends Module {
 
     // Debug signal
     val debug = Output(UInt(16.W))
-    val debug2 = Output(UInt(16.W))
     val rxdebug = Output(UInt(16.W))
   })
 
   // Random Access Memory
   // negedge clock!!!
-  // val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM()) }
   val ram = withClock((~clock.asBool()).asClock()) { Module(new RAM(init)) }
   ram.io.addr := io.addrM
   ram.io.in := io.inM
@@ -79,7 +77,10 @@ class MMIO(init: String) extends Module {
   )
 
   // Debug signal
-  io.debug := ram.io.debug
-  io.debug2 := ram.io.debug2
+  val debugReg = RegInit(0.asUInt())
+  when(io.addrM === 1024.asUInt) {
+    debugReg := ram.io.out
+  }
+  io.debug := debugReg
   io.rxdebug := rx.io.dout
 }

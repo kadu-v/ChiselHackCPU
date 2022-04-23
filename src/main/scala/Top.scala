@@ -25,8 +25,7 @@ class Top(filename: String, init: String) extends Module {
     val RLED4 = Output(Bool())
 
     // Debug signal
-    val debug = Output(UInt(16.W))
-    // val debug2 = Output(UInt(16.W))
+    // val debug = Output(UInt(8.W))
     // val rxdebug = Output(UInt(16.W))
   })
 
@@ -70,8 +69,7 @@ class Top(filename: String, init: String) extends Module {
   // LED
   val debug = mem.io.debug === 8.asUInt()
 
-  io.debug := mem.io.debug
-  // io.debug2 := mem.io.debug2
+  // io.debug := mem.io.debug
   // io.rxdebug := mem.io.rxdebug
 
   // LED
@@ -83,7 +81,7 @@ class Top(filename: String, init: String) extends Module {
 }
 
 object Elaborate extends App {
-  val argsx = args :+ "--target-dir" :+ "out"
+  val argsx = args :+ "--target-dir" :+ "apio" :+ "--emission-options=disableMemRandomization,disableRegisterRandomization"
   (new chisel3.stage.ChiselStage)
-    .emitVerilog(new Top("./bin.hack", "./init.bin"), argsx)
+    .emitVerilog(new Top("bin.hack", "init.bin"), argsx)
 }
