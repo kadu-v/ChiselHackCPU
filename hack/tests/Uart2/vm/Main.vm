@@ -1,0 +1,24 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/08/FunctionCalls/SimpleFunction/SimpleFunction.vm
+
+// Performs a simple calculation and returns the result.
+function Main.uart 1
+    push constant 16 // push 16 to stack
+    pop local 0 // pop 16 and push local 
+label LOOP
+    push constant 0
+    push local 0
+    eq
+    if-goto END
+    push local 0
+    push constant 1
+    sub              // - 1
+    pop local 0      // tmp = tmp - 1
+    goto LOOP
+label END
+    push constant 8192
+    pop pointer 1
+    push that 0
+    return
