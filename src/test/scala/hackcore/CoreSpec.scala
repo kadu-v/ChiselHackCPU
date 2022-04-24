@@ -1,4 +1,4 @@
-package hackcore
+package core
 
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec

@@ -1,4 +1,4 @@
-package hackcore
+package core
 
 import chisel3.Bundle
 import Chisel.UInt
