@@ -46,7 +46,6 @@ class MMIO(init: String) extends Module {
   io.rts := rx.io.rts
   rx.io.cbf := stCtlReg(5)
 
-  // status register
   //  15       Tx          8  7         4 Rx        0
   // |-----------------------------------------------|
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
@@ -59,12 +58,16 @@ class MMIO(init: String) extends Module {
   //                                             V
   //                                             E
 
+  // status register
   stCtlReg(0) := rx.io.busy // busy flag
   stCtlReg(1) := rx.io.recieved // recieved flag
 
-  // write data to controll register
+  // controll register
   when(io.addrM === 8192.asUInt() && io.writeM) {
-    stCtlReg := VecInit(io.inM.asBools) // clear buffer flag
+    stCtlReg(4) := io.inM(4)
+    stCtlReg(5) := io.inM(5)
+  } otherwise {
+    stCtlReg(5) := false.B
   }
 
   // Multiplexer
