@@ -1,7 +1,0 @@
-function Sys.init 0
-push constant 1024
-pop pointer 1
-call Main.uart 1
-pop that 0
-label WHILE
-goto WHILE        
