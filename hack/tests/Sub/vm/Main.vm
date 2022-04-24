@@ -1,0 +1,5 @@
+function Main.sub 0
+push constant 8
+push constant 7
+sub
+return

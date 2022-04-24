@@ -1,8 +1,7 @@
 function Sys.init 0
 push constant 1024
 pop pointer 1
-push constant 2
-call Main.fibonacci 0   // computes the 4'th fibonacci element
+call Main.sub 0
 pop that 0
 label WHILE
 goto WHILE        
