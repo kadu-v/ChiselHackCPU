@@ -1,7 +1,7 @@
 function Main.uart 2
     push constant 8194    // set Uart Tx address
     pop pointer 1
-    push constant 85     
+    push constant 96     // send a @
     pop that 0           // set data
     push constant 8192   // set controll register address
     pop pointer 1 
