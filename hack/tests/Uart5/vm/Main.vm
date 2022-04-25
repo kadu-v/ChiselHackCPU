@@ -1,0 +1,27 @@
+function Main.uart 2
+    push constant 8194    // set Uart Tx address
+    pop pointer 1
+    push constant 85     
+    pop that 0           // set data
+    push constant 8192   // set controll register address
+    pop pointer 1 
+    push constant 4096   // set run flag
+    pop that 0
+    push that 0
+    pop local 1
+    // busy loop
+    push constant 16     // push 16 to stack
+    pop local 0          //  pop 16 and push local 
+label LOOP
+    push constant 0
+    push local 0
+    eq
+    if-goto END
+    push local 0
+    push constant 1
+    sub              // - 1
+    pop local 0      // tmp = tmp - 1
+    goto LOOP
+label END
+    push local 1
+    return

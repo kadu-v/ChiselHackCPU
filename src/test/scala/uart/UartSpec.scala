@@ -7,7 +7,7 @@ import chisel3._
 import top.Top
 import chiseltest.WriteVcdAnnotation
 
-class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
+class UartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
   behavior of "Uart Rx(12 MHz, 115200 bps)"
   it should "recieve 0b01010101" in {
     test(new Rx(12, 115200)) { c =>
@@ -42,6 +42,7 @@ class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Uart1/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
         c.io.rx.poke(true.B)
         c.clock.step(100)
         c.io.rx.poke(false.B) // start bit
@@ -76,6 +77,7 @@ class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Uart2/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
         c.io.rx.poke(true.B)
         c.clock.step(100)
         c.io.rx.poke(false.B) // start bit
@@ -110,6 +112,7 @@ class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Uart3/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
         c.io.rx.poke(true.B)
         c.clock.step(100)
         c.io.rx.poke(false.B) // start bit
@@ -144,6 +147,7 @@ class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Uart4/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
         c.io.rx.poke(true.B)
         c.clock.step(100)
         c.io.rx.poke(false.B) // start bit
@@ -171,6 +175,17 @@ class UartRxSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
         // wait here
         c.clock.step(1000)
         c.io.debug.expect(0x00.asUInt())
+      }
+  }
+
+  behavior of "Uart Tx(12 MHz, 115200 bps)"
+  it should "send 0b01010101" in {
+    test(new Top("./hack/tests/Uart5/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
+        c.clock.step(5000)
+        c.io.debug.expect(256.asUInt())
       }
   }
 }
