@@ -188,4 +188,19 @@ class UartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
         c.io.debug.expect(256.asUInt())
       }
   }
+
+  it should "send 0b01010101, reset" in {
+    test(new Top("./hack/tests/Uart5/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.setTimeout(0)
+        c.io.cts.poke(true.B)
+        c.clock.step(5000)
+        c.reset.poke(true.B)
+        c.clock.step(50)
+        c.reset.poke(false.B)
+        c.io.cts.poke(true.B)
+        c.clock.step(5000)
+        c.io.debug.expect(256.asUInt())
+      }
+  }
 }
