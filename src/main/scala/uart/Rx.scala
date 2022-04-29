@@ -83,7 +83,7 @@ class Rx(freq: Int, baudRate: Int) extends Module {
         state := sEND
       }.elsewhen(clkCnt === waitTime) {
         clkCnt := 0.asUInt()
-        rxData := Cat(io.rx, rxData(8, 1)) // LSB
+        rxData := io.rx ## rxData(8, 1) // LSB
         dataCnt := dataCnt + 1.asUInt()
       }.otherwise {
         clkCnt := clkCnt + 1.asUInt()
@@ -93,7 +93,7 @@ class Rx(freq: Int, baudRate: Int) extends Module {
       state := sIDLE
       clkCnt := 0.asUInt()
       dataCnt := 0.asUInt()
-      buff := Cat("b00000000".U, rxData(7, 0)) // change data to valid data!!
+      buff := "b00000000".U ## rxData(7, 0) // change data to valid data!!
       busy := false.B
       recieved := true.B
       rts := false.B

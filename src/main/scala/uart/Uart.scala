@@ -28,15 +28,15 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   // |-----------------------------------------------|
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   // |-----------------------------------------------|
-  //            R          B         C           R B
-  //            U          U         L           E U
-  //            N          S         E           C S
-  //                       Y         A           I Y
-  //                                 R           E
-  //                                             V
-  //                                             E
+  //            R          B            C        R  B
+  //            U          U            L        E  U
+  //            N          S            E        C  S
+  //                       Y            A        I  Y
+  //                                    R        E
+  //                       T                     V  R
+  //                       X                     E  X
 
-  // staus and controll register
+  // staus and control register
   val uartStCtlReg = RegInit(
     VecInit(Seq.fill(16)(false.B))
   )
@@ -53,15 +53,6 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     txBuff := io.inM(7, 0)
   }
 
-  // controll register
-  when(io.addrM === stCtlAddr.asUInt() && io.writeM) {
-    uartStCtlReg(5) := io.inM(5) // Rx
-    uartStCtlReg(12) := io.inM(12) // Tx
-  }.otherwise {
-    uartStCtlReg(5) := false.B // Rx
-    uartStCtlReg(12) := false.B // Tx
-  }
-
   // status register
   // Rx
   uartStCtlReg(0) := rx.io.busy // busy flag
@@ -69,10 +60,19 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   // Tx
   uartStCtlReg(8) := tx.io.busy
 
+  // control register
+  when(io.addrM === stCtlAddr.asUInt() && io.writeM) {
+    uartStCtlReg(4) := io.inM(4) // Rx
+    uartStCtlReg(12) := io.inM(12) // Tx
+  }.otherwise {
+    uartStCtlReg(4) := false.B // Rx
+    uartStCtlReg(12) := false.B // Tx
+  }
+
   // connect IO
   rx.io.rx := io.rx
   io.rts := rx.io.rts
-  rx.io.cbf := uartStCtlReg(5)
+  rx.io.cbf := uartStCtlReg(4)
 
   tx.io.din := txBuff
   tx.io.run := uartStCtlReg(12)
