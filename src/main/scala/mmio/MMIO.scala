@@ -3,8 +3,8 @@ package mmio
 import chisel3._
 import memory.RAM
 import uart.Uart
+import spi.Spi
 import chisel3.util.MuxCase
-import javax.swing.InputMap
 
 class MMIO(init: String) extends Module {
   val io = IO(new Bundle {
@@ -12,14 +12,20 @@ class MMIO(init: String) extends Module {
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
 
-    // UART
+    /* UART */
     // Rx
     val rx = Input(Bool())
     val rts = Output(Bool())
-
     // Tx
     val cts = Input(Bool())
     val tx = Output(Bool())
+
+    /* SPI */
+    val miso = Input(Bool())
+    val mosi = Output(Bool())
+    val sclk = Output(Bool())
+    val csx = Output(Bool())
+    val dcx = Output(Bool()) // LCD monitor
 
     // Output to core
     val out = Output(UInt(16.W))
@@ -43,7 +49,7 @@ class MMIO(init: String) extends Module {
   /* UART */
   val uart = Module(
     new Uart(
-      8192, // address of status and controll register
+      8192, // address of status and control register
       8193, // address of RX
       8194 // address of Tx
     )
@@ -64,19 +70,43 @@ class MMIO(init: String) extends Module {
   io.tx := uart.io.tx
 
   /* SPI */
+  val spi = Module(
+    new Spi(
+      8195, // address of status and control register
+      8196, // address of miso
+      8197 // address of mosi
+    )
+  )
+  spi.io.addrM := io.addrM
+  spi.io.inM := io.inM
+  spi.io.writeM := Mux(
+    io.writeM &&
+      (io.addrM === 8194.U
+        || io.addrM === 8195.U
+        || io.addrM === 8196.U),
+    true.B,
+    false.B
+  )
+  spi.io.miso := io.miso
+  io.mosi := spi.io.mosi
+  io.sclk := spi.io.sclk
+  io.csx := spi.io.csx
+  io.dcx := spi.io.dcx
 
   /* Multiplexer */
-  // if      addrM === 8192 then status and controll register of uart
+  // if      addrM === 8192 then status and control register of uart
   // else if addrM === 8193 then revieved data of UART Rx
   // else if addrM === 8194 then dummy data of UART Tx
   // else                        ram[addrM]
   io.out := MuxCase(
     ram.io.out,
     Seq(
-      (io.addrM === 8192.asUInt() || io.addrM === 8193
-        .asUInt() || io.addrM === 8194.asUInt()) -> uart.io.out
-        .asUInt()
-        .asUInt()
+      (io.addrM === 8192.asUInt()
+        || io.addrM === 8193.asUInt()
+        || io.addrM === 8194.asUInt()) -> uart.io.out,
+      (io.addrM === 8195.asUInt()
+        || io.addrM === 8196.asUInt()
+        || io.addrM === 8197.asUInt()) -> spi.io.out
     )
   )
 
