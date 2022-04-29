@@ -86,10 +86,3 @@ class Top(filename: String, init: String) extends Module {
   io.RLED3 := false.B
   io.RLED4 := false.B
 }
-
-object Elaborate extends App {
-  val argsx =
-    args :+ "--target-dir" :+ "apio" :+ "--emission-options=disableMemRandomization,disableRegisterRandomization"
-  (new chisel3.stage.ChiselStage)
-    .emitVerilog(new Top("bin.hack", "init.bin"), argsx)
-}
