@@ -14,7 +14,7 @@ label LOOP
 label END
     push constant 8192
     pop pointer 1
-    push constant 32      // 0 clear
+    push constant 16      // 0 clear
     pop that 0
     push that 0
     return

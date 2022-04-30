@@ -16,10 +16,12 @@ class Top(filename: String, init: String) extends Module {
     val tx = Output(Bool())
     val cts = Input(Bool()) // clear to send
 
-    //
-    // val PIO0 = Output(UInt(8.W))
-    //
-    // val PIO1 = Output(UInt(8.W))
+    // SPI
+    val miso = Input(Bool())
+    val mosi = Output(Bool())
+    val sclk = Output(Bool())
+    val csx = Output(Bool())
+    val dcx = Output(Bool()) // LCD monitor
 
     // LED
     val GLED = Output(Bool())
@@ -68,6 +70,13 @@ class Top(filename: String, init: String) extends Module {
   io.tx := mem.io.tx
   mem.io.cts := io.cts
 
+  // SPI Master
+  mem.io.miso := io.miso
+  io.mosi := mem.io.mosi
+  io.sclk := mem.io.sclk
+  io.csx := mem.io.csx
+  io.dcx := mem.io.dcx // LCD monitor
+
   // rom
   rom.io.addr := core.io.pc
 
@@ -85,11 +94,4 @@ class Top(filename: String, init: String) extends Module {
   io.RLED2 := false.B
   io.RLED3 := false.B
   io.RLED4 := false.B
-}
-
-object Elaborate extends App {
-  val argsx =
-    args :+ "--target-dir" :+ "apio" :+ "--emission-options=disableMemRandomization,disableRegisterRandomization"
-  (new chisel3.stage.ChiselStage)
-    .emitVerilog(new Top("bin.hack", "init.bin"), argsx)
 }
