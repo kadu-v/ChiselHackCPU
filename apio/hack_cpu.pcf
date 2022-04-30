@@ -4,9 +4,11 @@ set_io              clock     21
 # reset using buttun
 set_io  -pullup yes reset     112
 
-# UART Rx
-set_io              io_rx     113
-set_io              io_rts    114
+# UART Rx and Tx
+set_io              io_rx     9
+set_io              io_tx     8
+set_io              io_rts    7
+set_io              io_cts    4
 
 # LEDs
 set_io              io_RLED1  99
