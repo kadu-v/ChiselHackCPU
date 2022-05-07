@@ -6,7 +6,7 @@ import memory.ROM
 import chisel3._
 import mmio.MMIO
 
-class Top(filename: String, init: String) extends Module {
+class Top(filename: String, init: String, words: Int) extends Module {
   val io = IO(new Bundle {
     // UART RX Input
     val rx = Input(Bool())
@@ -42,7 +42,7 @@ class Top(filename: String, init: String) extends Module {
   val mem = Module(new MMIO(init))
 
   // ROM
-  val rom = Module(new ROM(filename))
+  val rom = Module(new ROM(filename, words))
 
   // core
   core.io.inst := rom.io.out
