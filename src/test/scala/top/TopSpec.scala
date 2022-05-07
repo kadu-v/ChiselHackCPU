@@ -1,43 +1,56 @@
-package uart
+package top
 
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 import chisel3._
-import top.Top
 import chiseltest.WriteVcdAnnotation
 
-class UartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
-  behavior of "Uart Rx(12 MHz, 115200 bps)"
-  it should "recieve 0b01010101" in {
-    test(new Rx(12, 115200)) { c =>
-      // 104 clock
-      c.io.rx.poke(true.B)
-      c.clock.step(100)
-      c.io.rx.poke(false.B) // start bit
-      c.clock.step(104)
-      c.io.rx.poke(1.B) // 1 bit 1
-      c.clock.step(104)
-      c.io.rx.poke(0.B) // 2 bit 0
-      c.clock.step(104)
-      c.io.rx.poke(1.B) // 3 bit 1
-      c.clock.step(104)
-      c.io.rx.poke(0.B) // 4 bit 0
-      c.clock.step(104)
-      c.io.rx.poke(1.B) // 5 bit 1
-      c.clock.step(104)
-      c.io.rx.poke(0.B) // 6 bit 0
-      c.clock.step(104)
-      c.io.rx.poke(1.B) // 7 bit 1
-      c.clock.step(104)
-      c.io.rx.poke(0.B) // 8 bit 0
-      c.clock.step(104)
-      c.io.rx.poke(true.B) // stop bit
-      c.clock.step(104)
-      c.io.dout.expect(0x55.asUInt()) // LSB
-    }
+class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
+  behavior of "Hack Core"
+  it should "push constants" in {
+    test(new Top("./hack/tests/Const/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.step(500)
+        c.io.debug.expect(15.asUInt())
+      }
   }
 
+  it should "add (8 + 8 = 16)" in {
+    test(new Top("./hack/tests/Add/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.step(500)
+        c.io.debug.expect(16.asUInt())
+      }
+  }
+
+  it should "sub (8 - 7 = 1)" in {
+    test(new Top("./hack/tests/Sub/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.step(500)
+        c.io.debug.expect(1.asUInt())
+      }
+  }
+
+  it should "do fib(2) = 1 (fib(0) = 0, fib(1) = 1)" in {
+    test(new Top("./hack/tests/Fib2/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.setTimeout(0)
+        c.clock.step(1000)
+        c.io.debug.expect(1.asUInt())
+      }
+  }
+
+  it should "do fib(6) = 8 (fib(0) = 0, fib(1) = 1)" in {
+    test(new Top("./hack/tests/Fib6/vm.hack", "./hack/init.bin"))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.setTimeout(0)
+        c.clock.step(4000)
+        c.io.debug.expect(8.asUInt())
+      }
+  }
+
+  behavior of "Uart Rx(12 MHz, 115200 bps)"
   it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
     test(new Top("./hack/tests/Uart1/vm.hack", "./hack/init.bin"))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>

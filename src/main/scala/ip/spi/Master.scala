@@ -1,4 +1,4 @@
-package spi
+package ip.spi
 
 import chisel3._
 import chisel3.util._

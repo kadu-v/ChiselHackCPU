@@ -1,10 +1,11 @@
-package spi
+package lcd
 
+import ip.spi._
 import chisel3._
 import chisel3.util._
 
 // Interface for MMIO
-class Spi(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
+class SpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   val io = IO(new Bundle {
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())

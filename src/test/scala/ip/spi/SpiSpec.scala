@@ -1,6 +1,4 @@
-package spi
-
-package spi
+package ip.spi
 
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec

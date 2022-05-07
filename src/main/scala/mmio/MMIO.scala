@@ -2,8 +2,8 @@ package mmio
 
 import chisel3._
 import memory.RAM
-import uart.Uart
-import spi.Spi
+import usb.Uart
+import lcd.SpiMaster
 import chisel3.util.MuxCase
 
 class MMIO(init: String) extends Module {
@@ -71,7 +71,7 @@ class MMIO(init: String) extends Module {
 
   /* SPI */
   val spi = Module(
-    new Spi(
+    new SpiMaster(
       8195, // address of status and control register
       8196, // address of miso
       8197 // address of mosi
