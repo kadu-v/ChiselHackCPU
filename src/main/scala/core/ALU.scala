@@ -18,16 +18,16 @@ class ALU extends Module {
     val ng = Output(Bool())
   })
 
-  val x0 = Mux(io.zx, 0.asUInt(), io.in1)
+  val x0 = Mux(io.zx, 0.asUInt, io.in1)
   val x1 = Mux(io.nx, ~x0, x0)
 
-  val y0 = Mux(io.zy, 0.asUInt(), io.in2)
+  val y0 = Mux(io.zy, 0.asUInt, io.in2)
   val y1 = Mux(io.ny, ~y0, y0)
 
   val z0 = Mux(io.f, x1 + y1, x1 & y1)
   val out = Mux(io.no, ~z0, z0)
   io.out := out
 
-  io.zr := Mux(out === 0.asUInt(), true.B, false.B)
-  io.ng := Mux(out.asSInt() < 0.asSInt(), true.B, false.B)
+  io.zr := Mux(out === 0.asUInt, true.B, false.B)
+  io.ng := Mux(out.asSInt() < 0.asSInt, true.B, false.B)
 }

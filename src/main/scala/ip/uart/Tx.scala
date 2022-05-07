@@ -13,8 +13,7 @@ class Tx(freq: Int, baudRate: Int) extends Module {
   })
 
   val waitTime =
-    ((freq * 1000000) / baudRate)
-      .asUInt() // 50 MHz / 115200 = 50 * 10**6 / 115200
+    ((freq * 1000000) / baudRate).asUInt // 50 MHz / 115200 = 50 * 10**6 / 115200
 
   val sIDLE :: sSTART :: sSEND :: sEND :: Nil = Enum(4)
   val txData = RegInit("b1111111111".U(10.W))
@@ -36,33 +35,33 @@ class Tx(freq: Int, baudRate: Int) extends Module {
       }
     }
     is(sSTART) { // send a start bit
-      when(clkCnt === waitTime - 1.asUInt()) {
+      when(clkCnt === waitTime - 1.asUInt) {
         state := sSEND
-        clkCnt := 0.asUInt()
+        clkCnt := 0.asUInt
         txData := true.B ## txData(9, 1) // LSB, shift
       }.otherwise {
-        clkCnt := clkCnt + 1.asUInt()
+        clkCnt := clkCnt + 1.asUInt
       }
     }
     is(sSEND) { // send a tx data
-      when(dataCnt === 8.asUInt()) {
+      when(dataCnt === 8.asUInt) {
         state := sEND
-      }.elsewhen(clkCnt === waitTime - 1.asUInt()) {
-        clkCnt := 0.asUInt()
+      }.elsewhen(clkCnt === waitTime - 1.asUInt) {
+        clkCnt := 0.asUInt
         txData := true.B ## txData(9, 1) // LSB, shift
-        dataCnt := dataCnt + 1.asUInt()
+        dataCnt := dataCnt + 1.asUInt
       }.otherwise {
-        clkCnt := clkCnt + 1.asUInt()
+        clkCnt := clkCnt + 1.asUInt
       }
     }
     is(sEND) { // send a stop bit
-      when(clkCnt === waitTime - 1.asUInt()) {
+      when(clkCnt === waitTime - 1.asUInt) {
         state := sIDLE
-        dataCnt := 0.asUInt()
-        clkCnt := 0.asUInt()
+        dataCnt := 0.asUInt
+        clkCnt := 0.asUInt
         busy := false.B
       }.otherwise {
-        clkCnt := clkCnt + 1.asUInt()
+        clkCnt := clkCnt + 1.asUInt
       }
     }
   }

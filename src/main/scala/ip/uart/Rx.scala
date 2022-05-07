@@ -21,11 +21,9 @@ class Rx(freq: Int, baudRate: Int) extends Module {
   })
 
   val waitTime =
-    ((freq * 1000000) / baudRate)
-      .asUInt() // 50 MHz / 115200 = 50 * 10**6 / 115200
+    ((freq * 1000000) / baudRate).asUInt // 50 MHz / 115200 = 50 * 10**6 / 115200
   val halfTime =
-    ((freq * 1000000) / baudRate / 2)
-      .asUInt() // 50 MHz / 115200 / 2 = 50 * 10**6 / 115200
+    ((freq * 1000000) / baudRate / 2).asUInt // 50 MHz / 115200 / 2 = 50 * 10**6 / 115200
 
   // inner register for state machine
   val sIDLE :: sWAIT :: sRDATA :: sEND :: Nil = Enum(4)
@@ -73,26 +71,26 @@ class Rx(freq: Int, baudRate: Int) extends Module {
     is(sWAIT) {
       when(clkCnt === halfTime) {
         state := sRDATA
-        clkCnt := 0.asUInt()
+        clkCnt := 0.asUInt
       }.otherwise {
-        clkCnt := clkCnt + 1.asUInt()
+        clkCnt := clkCnt + 1.asUInt
       }
     }
     is(sRDATA) {
-      when(dataCnt === 9.asUInt()) {
+      when(dataCnt === 9.asUInt) {
         state := sEND
       }.elsewhen(clkCnt === waitTime) {
-        clkCnt := 0.asUInt()
+        clkCnt := 0.asUInt
         rxData := io.rx ## rxData(8, 1) // LSB
-        dataCnt := dataCnt + 1.asUInt()
+        dataCnt := dataCnt + 1.asUInt
       }.otherwise {
-        clkCnt := clkCnt + 1.asUInt()
+        clkCnt := clkCnt + 1.asUInt
       }
     }
     is(sEND) {
       state := sIDLE
-      clkCnt := 0.asUInt()
-      dataCnt := 0.asUInt()
+      clkCnt := 0.asUInt
+      dataCnt := 0.asUInt
       buff := "b00000000".U ## rxData(7, 0) // change data to valid data!!
       busy := false.B
       recieved := true.B

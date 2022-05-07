@@ -101,17 +101,17 @@ class MMIO(init: String) extends Module {
   io.out := MuxCase(
     ram.io.out,
     Seq(
-      (io.addrM === 8192.asUInt()
-        || io.addrM === 8193.asUInt()
-        || io.addrM === 8194.asUInt()) -> uart.io.out,
-      (io.addrM === 8195.asUInt()
-        || io.addrM === 8196.asUInt()
-        || io.addrM === 8197.asUInt()) -> spi.io.out
+      (io.addrM === 8192.asUInt
+        || io.addrM === 8193.asUInt
+        || io.addrM === 8194.asUInt) -> uart.io.out,
+      (io.addrM === 8195.asUInt
+        || io.addrM === 8196.asUInt
+        || io.addrM === 8197.asUInt) -> spi.io.out
     )
   )
 
   // Debug signal
-  val debugReg = RegInit(0.asUInt())
+  val debugReg = RegInit(0.asUInt)
   when(io.addrM === 1024.asUInt) {
     debugReg := ram.io.out
   }

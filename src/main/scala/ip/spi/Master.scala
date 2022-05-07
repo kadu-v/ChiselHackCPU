@@ -31,12 +31,12 @@ class Master extends Module {
   val stateSclk = RegInit(sIDLE) // inner register for SCLK
   val stateCsx = RegInit(sIDLE) // inner register for CSX
 
-  val rxReg = RegInit(0.asUInt())
+  val rxReg = RegInit(0.asUInt)
   val txReg = RegInit(0.U(8.W))
   val sclkReg = RegInit(false.B)
   val csxReg = RegInit(true.B)
   val busy = RegInit(false.B)
-  val rxBuff = RegInit(0.asUInt()) // inner buffer
+  val rxBuff = RegInit(0.asUInt) // inner buffer
   val completed = RegInit(false.B)
   val dcx = RegInit(false.B)
 
@@ -65,16 +65,16 @@ class Master extends Module {
     }
     is(sRUN) {
       sclkReg := ~sclkReg
-      when(countSclk === 15.asUInt()) {
+      when(countSclk === 15.asUInt) {
         stateSclk := sEND
       }.otherwise {
-        countSclk := countSclk + 1.asUInt()
+        countSclk := countSclk + 1.asUInt
       }
     }
     is(sEND) {
       stateSclk := sIDLE
       sclkReg := false.B
-      countSclk := 0.asUInt()
+      countSclk := 0.asUInt
     }
   }
 
@@ -94,17 +94,17 @@ class Master extends Module {
       }
     }
     is(sRUN) {
-      when(countCsx === 15.asUInt()) {
+      when(countCsx === 15.asUInt) {
         stateCsx := sEND
       }.otherwise {
-        countCsx := countCsx + 1.asUInt()
+        countCsx := countCsx + 1.asUInt
       }
     }
     is(sEND) {
       stateCsx := sIDLE
       csxReg := true.B
       busy := false.B
-      countCsx := 0.asUInt()
+      countCsx := 0.asUInt
     }
   }
 
@@ -117,18 +117,18 @@ class Master extends Module {
       }
     }
     is(sRUN) {
-      count := count + 1.asUInt()
-      when(count === 16.asUInt()) {
+      count := count + 1.asUInt
+      when(count === 16.asUInt) {
         state := sEND
-      }.elsewhen(count(0) === 1.asUInt()) { // posedge of sclk
+      }.elsewhen(count(0) === 1.asUInt) { // posedge of sclk
         txReg := txReg(6, 0) ## false.B
         rxBuff := rxBuff(6, 0) ## io.miso
       }
     }
     is(sEND) {
       state := sIDLE
-      count := 0.asUInt()
-      txReg := 0.asUInt()
+      count := 0.asUInt
+      txReg := 0.asUInt
       rxReg := "b00000000".U ## rxBuff
     }
   }

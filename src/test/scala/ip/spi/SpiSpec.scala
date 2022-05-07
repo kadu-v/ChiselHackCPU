@@ -11,7 +11,7 @@ class SpiSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
   it should "transmit 0b01010101" in {
     test(new Master()).withAnnotations(Seq(WriteVcdAnnotation)) { c =>
       c.clock.step(4)
-      c.io.txData.poke("b01010101".asUInt())
+      c.io.txData.poke("b01010101".asUInt)
       c.io.miso.poke(false.B)
       c.io.run.poke(true.B)
       c.clock.step(1)
@@ -36,7 +36,7 @@ class SpiSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
   it should "recieve 0b11001100" in {
     test(new Master()).withAnnotations(Seq(WriteVcdAnnotation)) { c =>
       c.clock.step(4)
-      c.io.txData.poke("b01010101".asUInt())
+      c.io.txData.poke("b01010101".asUInt)
       c.io.miso.poke(false.B)
       c.io.run.poke(true.B)
       c.clock.step(1)
@@ -58,7 +58,7 @@ class SpiSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       c.clock.step(2)
       c.io.miso.poke(false.B)
       c.clock.step(10)
-      c.io.rxData.expect("b11001100".asUInt())
+      c.io.rxData.expect("b11001100".asUInt)
     }
   }
 }

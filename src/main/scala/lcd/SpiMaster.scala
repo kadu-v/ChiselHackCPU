@@ -44,10 +44,10 @@ class SpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
 
   // Master of SPI
   val master = Module(new Master())
-  val txBuff = RegInit(0.asUInt())
+  val txBuff = RegInit(0.asUInt)
 
   // MOSI Buffer
-  when(io.addrM === txAddr.asUInt() && io.writeM) {
+  when(io.addrM === txAddr.asUInt && io.writeM) {
     txBuff := io.inM(7, 0)
   }
 
@@ -80,10 +80,10 @@ class SpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
 
   // Output
   io.out := MuxCase(
-    0.asUInt(),
+    0.asUInt,
     Seq(
-      (io.addrM === stCtlAddr.asUInt()) -> spiStCtlReg.asUInt(),
-      (io.addrM === rxAddr.asUInt()) -> master.io.rxData
+      (io.addrM === stCtlAddr.asUInt) -> spiStCtlReg.asUInt,
+      (io.addrM === rxAddr.asUInt) -> master.io.rxData
     )
   )
 }

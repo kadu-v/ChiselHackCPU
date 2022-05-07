@@ -34,7 +34,7 @@ class UartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       c.clock.step(104)
       c.io.rx.poke(true.B) // stop bit
       c.clock.step(104)
-      c.io.dout.expect(0x55.asUInt()) // LSB
+      c.io.dout.expect(0x55.asUInt) // LSB
     }
   }
 

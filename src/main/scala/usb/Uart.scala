@@ -47,10 +47,10 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
 
   // Tx
   val tx = Module(new Tx(12, 115200))
-  val txBuff = RegInit(0.asUInt()) // buffer for Tx
+  val txBuff = RegInit(0.asUInt) // buffer for Tx
 
   // Tx Buffer
-  when(io.addrM === txAddr.asUInt() && io.writeM) {
+  when(io.addrM === txAddr.asUInt && io.writeM) {
     txBuff := io.inM(7, 0)
   }
 
@@ -62,7 +62,7 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   uartStCtlReg(8) := tx.io.busy
 
   // control register
-  when(io.addrM === stCtlAddr.asUInt() && io.writeM) {
+  when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     uartStCtlReg(4) := io.inM(4) // Rx
     uartStCtlReg(12) := io.inM(12) // Tx
   }.otherwise {
@@ -82,10 +82,10 @@ class Uart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
 
   // Output
   io.out := MuxCase(
-    0.asUInt(),
+    0.asUInt,
     Seq(
-      (io.addrM === stCtlAddr.asUInt()) -> uartStCtlReg.asUInt(),
-      (io.addrM === rxAddr.asUInt()) -> rx.io.dout
+      (io.addrM === stCtlAddr.asUInt) -> uartStCtlReg.asUInt,
+      (io.addrM === rxAddr.asUInt) -> rx.io.dout
     )
   )
 }
