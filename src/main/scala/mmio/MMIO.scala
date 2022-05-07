@@ -2,8 +2,8 @@ package mmio
 
 import chisel3._
 import memory.RAM
-import usb.Uart
-import lcd.SpiMaster
+import usb.USBUart
+import lcd.LCDSpiMaster
 import chisel3.util.MuxCase
 
 class MMIO(init: String) extends Module {
@@ -12,7 +12,7 @@ class MMIO(init: String) extends Module {
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
 
-    /* UART */
+    /* usbUart */
     // Rx
     val rx = Input(Bool())
     val rts = Output(Bool())
@@ -20,7 +20,7 @@ class MMIO(init: String) extends Module {
     val cts = Input(Bool())
     val tx = Output(Bool())
 
-    /* SPI */
+    /* lcdSpiMaster */
     val miso = Input(Bool())
     val mosi = Output(Bool())
     val sclk = Output(Bool())
@@ -46,17 +46,17 @@ class MMIO(init: String) extends Module {
     false.B
   )
 
-  /* UART */
-  val uart = Module(
-    new Uart(
+  /* usbUart */
+  val usbUart = Module(
+    new USBUart(
       8192, // address of status and control register
       8193, // address of RX
       8194 // address of Tx
     )
   )
-  uart.io.addrM := io.addrM
-  uart.io.inM := io.inM
-  uart.io.writeM := Mux(
+  usbUart.io.addrM := io.addrM
+  usbUart.io.inM := io.inM
+  usbUart.io.writeM := Mux(
     io.writeM &&
       (io.addrM === 8192.U
         || io.addrM === 8193.U
@@ -64,22 +64,22 @@ class MMIO(init: String) extends Module {
     true.B,
     false.B
   )
-  uart.io.rx := io.rx
-  io.rts := uart.io.rts
-  uart.io.cts := io.cts
-  io.tx := uart.io.tx
+  usbUart.io.rx := io.rx
+  io.rts := usbUart.io.rts
+  usbUart.io.cts := io.cts
+  io.tx := usbUart.io.tx
 
-  /* SPI */
-  val spi = Module(
-    new SpiMaster(
+  /* lcdSpiMaster */
+  val lcdSpiMaster = Module(
+    new LCDSpiMaster(
       8195, // address of status and control register
       8196, // address of miso
       8197 // address of mosi
     )
   )
-  spi.io.addrM := io.addrM
-  spi.io.inM := io.inM
-  spi.io.writeM := Mux(
+  lcdSpiMaster.io.addrM := io.addrM
+  lcdSpiMaster.io.inM := io.inM
+  lcdSpiMaster.io.writeM := Mux(
     io.writeM &&
       (io.addrM === 8194.U
         || io.addrM === 8195.U
@@ -87,26 +87,26 @@ class MMIO(init: String) extends Module {
     true.B,
     false.B
   )
-  spi.io.miso := io.miso
-  io.mosi := spi.io.mosi
-  io.sclk := spi.io.sclk
-  io.csx := spi.io.csx
-  io.dcx := spi.io.dcx
+  lcdSpiMaster.io.miso := io.miso
+  io.mosi := lcdSpiMaster.io.mosi
+  io.sclk := lcdSpiMaster.io.sclk
+  io.csx := lcdSpiMaster.io.csx
+  io.dcx := lcdSpiMaster.io.dcx
 
   /* Multiplexer */
-  // if      addrM === 8192 then status and control register of uart
-  // else if addrM === 8193 then revieved data of UART Rx
-  // else if addrM === 8194 then dummy data of UART Tx
+  // if      addrM === 8192 then status and control register of usbUart
+  // else if addrM === 8193 then revieved data of usbUart Rx
+  // else if addrM === 8194 then dummy data of usbUart Tx
   // else                        ram[addrM]
   io.out := MuxCase(
     ram.io.out,
     Seq(
       (io.addrM === 8192.asUInt
         || io.addrM === 8193.asUInt
-        || io.addrM === 8194.asUInt) -> uart.io.out,
+        || io.addrM === 8194.asUInt) -> usbUart.io.out,
       (io.addrM === 8195.asUInt
         || io.addrM === 8196.asUInt
-        || io.addrM === 8197.asUInt) -> spi.io.out
+        || io.addrM === 8197.asUInt) -> lcdSpiMaster.io.out
     )
   )
 
