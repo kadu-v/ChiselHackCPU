@@ -83,13 +83,13 @@ class Top(filename: String, init: String, words: Int) extends Module {
   // Debug
 
   // LED
-  val debug = mem.io.debug === 8.asUInt()
+  val debug = mem.io.debug === 8.asUInt
 
   io.debug := mem.io.debug
   // io.rxdebug := mem.io.rxdebug
 
   // LED
-  io.GLED := reset.asBool() // reset
+  io.GLED := reset.asBool // reset
   io.RLED1 := debug
   io.RLED2 := false.B
   io.RLED3 := false.B
