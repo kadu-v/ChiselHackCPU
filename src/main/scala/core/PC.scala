@@ -7,6 +7,7 @@ class PC extends Module {
     val a = Input(UInt(16.W))
     val load = Input(Bool())
     val inc = Input(Bool())
+    val run = Input(Bool())
 
     val out = Output(UInt(16.W))
   })
@@ -17,6 +18,8 @@ class PC extends Module {
     inner := io.a
   }.elsewhen(io.inc) {
     inner := inner + 1.asUInt
+  }.elsewhen(io.run) {
+    inner := 0.asUInt
   }
 
 }

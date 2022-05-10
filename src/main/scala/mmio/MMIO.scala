@@ -1,18 +1,24 @@
 package mmio
 
 import chisel3._
-import memory.RAM
+import ip.memory.EBRAM
+import memory.ROM
 import usb.USBUart
 import lcd.LCDSpiMaster
 import chisel3.util.MuxCase
 
-class MMIO(init: String) extends Module {
+class MMIO(init: String, file: String, words: Int) extends Module {
   val io = IO(new Bundle {
-    val addrM = Input(UInt(16.W))
-    val writeM = Input(Bool())
-    val inM = Input(UInt(16.W))
+    /* Random Access Memory */
+    // Input from core
+    val addrRam = Input(UInt(16.W))
+    val writeRam = Input(Bool())
+    val inRam = Input(UInt(16.W))
 
-    /* usbUart */
+    // Output to core
+    val outRam = Output(UInt(16.W))
+
+    /* USB Uart */
     // Rx
     val rx = Input(Bool())
     val rts = Output(Bool())
@@ -20,15 +26,19 @@ class MMIO(init: String) extends Module {
     val cts = Input(Bool())
     val tx = Output(Bool())
 
-    /* lcdSpiMaster */
+    /* LCD SPI Master */
     val miso = Input(Bool())
     val mosi = Output(Bool())
     val sclk = Output(Bool())
     val csx = Output(Bool())
     val dcx = Output(Bool()) // LCD monitor
 
+    /* Program Counter */
+    val pc = Input(UInt(16.W))
+    val run = Output(Bool())
+
     // Output to core
-    val out = Output(UInt(16.W))
+    val outInst = Output(UInt(16.W))
 
     // Debug signal
     val debug = Output(UInt(16.W))
@@ -36,17 +46,17 @@ class MMIO(init: String) extends Module {
 
   /* Random Access Memory */
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
-    Module(new RAM(init))
+    Module(new EBRAM(init))
   }
-  ram.io.addr := io.addrM
-  ram.io.in := io.inM
+  ram.io.addr := io.addrRam
+  ram.io.in := io.inRam
   ram.io.writeM := Mux(
-    io.writeM && io.addrM(13) === 0.U,
+    io.writeRam && io.addrRam(13) === 0.U,
     true.B,
     false.B
   )
 
-  /* usbUart */
+  /* USB Uart */
   val usbUart = Module(
     new USBUart(
       8192, // address of status and control register
@@ -54,13 +64,13 @@ class MMIO(init: String) extends Module {
       8194 // address of Tx
     )
   )
-  usbUart.io.addrM := io.addrM
-  usbUart.io.inM := io.inM
+  usbUart.io.addrM := io.addrRam
+  usbUart.io.inM := io.inRam
   usbUart.io.writeM := Mux(
-    io.writeM &&
-      (io.addrM === 8192.U
-        || io.addrM === 8193.U
-        || io.addrM === 8194.U),
+    io.writeRam &&
+      (io.addrRam === 8192.U
+        || io.addrRam === 8193.U
+        || io.addrRam === 8194.U),
     true.B,
     false.B
   )
@@ -69,7 +79,7 @@ class MMIO(init: String) extends Module {
   usbUart.io.cts := io.cts
   io.tx := usbUart.io.tx
 
-  /* lcdSpiMaster */
+  /* LCD SPI Master */
   val lcdSpiMaster = Module(
     new LCDSpiMaster(
       8195, // address of status and control register
@@ -77,13 +87,13 @@ class MMIO(init: String) extends Module {
       8197 // address of mosi
     )
   )
-  lcdSpiMaster.io.addrM := io.addrM
-  lcdSpiMaster.io.inM := io.inM
+  lcdSpiMaster.io.addrM := io.addrRam
+  lcdSpiMaster.io.inM := io.inRam
   lcdSpiMaster.io.writeM := Mux(
-    io.writeM &&
-      (io.addrM === 8194.U
-        || io.addrM === 8195.U
-        || io.addrM === 8196.U),
+    io.writeRam &&
+      (io.addrRam === 8194.U
+        || io.addrRam === 8195.U
+        || io.addrRam === 8196.U),
     true.B,
     false.B
   )
@@ -93,26 +103,47 @@ class MMIO(init: String) extends Module {
   io.csx := lcdSpiMaster.io.csx
   io.dcx := lcdSpiMaster.io.dcx
 
+  /* Read Only Memory for instructions */
+  val rom = Module(
+    new ROM(
+      8197, // address of status and control register
+      8198, // address of address register
+      8199, // adress of in register
+      file,
+      words
+    )
+  )
+  rom.io.addrM := io.addrRam
+  rom.io.writeM := io.writeRam
+  rom.io.inM := io.inRam
+
+  rom.io.pc := io.pc
+  io.outInst := rom.io.outInst
+  io.run := rom.io.pc
+
   /* Multiplexer */
   // if      addrM === 8192 then status and control register of usbUart
   // else if addrM === 8193 then revieved data of usbUart Rx
   // else if addrM === 8194 then dummy data of usbUart Tx
   // else                        ram[addrM]
-  io.out := MuxCase(
+  io.outRam := MuxCase(
     ram.io.out,
     Seq(
-      (io.addrM === 8192.asUInt
-        || io.addrM === 8193.asUInt
-        || io.addrM === 8194.asUInt) -> usbUart.io.out,
-      (io.addrM === 8195.asUInt
-        || io.addrM === 8196.asUInt
-        || io.addrM === 8197.asUInt) -> lcdSpiMaster.io.out
+      (io.addrRam === 8192.asUInt
+        || io.addrRam === 8193.asUInt
+        || io.addrRam === 8194.asUInt) -> usbUart.io.out,
+      (io.addrRam === 8195.asUInt
+        || io.addrRam === 8196.asUInt
+        || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.out,
+      (io.addrRam === 8197.asUInt
+        || io.addrRam === 8198.asUInt
+        || io.addrRam === 8199.asUInt) -> rom.io.out
     )
   )
 
   // Debug signal
   val debugReg = RegInit(0.asUInt)
-  when(io.addrM === 1024.asUInt) {
+  when(io.addrRam === 1024.asUInt) {
     debugReg := ram.io.out
   }
   io.debug := debugReg

@@ -6,6 +6,7 @@ class Core extends Module {
   val io = IO(new Bundle {
     val inst = Input(UInt(16.W))
     val inM = Input(UInt(16.W))
+    val run = Input(Bool())
 
     val outM = Output(UInt(16.W))
     val writeM = Output(Bool())
@@ -80,6 +81,7 @@ class Core extends Module {
   pc.io.load := pcLoad.io.loadPC
   pc.io.inc := true.B
   pc.io.a := regA.io.out
+  pc.io.run := io.run
 
   io.outM := alu.io.out
   io.writeM := decode.io.writeM

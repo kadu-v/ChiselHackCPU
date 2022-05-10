@@ -39,20 +39,19 @@ class Top(filename: String, init: String, words: Int) extends Module {
   val core = Module(new Core())
 
   // MMIO
-  val mem = Module(new MMIO(init))
-
-  // ROM
-  val rom = Module(new ROM(filename, words))
+  val mmio = Module(new MMIO(init, filename, words))
 
   // core
-  core.io.inst := rom.io.out
-  core.io.inM := mem.io.out
+  core.io.inst := mmio.io.outInst
+  core.io.inM := mmio.io.outRam
+  core.io.run := mmio.io.run
+  mmio.io.pc := core.io.pc // rom
 
   // Memory mapped IO
   // hack cpu core
-  mem.io.inM := core.io.outM
-  mem.io.addrM := core.io.addrM
-  mem.io.writeM := core.io.writeM
+  mmio.io.inRam := core.io.outM
+  mmio.io.addrRam := core.io.addrM
+  mmio.io.writeRam := core.io.writeM
 
   // UART Rx and Tx
   //        io.rx                            io.tx
@@ -65,28 +64,25 @@ class Top(filename: String, init: String, words: Int) extends Module {
   //   +----------------+             +----------------+
   //        rx.io.rts                     rx.io.cts
 
-  mem.io.rx := io.rx
-  io.rts := mem.io.rts
-  io.tx := mem.io.tx
-  mem.io.cts := io.cts
+  mmio.io.rx := io.rx
+  io.rts := mmio.io.rts
+  io.tx := mmio.io.tx
+  mmio.io.cts := io.cts
 
   // SPI Master
-  mem.io.miso := io.miso
-  io.mosi := mem.io.mosi
-  io.sclk := mem.io.sclk
-  io.csx := mem.io.csx
-  io.dcx := mem.io.dcx // LCD monitor
-
-  // rom
-  rom.io.addr := core.io.pc
+  mmio.io.miso := io.miso
+  io.mosi := mmio.io.mosi
+  io.sclk := mmio.io.sclk
+  io.csx := mmio.io.csx
+  io.dcx := mmio.io.dcx // LCD monitor
 
   // Debug
 
   // LED
-  val debug = mem.io.debug === 8.asUInt
+  val debug = mmio.io.debug === 8.asUInt
 
-  io.debug := mem.io.debug
-  // io.rxdebug := mem.io.rxdebug
+  io.debug := mmio.io.debug
+  // io.rxdebug := mmio.io.rxdebug
 
   // LED
   io.GLED := reset.asBool // reset
