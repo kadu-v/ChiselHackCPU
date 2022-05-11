@@ -56,6 +56,8 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(5000)
+        c.io.debug.expect(1.asUInt)
+
       }
   }
 

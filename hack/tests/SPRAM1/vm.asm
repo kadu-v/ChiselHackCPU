@@ -46,6 +46,107 @@
 (Sys.init)
 	@SP
 	A=M
+	D=A
+	@SP
+	M=D
+	@RETURN1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@LCL
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@ARG
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	D=M
+	@LCL
+	M=D
+	@5
+	D=D-A
+	@ARG
+	M=D
+	@Boot.init
+	0;JMP
+(RETURN1)
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@5
+	D=A
+	@LCL
+	A=M-D
+	D=M
+	@R13
+	M=D
+	@SP
+	A=M-1
+	D=M
+	@ARG
+	A=M
+	M=D
+	D=A+1
+	@SP
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THAT
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THIS
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@ARG
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@LCL
+	M=D
+	@R13
+	A=M
+	0;JMP
+(Boot.init)
+	@SP
+	A=M
+	M=0
+	A=A+1
+	M=0
+	A=A+1
 	M=0
 	A=A+1
 	M=0
@@ -62,7 +163,7 @@
 	@SP
 	AM=M-1
 	D=M
-	@Sys.0
+	@Boot.0
 	M=D
 	@8197
 	D=A
@@ -73,7 +174,7 @@
 	@SP
 	AM=M-1
 	D=M
-	@Sys.1
+	@Boot.1
 	M=D
 	@8198
 	D=A
@@ -84,7 +185,7 @@
 	@SP
 	AM=M-1
 	D=M
-	@Sys.2
+	@Boot.2
 	M=D
 	@8199
 	D=A
@@ -95,9 +196,9 @@
 	@SP
 	AM=M-1
 	D=M
-	@Sys.3
+	@Boot.3
 	M=D
-	@0
+	@1024
 	D=A
 	@SP
 	AM=M+1
@@ -117,7 +218,7 @@
 	D=A
 	@LCL
 	M=M-D
-	@5497
+	@568
 	D=A
 	@SP
 	AM=M+1
@@ -140,13 +241,56 @@
 	D=A
 	@LCL
 	M=M-D
-	@Sys.2
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@2
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@2
+	D=A
+	@LCL
+	M=M-D
+	@5497
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	A=M-1
+	M=-M
+	@3
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@3
+	D=A
+	@LCL
+	M=M-D
+	@Boot.2
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -194,13 +338,13 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.3
+	@Boot.3
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -251,13 +395,13 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.1
+	@Boot.1
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -305,13 +449,13 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.2
+	@Boot.2
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -359,13 +503,13 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.3
+	@Boot.3
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -416,13 +560,13 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.1
+	@Boot.1
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -470,13 +614,343 @@
 	D=A
 	@THAT
 	M=M-D
-	@Sys.1
+	@Boot.2
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@Sys.0
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.3
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@2
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@32
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.2
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@3
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.3
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@3
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@32
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@Boot.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Boot.0
 	D=M
 	@SP
 	AM=M+1
@@ -524,7 +998,7 @@
 	D=A
 	@THAT
 	M=M-D
-(Sys.init$WHILE_EXP0)
+(Boot.init$WHILE_EXP0)
 	@0
 	D=A
 	@SP
@@ -540,11 +1014,11 @@
 	@SP
 	AM=M-1
 	D=M
-	@Sys.init$WHILE_END0
+	@Boot.init$WHILE_END0
 	D;JNE
-	@Sys.init$WHILE_EXP0
+	@Boot.init$WHILE_EXP0
 	0;JMP
-(Sys.init$WHILE_END0)
+(Boot.init$WHILE_END0)
 	@0
 	D=A
 	@SP

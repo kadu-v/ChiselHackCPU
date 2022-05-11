@@ -1,42 +1,6 @@
-
 class Sys {
-    static Array RAM;
-    static int addrOfStCtReg;
-    static int addrOfAddrReg;
-    static int addrOfInReg;
-
     function void init() {
-        var int inst0;
-        var int inst1;
-        let RAM = 0;
-        let addrOfStCtReg = 8197; // address of spram's conrtol and status register
-        let addrOfAddrReg = 8198; // address of address's register
-        let addrOfInReg = 8199; // address of in's register
-        // (LOOP)
-        //      @LOOP
-        //      0;JMP
-        let inst0 = 0;     
-        let inst1 = -5497; 
-
-        // write first instructions
-        let RAM[addrOfAddrReg] = 0;
-        let RAM[addrOfInReg] = inst0;
-        let RAM[addrOfStCtReg] = 32; // 000000000100000
-
-        // write second instructions
-        let RAM[addrOfAddrReg] = 1;
-        let RAM[addrOfInReg] = inst1;
-        let RAM[addrOfStCtReg] = 32; // 000000000100000
-
-        // switch instruction memory from EBROM to SPRAM
-        let RAM[addrOfStCtReg] = 16; // 000000000010000
-        
-        
-        while(true) {
-            // wait here
-        }
-
+        do Boot.init();
         return;
     }
-
 }
