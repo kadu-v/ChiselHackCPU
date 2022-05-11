@@ -108,7 +108,7 @@ class MMIO(init: String, file: String, words: Int) extends Module {
     new ROM(
       8197, // address of status and control register
       8198, // address of address register
-      8199, // adress of in register
+      8199, // address of in register
       file,
       words
     )
@@ -119,7 +119,7 @@ class MMIO(init: String, file: String, words: Int) extends Module {
 
   rom.io.pc := io.pc
   io.outInst := rom.io.outInst
-  io.run := rom.io.pc
+  io.run := rom.io.run
 
   /* Multiplexer */
   // if      addrM === 8192 then status and control register of usbUart

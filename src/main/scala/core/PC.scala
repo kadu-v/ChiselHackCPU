@@ -14,12 +14,12 @@ class PC extends Module {
 
   val inner = withClock((~clock.asBool()).asClock()) { RegInit(0.asUInt) }
   io.out := inner
-  when(io.load) {
+  when(io.run) {
+    inner := 0.asUInt
+  }.elsewhen(io.load) {
     inner := io.a
   }.elsewhen(io.inc) {
     inner := inner + 1.asUInt
-  }.elsewhen(io.run) {
-    inner := 0.asUInt
   }
 
 }

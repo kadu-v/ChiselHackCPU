@@ -51,6 +51,14 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       }
   }
 
+  it should "switch instruction's memory from EBRAM to SPRAM" in {
+    test(new Top("./hack/tests/SPRAM1/vm.hack", "./hack/init.bin", words))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
+        c.clock.setTimeout(0)
+        c.clock.step(5000)
+      }
+  }
+
   behavior of "Uart Rx(12 MHz, 115200 bps)"
   it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
     test(new Top("./hack/tests/Uart1/vm.hack", "./hack/init.bin", words))
@@ -217,4 +225,5 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
         c.io.debug.expect(256.asUInt)
       }
   }
+
 }

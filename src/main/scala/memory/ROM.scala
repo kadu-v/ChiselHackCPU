@@ -55,7 +55,7 @@ class ROM(
   val addrReg = RegInit(0.asUInt)
   val inReg = RegInit(0.asUInt)
   val run = RegInit(false.B)
-  io.run := run
+  io.run := romStCtlReg(4)
 
   // status register
   romStCtlReg(0) := run
@@ -64,8 +64,10 @@ class ROM(
   // switch instruction memory from EBROM to SPRAM
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     run := io.inM(4)
+    romStCtlReg(4) := io.inM(4)
     romStCtlReg(5) := io.inM(5)
   }.otherwise {
+    romStCtlReg(4) := false.B
     romStCtlReg(5) := false.B
   }
 
