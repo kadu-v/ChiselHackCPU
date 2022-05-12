@@ -3,7 +3,7 @@ package ip.memory
 import chisel3._
 import chisel3.util.MuxCase
 
-class SPRAMMock extends Module {
+class SPRAMStub extends Module {
   val io = IO(new Bundle {
     val in = Input(UInt(16.W))
     val addr = Input(UInt(16.W))
@@ -21,10 +21,10 @@ class SPRAMMock extends Module {
     )
   )
 
-  val spram00 = Module(new SPRAM256KMock())
-  val spram01 = Module(new SPRAM256KMock())
-  val spram10 = Module(new SPRAM256KMock())
-  val spram11 = Module(new SPRAM256KMock())
+  val spram00 = Module(new SPRAM256KAStub())
+  val spram01 = Module(new SPRAM256KAStub())
+  val spram10 = Module(new SPRAM256KAStub())
+  val spram11 = Module(new SPRAM256KAStub())
 
   spram00.io.addr := io.addr(13, 0)
   spram01.io.addr := io.addr(13, 0)

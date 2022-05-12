@@ -6,7 +6,7 @@ import chisel3.experimental.{annotate, ChiselAnnotation}
 import firrtl.annotations.MemorySynthInit
 import firrtl.annotations.MemoryLoadFileType
 
-class SPRAM256KMock extends Module {
+class SPRAM256KAStub extends Module {
   val io = IO(new Bundle {
     val in = Input(UInt(16.W))
     val addr = Input(UInt(13.W))
