@@ -1,10 +1,7 @@
 package ip.memory
 
 import chisel3._
-import chisel3.util.experimental.{loadMemoryFromFileInline}
-import chisel3.experimental.{annotate, ChiselAnnotation}
-import firrtl.annotations.MemorySynthInit
-import firrtl.annotations.MemoryLoadFileType
+import chisel3.util.MuxCase
 
 class SPRAMMock extends Module {
   val io = IO(new Bundle {
@@ -14,16 +11,54 @@ class SPRAMMock extends Module {
 
     val out = Output(UInt(16.W))
   })
+  val cs = MuxCase(
+    "b0000".asUInt,
+    Seq(
+      (io.addr(15, 14) === "b00".asUInt) -> "b0001".asUInt,
+      (io.addr(15, 14) === "b01".asUInt) -> "b0010".asUInt,
+      (io.addr(15, 14) === "b10".asUInt) -> "b0100".asUInt,
+      (io.addr(15, 14) === "b11".asUInt) -> "b1000".asUInt
+    )
+  )
 
-  annotate(new ChiselAnnotation {
-    override def toFirrtl = MemorySynthInit
-  })
+  val spram00 = Module(new SPRAM256KMock())
+  val spram01 = Module(new SPRAM256KMock())
+  val spram10 = Module(new SPRAM256KMock())
+  val spram11 = Module(new SPRAM256KMock())
 
-  val mem = Mem(65536, UInt(16.W))
-  when(io.writeM) {
-    mem(io.addr) := io.in
-  }
-  // loadMemoryFromFileInline(mem, init, MemoryLoadFileType.Binary)
+  spram00.io.addr := io.addr(13, 0)
+  spram01.io.addr := io.addr(13, 0)
+  spram10.io.addr := io.addr(13, 0)
+  spram11.io.addr := io.addr(13, 0)
 
-  io.out := mem(io.addr)
+  spram00.io.cs := cs(0)
+  spram01.io.cs := cs(1)
+  spram10.io.cs := cs(2)
+  spram11.io.cs := cs(3)
+
+  spram00.io.in := io.in
+  spram01.io.in := io.in
+  spram10.io.in := io.in
+  spram11.io.in := io.in
+
+  spram00.io.addr := io.addr
+  spram01.io.addr := io.addr
+  spram10.io.addr := io.addr
+  spram11.io.addr := io.addr
+
+  spram00.io.wren := io.writeM
+  spram01.io.wren := io.writeM
+  spram10.io.wren := io.writeM
+  spram11.io.wren := io.writeM
+
+  io.out := MuxCase(
+    0.asUInt,
+    Seq(
+      (io.addr(15, 14) === "b00".asUInt) -> spram00.io.out,
+      (io.addr(15, 14) === "b01".asUInt) -> spram01.io.out,
+      (io.addr(15, 14) === "b10".asUInt) -> spram10.io.out,
+      (io.addr(15, 14) === "b11".asUInt) -> spram11.io.out
+    )
+  )
+
 }

@@ -4,6 +4,8 @@ import chisel3._
 import ip.memory._
 import chisel3.util.MuxCase
 
+// TODO: runレジスタのドメインが立ち下がりエッジになっている
+// モジュール全体のレジスタのドメインを立ち上がりエッジに統一する
 class ROM(
     stCtlAddr: Int,
     addrAddr: Int,
@@ -19,7 +21,7 @@ class ROM(
 
     val out = Output(UInt(16.W))
 
-    // instruction memory
+    /* instruction memory */
     val pc = Input(UInt(16.W))
     val outInst = Output(UInt(16.W))
     val run = Output(Bool())
@@ -48,21 +50,32 @@ class ROM(
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   // |-----------------------------------------------|
 
+  // status and control register
   val romStCtlReg = RegInit(
     VecInit(Seq.fill(16)(false.B))
   )
 
+  // address register
   val addrReg = RegInit(0.asUInt)
+
+  // in register
   val inReg = RegInit(0.asUInt)
+
+  // EBROM and SPRAM
+  val ebrom = Module(new EBROM(file, words))
+  // val spram = Module(new SPRAM())
+  val spram = Module(new SPRAMMock())
+
+  // inner register
   val run = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     RegInit(false.B)
   }
   io.run := romStCtlReg(4)
 
-  // status register
+  /* status register */
   romStCtlReg(0) := run
 
-  // control register
+  /* control register */
   // switch instruction memory from EBROM to SPRAM
   // negative edge
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
@@ -78,16 +91,17 @@ class ROM(
     romStCtlReg(5) := false.B
   }
 
-  // adress register
+  /* adress register */
   when(io.addrM === addrAddr.asUInt && io.writeM) {
     addrReg := io.inM
   }
 
-  // in register
+  /* in register */
   when(io.addrM === inAddr.asUInt && io.writeM) {
     inReg := io.inM
   }
 
+  /* connect IO */
   io.out := MuxCase(
     0.asUInt,
     Seq(
@@ -96,11 +110,6 @@ class ROM(
       (io.addrM === inAddr.asUInt) -> inReg
     )
   )
-
-  val ebrom = Module(new EBROM(file, words))
-
-//   val spram = Module(new SPRAM())
-  val spram = Module(new SPRAMMock())
 
   ebrom.io.addr := Mux(run, 0.asUInt, io.pc)
 
