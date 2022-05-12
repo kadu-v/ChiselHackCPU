@@ -54,7 +54,9 @@ class ROM(
 
   val addrReg = RegInit(0.asUInt)
   val inReg = RegInit(0.asUInt)
-  val run = RegInit(false.B)
+  val run = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
+    RegInit(false.B)
+  }
   io.run := romStCtlReg(4)
 
   // status register
@@ -62,8 +64,13 @@ class ROM(
 
   // control register
   // switch instruction memory from EBROM to SPRAM
+  // negative edge
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     run := io.inM(4)
+  }
+
+  // positive edge
+  when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     romStCtlReg(4) := io.inM(4)
     romStCtlReg(5) := io.inM(5)
   }.otherwise {
