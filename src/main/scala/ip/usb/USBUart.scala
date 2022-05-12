@@ -11,6 +11,7 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
+    val outM = Output(UInt(16.W)) // Output
 
     // UART
     // Rx
@@ -21,8 +22,6 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
     val cts = Input(Bool())
     val tx = Output(Bool())
 
-    // Output
-    val out = Output(UInt(16.W))
   })
 
   /* UART */
@@ -82,7 +81,7 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
   io.tx := tx.io.tx
 
   // Output
-  io.out := MuxCase(
+  io.outM := MuxCase(
     0.asUInt,
     Seq(
       (io.addrM === stCtlAddr.asUInt) -> uartStCtlReg.asUInt,

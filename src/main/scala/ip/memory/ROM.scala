@@ -18,8 +18,7 @@ class ROM(
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
-
-    val out = Output(UInt(16.W))
+    val outM = Output(UInt(16.W))
 
     /* instruction memory */
     val pc = Input(UInt(16.W))
@@ -102,7 +101,7 @@ class ROM(
   }
 
   /* connect IO */
-  io.out := MuxCase(
+  io.outM := MuxCase(
     0.asUInt,
     Seq(
       (io.addrM === stCtlAddr.asUInt) -> romStCtlReg.asUInt,
@@ -111,11 +110,11 @@ class ROM(
     )
   )
 
-  ebrom.io.addr := Mux(run, 0.asUInt, io.pc)
+  ebrom.io.addrM := Mux(run, 0.asUInt, io.pc)
 
-  spram.io.in := inReg
-  spram.io.addr := Mux(run, io.pc, addrReg)
+  spram.io.inM := inReg
+  spram.io.addrM := Mux(run, io.pc, addrReg)
   spram.io.writeM := romStCtlReg(5)
 
-  io.outInst := Mux(run, spram.io.out, ebrom.io.out)
+  io.outInst := Mux(run, spram.io.outM, ebrom.io.outM)
 }

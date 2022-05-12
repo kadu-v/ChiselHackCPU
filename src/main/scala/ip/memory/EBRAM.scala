@@ -8,12 +8,12 @@ import firrtl.annotations.MemoryLoadFileType
 
 class EBRAM(init: String) extends Module {
   val io = IO(new Bundle {
-    val in = Input(UInt(16.W))
-    val addr = Input(UInt(16.W))
+    val inM = Input(UInt(16.W))
+    val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
 
     // Output
-    val out = Output(UInt(16.W))
+    val outM = Output(UInt(16.W))
   })
 
   annotate(new ChiselAnnotation {
@@ -22,9 +22,9 @@ class EBRAM(init: String) extends Module {
 
   val mem = Mem(2048, UInt(16.W))
   when(io.writeM) {
-    mem(io.addr) := io.in
+    mem(io.addrM) := io.inM
   }
   loadMemoryFromFileInline(mem, init, MemoryLoadFileType.Binary)
 
-  io.out := mem(io.addr(12, 0))
+  io.outM := mem(io.addrM(12, 0))
 }

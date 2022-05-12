@@ -12,9 +12,9 @@ import firrtl.annotations.MemoryLoadFileType
 
 class EBROM(file: String, words: Int) extends Module {
   val io = IO(new Bundle {
-    val addr = Input(UInt(16.W))
+    val addrM = Input(UInt(16.W))
 
-    val out = Output(UInt(16.W))
+    val outM = Output(UInt(16.W))
   })
 
   annotate(new ChiselAnnotation {
@@ -23,5 +23,5 @@ class EBROM(file: String, words: Int) extends Module {
 
   val mem = Mem(words, UInt(16.W))
   loadMemoryFromFileInline(mem, file, MemoryLoadFileType.Binary)
-  io.out := mem(io.addr(10, 0))
+  io.outM := mem(io.addrM(10, 0))
 }

@@ -10,6 +10,7 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
+    val outM = Output(UInt(16.W)) // Output
 
     // SPI
     val miso = Input(Bool())
@@ -18,8 +19,6 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     val csx = Output(Bool()) // H: inactive, L: active
     val dcx = Output(Bool())
 
-    // Output
-    val out = Output(UInt(16.W))
   })
   /* SPI */
   //  15       12  Tx       8  7       4   Rx        0
@@ -79,7 +78,7 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   io.dcx := master.io.dcx
 
   // Output
-  io.out := MuxCase(
+  io.outM := MuxCase(
     0.asUInt,
     Seq(
       (io.addrM === stCtlAddr.asUInt) -> spiStCtlReg.asUInt,

@@ -33,12 +33,14 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
     val csx = Output(Bool())
     val dcx = Output(Bool()) // LCD monitor
 
-    /* Program Counter */
+    /* Read Only Memory */
     val pc = Input(UInt(16.W))
     val run = Output(Bool())
+    val outInst = Output(UInt(16.W)) // Output to core
 
-    // Output to core
-    val outInst = Output(UInt(16.W))
+    /* LED 7 Segment */
+    val outLED7seg = Output(UInt(7.W))
+    val csLED7seg = Output(Bool())
 
     // Debug signal
     val debug = Output(UInt(16.W))
@@ -50,8 +52,8 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     Module(new EBRAM(init))
   }
-  ram.io.addr := io.addrRam
-  ram.io.in := io.inRam
+  ram.io.addrM := io.addrRam
+  ram.io.inM := io.inRam
   ram.io.writeM := Mux(
     io.writeRam && io.addrRam(13) === 0.U,
     true.B,
@@ -134,21 +136,36 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
    *                         LED 7 Segments                                    *
    ----------------------------------------------------------------------------*/
 
+  val led7seg = Module(
+    new LED7Seg(
+      freq, // frequency fo clock
+      8200
+    )
+  )
+
+  led7seg.io.addrM := io.addrRam
+  led7seg.io.writeM := io.writeRam
+  led7seg.io.inM := io.inRam
+
+  io.outLED7seg := led7seg.io.out
+  io.csLED7seg := led7seg.io.cs
+
   /*----------------------------------------------------------------------------
    *                         Multiplexer                                       *
    ----------------------------------------------------------------------------*/
   io.outRam := MuxCase(
-    ram.io.out,
+    ram.io.outM,
     Seq(
       (io.addrRam === 8192.asUInt
         || io.addrRam === 8193.asUInt
-        || io.addrRam === 8194.asUInt) -> usbUart.io.out,
+        || io.addrRam === 8194.asUInt) -> usbUart.io.outM,
       (io.addrRam === 8195.asUInt
         || io.addrRam === 8196.asUInt
-        || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.out,
+        || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.outM,
       (io.addrRam === 8197.asUInt
         || io.addrRam === 8198.asUInt
-        || io.addrRam === 8199.asUInt) -> rom.io.out
+        || io.addrRam === 8199.asUInt) -> rom.io.outM,
+      (io.addrRam === 8200.asUInt) -> led7seg.io.outM
     )
   )
 
@@ -157,7 +174,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
    ----------------------------------------------------------------------------*/
   val debugReg = RegInit(0.asUInt)
   when(io.addrRam === 1024.asUInt) {
-    debugReg := ram.io.out
+    debugReg := ram.io.outM
   }
   io.debug := debugReg
 }
