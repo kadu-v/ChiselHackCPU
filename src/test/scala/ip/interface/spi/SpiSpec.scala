@@ -1,4 +1,4 @@
-package ip.spi
+package ip.interface.spi
 
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec

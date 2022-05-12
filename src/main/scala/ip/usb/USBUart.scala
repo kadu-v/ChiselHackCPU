@@ -1,6 +1,6 @@
-package usb
+package ip.usb
 
-import ip.uart._
+import ip.interface.uart._
 import chisel3._
 import chisel3.util._
 

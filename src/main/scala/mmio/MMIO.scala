@@ -3,8 +3,8 @@ package mmio
 import chisel3._
 import ip.memory.EBRAM
 import memory.ROM
-import usb.USBUart
-import lcd.LCDSpiMaster
+import ip.usb.USBUart
+import ip.lcd.LCDSpiMaster
 import chisel3.util.MuxCase
 
 class MMIO(init: String, file: String, words: Int) extends Module {

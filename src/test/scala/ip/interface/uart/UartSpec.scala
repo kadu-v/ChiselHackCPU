@@ -1,4 +1,4 @@
-package ip.uart
+package ip.interface.uart
 
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
