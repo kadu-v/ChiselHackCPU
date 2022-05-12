@@ -54,14 +54,14 @@ class USBUart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     txBuff := io.inM(7, 0)
   }
 
-  // status register
+  /* status register */
   // Rx
   uartStCtlReg(0) := rx.io.busy // busy flag
   uartStCtlReg(1) := rx.io.recieved // recieved flag
   // Tx
   uartStCtlReg(8) := tx.io.busy
 
-  // control register
+  /* control register */
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     uartStCtlReg(4) := io.inM(4) // Rx
     uartStCtlReg(12) := io.inM(12) // Tx
@@ -70,7 +70,7 @@ class USBUart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     uartStCtlReg(12) := false.B // Tx
   }
 
-  // connect IO
+  /* connect IO */
   rx.io.rx := io.rx
   io.rts := rx.io.rts
   rx.io.cbf := uartStCtlReg(4)

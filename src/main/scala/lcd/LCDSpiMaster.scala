@@ -51,11 +51,11 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     txBuff := io.inM(7, 0)
   }
 
-  // status register
+  /* status register */
   spiStCtlReg(0) := master.io.busy
   spiStCtlReg(1) := master.io.completed
 
-  // control register
+  /* control register */
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     spiStCtlReg(4) := io.inM(4)
     spiStCtlReg(5) := io.inM(5)
@@ -66,7 +66,7 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     spiStCtlReg(6) := false.B
   }
 
-  // connect IO
+  /* connect IO */
   master.io.cbf := spiStCtlReg(4)
   master.io.run := spiStCtlReg(5)
   master.io.inDcx := spiStCtlReg(6)
