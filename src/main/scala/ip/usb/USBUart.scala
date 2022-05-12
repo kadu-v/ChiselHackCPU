@@ -1,11 +1,12 @@
-package usb
+package ip.usb
 
-import ip.uart._
+import ip.interface.uart._
 import chisel3._
 import chisel3.util._
 
 // Interface for MMIO
-class USBUart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
+class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
+    extends Module {
   val io = IO(new Bundle {
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
@@ -43,10 +44,10 @@ class USBUart(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   )
 
   //  RX
-  val rx = Module(new Rx(12, 115200))
+  val rx = Module(new Rx(freq, 115200))
 
   // Tx
-  val tx = Module(new Tx(12, 115200))
+  val tx = Module(new Tx(freq, 115200))
   val txBuff = RegInit(0.asUInt) // buffer for Tx
 
   // Tx Buffer

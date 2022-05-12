@@ -1,7 +1,6 @@
 package top
 
 import core.Core
-import memory.ROM
 
 import chisel3._
 import mmio.MMIO
@@ -39,7 +38,7 @@ class Top(filename: String, init: String, words: Int) extends Module {
   val core = Module(new Core())
 
   // MMIO
-  val mmio = Module(new MMIO(init, filename, words))
+  val mmio = Module(new MMIO(12, init, filename, words))
 
   // core
   core.io.inst := mmio.io.outInst

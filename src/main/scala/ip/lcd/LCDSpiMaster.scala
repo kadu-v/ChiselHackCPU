@@ -1,6 +1,6 @@
-package lcd
+package ip.lcd
 
-import ip.spi._
+import ip.interface.spi._
 import chisel3._
 import chisel3.util._
 

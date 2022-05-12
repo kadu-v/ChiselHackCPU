@@ -1,4 +1,4 @@
-package ip.uart
+package ip.interface.uart
 
 import chisel3._
 import chisel3.util._

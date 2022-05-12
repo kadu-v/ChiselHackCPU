@@ -1,4 +1,4 @@
-package memory
+package ip.memory
 
 import chisel3._
 import ip.memory._

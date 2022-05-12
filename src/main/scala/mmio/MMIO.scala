@@ -1,13 +1,13 @@
 package mmio
 
 import chisel3._
-import ip.memory.EBRAM
-import memory.ROM
-import usb.USBUart
-import lcd.LCDSpiMaster
+import ip.memory.{EBRAM, ROM}
+import ip.usb.USBUart
+import ip.lcd.LCDSpiMaster
+import ip.led.LED7Seg
 import chisel3.util.MuxCase
 
-class MMIO(init: String, file: String, words: Int) extends Module {
+class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   val io = IO(new Bundle {
     /* Random Access Memory */
     // Input from core
@@ -44,7 +44,9 @@ class MMIO(init: String, file: String, words: Int) extends Module {
     val debug = Output(UInt(16.W))
   })
 
-  /* Random Access Memory */
+  /*----------------------------------------------------------------------------
+   *                         Random Access Memory                              *
+   ----------------------------------------------------------------------------*/
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     Module(new EBRAM(init))
   }
@@ -56,9 +58,12 @@ class MMIO(init: String, file: String, words: Int) extends Module {
     false.B
   )
 
-  /* USB Uart */
+  /*----------------------------------------------------------------------------
+   *                         USB Uart                                          *
+   ----------------------------------------------------------------------------*/
   val usbUart = Module(
     new USBUart(
+      freq, // frequency of clock
       8192, // address of status and control register
       8193, // address of RX
       8194 // address of Tx
@@ -79,7 +84,9 @@ class MMIO(init: String, file: String, words: Int) extends Module {
   usbUart.io.cts := io.cts
   io.tx := usbUart.io.tx
 
-  /* LCD SPI Master */
+  /*----------------------------------------------------------------------------
+   *                         LCD SPI Master                                    *
+   ----------------------------------------------------------------------------*/
   val lcdSpiMaster = Module(
     new LCDSpiMaster(
       8195, // address of status and control register
@@ -103,7 +110,9 @@ class MMIO(init: String, file: String, words: Int) extends Module {
   io.csx := lcdSpiMaster.io.csx
   io.dcx := lcdSpiMaster.io.dcx
 
-  /* Read Only Memory for instructions */
+  /*----------------------------------------------------------------------------
+   *                         Read Only Memory for instructions                 *
+   ----------------------------------------------------------------------------*/
   val rom = Module(
     new ROM(
       8197, // address of status and control register
@@ -121,11 +130,13 @@ class MMIO(init: String, file: String, words: Int) extends Module {
   io.outInst := rom.io.outInst
   io.run := rom.io.run
 
-  /* Multiplexer */
-  // if      addrM === 8192 then status and control register of usbUart
-  // else if addrM === 8193 then revieved data of usbUart Rx
-  // else if addrM === 8194 then dummy data of usbUart Tx
-  // else                        ram[addrM]
+  /*----------------------------------------------------------------------------
+   *                         LED 7 Segments                                    *
+   ----------------------------------------------------------------------------*/
+
+  /*----------------------------------------------------------------------------
+   *                         Multiplexer                                       *
+   ----------------------------------------------------------------------------*/
   io.outRam := MuxCase(
     ram.io.out,
     Seq(
@@ -141,7 +152,9 @@ class MMIO(init: String, file: String, words: Int) extends Module {
     )
   )
 
-  // Debug signal
+  /*----------------------------------------------------------------------------
+   *                         Debug signal                                      *
+   ----------------------------------------------------------------------------*/
   val debugReg = RegInit(0.asUInt)
   when(io.addrRam === 1024.asUInt) {
     debugReg := ram.io.out
