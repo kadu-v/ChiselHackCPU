@@ -124,6 +124,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
       words
     )
   )
+
   rom.io.addrM := io.addrRam
   rom.io.writeM := io.writeRam
   rom.io.inM := io.inRam

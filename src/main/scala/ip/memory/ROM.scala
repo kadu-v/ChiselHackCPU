@@ -62,8 +62,8 @@ class ROM(
 
   // EBROM and SPRAM
   val ebrom = Module(new EBROM(file, words))
-  // val spram = Module(new SPRAM())
-  val spram = Module(new SPRAMStub())
+  val spram = Module(new SPRAM())
+  // val spram = Module(new SPRAMStub())
 
   // inner register
   val run = withClock((~clock.asBool()).asClock()) { // negedge clock!!!

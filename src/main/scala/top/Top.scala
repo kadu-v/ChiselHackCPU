@@ -22,7 +22,11 @@ class Top(filename: String, init: String, words: Int) extends Module {
     val csx = Output(Bool())
     val dcx = Output(Bool()) // LCD monitor
 
-    // LED
+    // LED 7 Segment
+    val outLED7Seg = Output(UInt(7.W))
+    val csLED7Seg = Output(Bool())
+
+    // Debug LED
     val GLED = Output(Bool())
     val RLED1 = Output(Bool())
     val RLED2 = Output(Bool())
@@ -52,30 +56,28 @@ class Top(filename: String, init: String, words: Int) extends Module {
   mmio.io.addrRam := core.io.addrM
   mmio.io.writeRam := core.io.writeM
 
-  // UART Rx and Tx
-  //        io.rx                            io.tx
-  //   +----------------+             +----------------+
-  //   |                |             |                |
-  //   |                v             v                |
-  //  HOST           Hack Rx         HOST           Hack Tx
-  //   ^                |             |                ^
-  //   |                |             |                |
-  //   +----------------+             +----------------+
-  //        rx.io.rts                     rx.io.cts
-
+  /*----------------------------------------------------------------------------
+   *                         USB Uart                                          *
+   ----------------------------------------------------------------------------*/
   mmio.io.rx := io.rx
   io.rts := mmio.io.rts
   io.tx := mmio.io.tx
   mmio.io.cts := io.cts
 
-  // SPI Master
+  /*----------------------------------------------------------------------------
+   *                         LCD SPI Master                                    *
+   ----------------------------------------------------------------------------*/
   mmio.io.miso := io.miso
   io.mosi := mmio.io.mosi
   io.sclk := mmio.io.sclk
   io.csx := mmio.io.csx
   io.dcx := mmio.io.dcx // LCD monitor
 
-  // Debug
+  /*----------------------------------------------------------------------------
+   *                         LED 7 Segments                                    *
+   ----------------------------------------------------------------------------*/
+  io.outLED7Seg := mmio.io.outLED7seg
+  io.csLED7Seg := mmio.io.csLED7seg
 
   // LED
   val debug = mmio.io.debug === 8.asUInt
