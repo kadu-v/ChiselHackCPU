@@ -1,0 +1,31 @@
+# clock
+set_io              clock     35
+
+# reset using buttun
+set_io              reset     8
+
+
+# 7SEG LED (HEADER B)
+set_io              io_outLED7Seg[0]    23  # IOT_37A
+set_io              io_outLED7Seg[1]    25  # IOT_36B
+set_io              io_outLED7Seg[2]    26  # IOT_39A
+set_io              io_outLED7Seg[3]    27  # IOT_38B
+set_io              io_outLED7Seg[4]    32  # IOT_43A
+set_io              io_outLED7Seg[5]    31  # IOT_42B
+set_io              io_outLED7Seg[6]    37  # IOT_45A_G1
+set_io              io_outLED7Seg[7]    34  # IOT_44A
+set_io              io_csLED7Seg        43  # IOT_49A
+
+
+# USB UART Rx and Tx (HEADER B)
+set_io              io_tx     36    # IOT_48B
+set_io              io_cts    42    # IOT_51A
+set_io              io_rx     38    # IOT_50B
+set_io              io_rts    28    # IOT_41A
+
+
+# LCD SPI (HEADER C)
+set_io              io_rx     4     # IOB_8A
+set_io              io_tx     3     # IOB_9A
+set_io              io_rts    48    # IOB_4A
+set_io              io_cts    45    # IOB_5B
