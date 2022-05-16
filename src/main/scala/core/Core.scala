@@ -17,7 +17,7 @@ class Core extends Module {
   // decode
   val decode = Module(new Decode)
 
-  // A register
+    // A register
   val regA = Module(new Register)
 
   // D registe

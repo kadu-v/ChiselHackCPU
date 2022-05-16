@@ -116,5 +116,7 @@ class ROM(
   spram.io.addrM := Mux(run, io.pc, addrReg)
   spram.io.writeM := romStCtlReg(5)
 
-  io.outInst := Mux(run, spram.io.outM, ebrom.io.outM)
+  val buffInst = RegInit(0.asUInt)
+  buffInst := Mux(run, spram.io.outM, ebrom.io.outM)
+  io.outInst := buffInst
 }

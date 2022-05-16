@@ -8,8 +8,8 @@ class BlackBoxSPRAM extends BlackBox with HasBlackBoxInline {
     val clock = Input(Clock())
     val cs = Input(Bool()) // H: active L: inactive
     val in = Input(UInt(16.W))
-    val addr = Input(UInt(13.W))
-    val wren = Input(UInt(4.W))
+    val addr = Input(UInt(14.W))
+    val wren = Input(Bool())
 
     val out = Output(UInt(16.W))
   })
@@ -19,6 +19,7 @@ class BlackBoxSPRAM extends BlackBox with HasBlackBoxInline {
     """module BlackBoxSPRAM(
       |   input   wire          clock,
       |   input   wire          cs,
+      |   input   wire  [15:0]  in,
       |   input   wire  [13:0]  addr,
       |   input   wire          wren,
       |   output  wire  [15:0]  out

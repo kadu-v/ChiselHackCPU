@@ -154,8 +154,10 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   /*----------------------------------------------------------------------------
    *                         Multiplexer                                       *
    ----------------------------------------------------------------------------*/
-  io.outRam := MuxCase(
-    ram.io.outM,
+
+    
+    io.outRam := MuxCase(
+    0.asUInt,
     Seq(
       (io.addrRam === 8192.asUInt
         || io.addrRam === 8193.asUInt
@@ -163,9 +165,9 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
       (io.addrRam === 8195.asUInt
         || io.addrRam === 8196.asUInt
         || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.outM,
-      (io.addrRam === 8197.asUInt
-        || io.addrRam === 8198.asUInt
-        || io.addrRam === 8199.asUInt) -> rom.io.outM,
+      // (io.addrRam === 8197.asUInt
+      //   || io.addrRam === 8198.asUInt
+      //   || io.addrRam === 8199.asUInt) -> rom.io.outM,
       (io.addrRam === 8200.asUInt) -> led7seg.io.outM
     )
   )
