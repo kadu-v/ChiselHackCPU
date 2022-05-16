@@ -2,6 +2,10 @@ package ip.led
 import chisel3._
 import chisel3.util._
 
+/*
+https://digilent.com/reference/pmod/pmodssd/reference-manual
+ */
+
 class LED7Seg(
     freq: Int, // MHz
     ledRegAddr: Int
