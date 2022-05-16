@@ -24,7 +24,6 @@ class Rx(freq: Int, baudRate: Int) extends Module {
     ((freq * 1000000) / baudRate).asUInt // 50 MHz / 115200 = 50 * 10**6 / 115200
   val halfTime =
     ((freq * 1000000) / baudRate / 2).asUInt // 50 MHz / 115200 / 2 = 50 * 10**6 / 115200
-
   // inner register for state machine
   val sIDLE :: sWAIT :: sRDATA :: sEND :: Nil = Enum(4)
   val rxData = RegInit(0.U(9.W))

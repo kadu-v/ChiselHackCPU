@@ -37,7 +37,7 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Fib2/vm.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(1000)
+        c.clock.step(2000)
         c.io.debug.expect(1.asUInt)
       }
   }
@@ -46,7 +46,7 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Fib6/vm.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(4000)
+        c.clock.step(8000)
         c.io.debug.expect(8.asUInt)
       }
   }
@@ -92,7 +92,7 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
         // c.io.rxdebug.expect(0x55.asUInt)
 
         // wait here
-        c.clock.step(1000)
+        c.clock.step(2000)
         c.io.debug.expect(0x55.asUInt)
       }
   }
@@ -127,7 +127,7 @@ class TopSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
         // c.io.rxdebug.expect(0x55.asUInt)
 
         // wait here
-        c.clock.step(1000)
+        c.clock.step(2000)
         c.io.debug.expect(0x2.asUInt)
       }
   }
