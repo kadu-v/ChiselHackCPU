@@ -41,19 +41,19 @@ class Top(filename: String, init: String, words: Int) extends Module {
   val div2Clk = RegInit(0.asUInt(1.W))
   div2Clk := div2Clk + 1.asUInt
 
-  // // Hack CPU core
-  // val core = withClock(div2Clk.asBool.asClock) { 
-  //   Module(new Core())
-  // } 
+  // Hack CPU core
+  val core = withClock(div2Clk.asBool.asClock) { 
+    Module(new Core())
+  } 
 
-  // // MMIO
-  // val mmio = withClock(div2Clk.asBool.asClock) { 
-  //   Module(new MMIO(6, init, filename, words))
-  // } 
+  // MMIO
+  val mmio = withClock(div2Clk.asBool.asClock) { 
+    Module(new MMIO(6, init, filename, words))
+  } 
 
     // Hack CPU core and MMIO
-  val core = Module(new Core())
-  val mmio = Module(new MMIO(6, init, filename, words))
+  // val core = Module(new Core())
+  // val mmio = Module(new MMIO(6, init, filename, words))
 
   // core
   core.io.inst := mmio.io.outInst

@@ -23,7 +23,7 @@ class LED7Seg(
   val seg1 = RegInit(0.asUInt)
   val seg2 = RegInit(0.asUInt)
   val cs = RegInit(false.B)
-  val divider = (freq * 1000000 / 240).asUInt // 240 Hz
+  val divider = (freq * 1000000 / 500).asUInt // 240 Hz
   val cnt = RegInit(0.U(16.W))
 
   when(io.addrM === ledRegAddr.asUInt && io.writeM) {
@@ -40,7 +40,7 @@ class LED7Seg(
 
   /* connect IO */
   io.outM := 0.asUInt
-  io.out := Mux(cs, seg1, seg2)
+  io.out := Mux(cs, seg2, seg1)
   io.cs := cs
 
   // decode 8bit to 7 segment

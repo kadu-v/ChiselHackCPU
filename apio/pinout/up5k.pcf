@@ -2,17 +2,17 @@
 set_io              clock     35
 
 # reset using buttun
-set_io              reset     8
+set_io  -pullup no  reset     43
 
 
 # 7SEG LED (HEADER B)
-set_io              io_outLED7Seg[0]    23  # IOT_37A
-set_io              io_outLED7Seg[1]    25  # IOT_36B
-set_io              io_outLED7Seg[2]    26  # IOT_39A
+set_io              io_outLED7Seg[6]    23  # IOT_37A
+set_io              io_outLED7Seg[5]    25  # IOT_36B
+set_io              io_outLED7Seg[4]    26  # IOT_39A
 set_io              io_outLED7Seg[3]    27  # IOT_38B
-set_io              io_outLED7Seg[4]    32  # IOT_43A
-set_io              io_outLED7Seg[5]    31  # IOT_42B
-set_io              io_outLED7Seg[6]    37  # IOT_45A_G1
+set_io              io_outLED7Seg[2]    32  # IOT_43A
+set_io              io_outLED7Seg[1]    31  # IOT_42B
+set_io              io_outLED7Seg[0]    37  # IOT_45A_G1
 set_io              io_csLED7Seg        34  # IOT_44A
 
 

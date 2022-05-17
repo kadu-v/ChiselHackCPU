@@ -157,7 +157,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
 
     
     io.outRam := MuxCase(
-    0.asUInt,
+    ram.io.outM.asUInt,
     Seq(
       (io.addrRam === 8192.asUInt
         || io.addrRam === 8193.asUInt

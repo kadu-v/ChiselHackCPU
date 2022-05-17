@@ -55,10 +55,10 @@ class SPRAM extends Module {
   io.outM := MuxCase(
     0.asUInt,
     Seq(
-      (io.addrM(15, 14) === "b00".asUInt) -> spram00.io.out,
-      (io.addrM(15, 14) === "b01".asUInt) -> spram01.io.out,
-      (io.addrM(15, 14) === "b10".asUInt) -> spram10.io.out,
-      (io.addrM(15, 14) === "b11".asUInt) -> spram11.io.out
+      (cs(0)) -> spram00.io.out,
+      (cs(1)) -> spram01.io.out,
+      (cs(2)) -> spram10.io.out,
+      (cs(3)) -> spram11.io.out
     )
   )
 
