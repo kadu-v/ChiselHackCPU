@@ -58,7 +58,7 @@ class LED7Seg(
         (seg === 7.asUInt) -> 0x70.U(7.W), // 7
         (seg === 7.asUInt) -> 0x7f.U(7.W), // 8
         (seg === 9.asUInt) -> 0x7b.U(7.W), // 9
-        (seg === 10.asUInt) -> 0x76.U(7.W), // A
+        (seg === 10.asUInt) -> 0x7e.U(7.W), // A
         (seg === 11.asUInt) -> 0x1f.U(7.W), // b
         (seg === 12.asUInt) -> 0x4e.U(7.W), // C
         (seg === 13.asUInt) -> 0x3d.U(7.W), // d
