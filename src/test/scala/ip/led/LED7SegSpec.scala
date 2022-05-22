@@ -47,11 +47,11 @@ class LED7SegSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
 
         c.clock.step(1000)
         c.io.cs.expect(false.B)
-        c.io.out.expect(0x33.asUInt)
+        c.io.out.expect(0x76.asUInt)
 
         c.clock.step(5000)
         c.io.cs.expect(true.B)
-        c.io.out.expect(0x76.asUInt)
+        c.io.out.expect(0x33.asUInt)
       }
   }
 }
