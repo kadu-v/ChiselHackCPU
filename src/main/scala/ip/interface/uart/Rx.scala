@@ -5,11 +5,12 @@ import chisel3.util._
 
 class Rx(freq: Int, baudRate: Int) extends Module {
   val io = IO(new Bundle {
-    // USRT RX Input
+    // UART RX Input
     val rx = Input(Bool()) // recieved serial data
 
     // control flag
     val cbf = Input(Bool()) // clear buffer
+    val wt = Input(Bool()) // wait recieving data
 
     // status
     val busy = Output(Bool()) // busy flag
@@ -56,10 +57,11 @@ class Rx(freq: Int, baudRate: Int) extends Module {
 
   switch(state) {
     is(sIDLE) {
+      rts := io.wt // wait recieving data
       when(io.cbf) {
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
-      }.elsewhen(detedge0.io.negdet) {
+      }.elsewhen(detedge0.io.negdet && ~io.rts) {
         state := sWAIT
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
