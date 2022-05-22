@@ -10,7 +10,6 @@ class Rx(freq: Int, baudRate: Int) extends Module {
 
     // control flag
     val cbf = Input(Bool()) // clear buffer
-    val wt = Input(Bool()) // wait recieving data
 
     // status
     val busy = Output(Bool()) // busy flag
@@ -57,16 +56,20 @@ class Rx(freq: Int, baudRate: Int) extends Module {
 
   switch(state) {
     is(sIDLE) {
-      rts := io.wt // wait recieving data
       when(io.cbf) {
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
-      }.elsewhen(detedge0.io.negdet && ~io.rts) {
+        busy := true.B
+        rts := true.B
+      }.elsewhen(detedge0.io.negdet) {
         state := sWAIT
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
         busy := true.B
         rts := true.B
+      }.otherwise {
+        busy := false.B
+        rts := false.B
       }
     }
     is(sWAIT) {

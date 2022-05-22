@@ -29,10 +29,10 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
   // |-----------------------------------------------|
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   // |-----------------------------------------------|
-  //            R          B         W  C        R  B
-  //            U          U         A  L        E  U
-  //            N          S         I  E        C  S
-  //                       Y         T  A        I  Y
+  //            R          B            C        R  B
+  //            U          U            L        E  U
+  //            N          S            E        C  S
+  //                       Y            A        I  Y
   //                                    R        E
   //                       T                     V  R
   //                       X                     E  X
@@ -64,10 +64,8 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
   /* control register */
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     uartStCtlReg(4) := io.inM(4) // Rx clear
-    uartStCtlReg(5) := io.inM(5) // RX wait
     uartStCtlReg(12) := io.inM(12) // Tx run
   }.otherwise {
-    uartStCtlReg(4) := false.B // Rx
     uartStCtlReg(12) := false.B // Tx
   }
 
@@ -75,7 +73,6 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
   rx.io.rx := io.rx
   io.rts := rx.io.rts
   rx.io.cbf := uartStCtlReg(4)
-  rx.io.wt := uartStCtlReg(5)
 
   tx.io.din := txBuff
   tx.io.run := uartStCtlReg(12)
