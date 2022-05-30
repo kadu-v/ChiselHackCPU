@@ -4,9 +4,13 @@ import struct
 
 use_port = '/dev/ttyUSB0'
 
-_serial = serial.Serial(use_port)
-_serial.baudrate = 9600
-_serial.parity = serial.PARITY_NONE
-_serial.bytesize = serial.EIGHTBITS
-_serial.stopbits = serial.STOPBITS_ONE
-_serial.timeout = 5 #sec            
+ser = serial.Serial(use_port)
+ser.baudrate = 115200
+ser.parity = serial.PARITY_NONE
+ser.bytesize = serial.EIGHTBITS
+ser.stopbits = serial.STOPBITS_ONE
+ser.timeout = 5 #sec            
+
+ser.write(3)
+ser.write(3)
+ser.write(3)
