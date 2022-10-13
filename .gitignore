@@ -14,3 +14,5 @@ project/
 *.json
 test_run_dir
 *.dblite
+*.asc
+*.bin
