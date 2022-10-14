@@ -37,8 +37,11 @@
         ```
         [alimex wiki](https://www.olimex.com/wiki/ICE40HX1K-EVB#Preparing_OLIMEXINO-32U4_as_programmer)
 
-3. Lチカで動作確認
+## Lチカで動作確認
     ```
     $ apio examples -d iCE40-HX1K-EVB/leds
     $ apio upload
     ```
+
+## ピンアウトのドキュメント
+この[リポジトリ](https://github.com/OLIMEX/iCE40HX1K-EVB/blob/master)の[iCE40HX1K-EVB_Rev_B.pdf](https://github.com/OLIMEX/iCE40HX1K-EVB/blob/master/iCE40HX1K-EVB_Rev_B.pdf)に記載されている。
