@@ -2,9 +2,33 @@
 # the external pins of the fpga are defined
 # compare to the schematic of the board and the datasheet of fpga
 
-set_io clk_in 15
+# clock
+set_io clock 15
+
+# Button
 set_io but[0] 41
 set_io but[1] 42
-set_io led[0] 40
-set_io led[1] 51
+
+
+# UART
+set_io io_rx  1
+set_io io_rts 2
+set_io io_tx  3
+set_io io_cts 4
+
+
+# SPI
+set_io io_miso 7
+set_io io_mosi 8
+set_io io_sclk 9
+set_io io_csx  10
+set_io io_dcx  11
+
+
+# LED 7 Segment
+
+
+# Debug LED
+set_io io_led0 40
+set_io io_led1 51
 
