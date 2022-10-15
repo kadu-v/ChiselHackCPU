@@ -20,7 +20,7 @@ class EBRAM(init: String) extends Module {
     override def toFirrtl = MemorySynthInit
   })
 
-  val mem = Mem(3072, UInt(16.W))
+  val mem = Mem(1024, UInt(16.W))
   when(io.writeM) {
     mem(io.addrM) := io.inM
   }

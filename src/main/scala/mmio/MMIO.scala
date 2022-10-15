@@ -1,7 +1,7 @@
 package mmio
 
 import chisel3._
-import ip.memory.{EBRAM, ROM}
+import ip.memory.{EBRAM, EBROM, ROM}
 import ip.usb.USBUart
 import ip.lcd.LCDSpiMaster
 import ip.led.LED7Seg
@@ -115,23 +115,37 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   /*----------------------------------------------------------------------------
    *                         Read Only Memory for instructions                 *
    ----------------------------------------------------------------------------*/
+  // val rom = Module(
+  //   new ROM(
+  //     8197, // address of status and control register
+  //     8198, // address of address register
+  //     8199, // address of in register
+  //     file,
+  //     words
+  //   )
+  // )
+  //   rom.io.addrM := io.addrRam
+  // rom.io.writeM := io.writeRam
+  // rom.io.inM := io.inRam
+
+  // rom.io.pc := io.pc
+  // io.outInst := rom.io.outInst
+  // io.run := rom.io.run
+
+
   val rom = Module(
-    new ROM(
-      8197, // address of status and control register
-      8198, // address of address register
-      8199, // address of in register
-      file,
-      words
+    new EBROM(
+        file,
+        words
     )
   )
 
-  rom.io.addrM := io.addrRam
-  rom.io.writeM := io.writeRam
-  rom.io.inM := io.inRam
 
-  rom.io.pc := io.pc
-  io.outInst := rom.io.outInst
-  io.run := rom.io.run
+  rom.io.addrM := io.pc
+  io.outInst := rom.io.outM
+  io.run := false.B
+
+
 
   /*----------------------------------------------------------------------------
    *                         LED 7 Segments                                    *

@@ -27,11 +27,12 @@ class Top(filename: String, init: String, words: Int) extends Module {
     val csLED7Seg = Output(Bool())
 
     // Debug LED
-    // val GLED = Output(Bool())
-    // val RLED1 = Output(Bool())
-    // val RLED2 = Output(Bool())
-    // val RLED3 = Output(Bool())
-    // val RLED4 = Output(Bool())
+    val led0 = Output(Bool())
+    val led1 = Output(Bool())
+
+    // Buttun
+    val btn0 = Input(Bool())
+    val btn1 = Input(Bool())
 
     // Debug signal
     val debug = Output(UInt(16.W))
@@ -51,9 +52,6 @@ class Top(filename: String, init: String, words: Int) extends Module {
     Module(new MMIO(6, init, filename, words))
   }
 
-  // Hack CPU core and MMIO
-  // val core = Module(new Core())
-  // val mmio = Module(new MMIO(6, init, filename, words))
 
   // core
   core.io.inst := mmio.io.outInst
@@ -90,16 +88,15 @@ class Top(filename: String, init: String, words: Int) extends Module {
   io.outLED7Seg := mmio.io.outLED7seg
   io.csLED7Seg := mmio.io.csLED7seg
 
-  // LED
+
+  /*----------------------------------------------------------------------------
+   *                         Debug                                             *
+   ----------------------------------------------------------------------------*/
   val debug = mmio.io.debug === 8.asUInt
 
-  io.debug := mmio.io.debug
-  // io.rxdebug := mmio.io.rxdebug
+  io.led0 := mmio.io.debug
+  io.led1 := false.B
 
-  // LED
-  // io.GLED := reset.asBool // reset
-  // io.RLED1 := debug
-  // io.RLED2 := false.B
-  // io.RLED3 := false.B
-  // io.RLED4 := false.B
+  io.debug := mmio.io.debug
+
 }
