@@ -9,7 +9,7 @@ build: $(SRC)/BlackBoxSPRAM.v $(SRC)/init.bin
 	cp $(SRC)/Top.v ./
 	cp $(SRC)/init.bin ./
 	cp $(SRC)/bin.hack ./
-	apio build
+	apio build -v
 
 .PHONY: upload
 upload: hardware.bin

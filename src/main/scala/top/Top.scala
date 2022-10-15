@@ -31,11 +31,11 @@ class Top(filename: String, init: String, words: Int) extends Module {
     val led1 = Output(Bool())
 
     // Buttun
-    val btn0 = Input(Bool())
-    val btn1 = Input(Bool())
+    // val btn0 = Input(Bool())
+    // val btn1 = Input(Bool())
 
     // Debug signal
-    val debug = Output(UInt(16.W))
+    // val debug = Output(UInt(16.W))
     // val rxdebug = Output(UInt(16.W))
   })
 
@@ -97,6 +97,6 @@ class Top(filename: String, init: String, words: Int) extends Module {
   io.led0 := mmio.io.debug
   io.led1 := false.B
 
-  io.debug := mmio.io.debug
+  // io.debug := mmio.io.debug
 
 }
