@@ -28,7 +28,7 @@ class Tx(freq: Int, baudRate: Int) extends Module {
 
   switch(state) {
     is(sIDLE) {
-      when(io.run && io.cts) {
+      when(io.run && ~io.cts) {
         state := sSTART
         busy := true.B
         txData := true.B ## io.din ## false.B // stop bit (1) | tx data (8) | start bit (1)

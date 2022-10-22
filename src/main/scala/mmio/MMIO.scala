@@ -153,7 +153,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
 
   val led7seg = Module(
     new LED7Seg(
-      freq, // frequency fo clock
+      freq, // frequency of clock
       8200
     )
   )

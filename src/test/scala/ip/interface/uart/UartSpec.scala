@@ -8,9 +8,9 @@ import top.Top
 import chiseltest.WriteVcdAnnotation
 
 class UartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
-  behavior of "Uart Rx(12 MHz, 115200 bps)"
+  behavior of "Uart Rx(25 MHz, 115200 bps)"
   it should "recieve 0b01010101" in {
-    test(new Rx(12, 115200)) { c =>
+    test(new Rx(25, 115200)) { c =>
       // 104 clock
       c.io.rx.poke(true.B)
       c.clock.step(100)

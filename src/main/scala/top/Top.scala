@@ -35,21 +35,21 @@ class Top(filename: String, init: String, words: Int) extends Module {
     // val btn1 = Input(Bool())
 
     // Debug signal
-    // val debug = Output(UInt(16.W))
+    val debug = Output(UInt(16.W))
     // val rxdebug = Output(UInt(16.W))
   })
 
-  val div2Clk = RegInit(0.asUInt(1.W))
-  div2Clk := div2Clk + 1.asUInt
+  val div4Clk = RegInit(0.asUInt(2.W))
+  div4Clk := div4Clk + 1.asUInt
 
   // Hack CPU core
-  val core = withClock(div2Clk.asBool.asClock) {
+  val core = withClock(div4Clk(1).asBool.asClock) {
     Module(new Core())
   }
 
   // MMIO
-  val mmio = withClock(div2Clk.asBool.asClock) {
-    Module(new MMIO(6, init, filename, words))
+  val mmio = withClock(div4Clk(1).asBool.asClock) {
+    Module(new MMIO(25, init, filename, words))
   }
 
 
@@ -97,6 +97,6 @@ class Top(filename: String, init: String, words: Int) extends Module {
   io.led0 := mmio.io.debug
   io.led1 := false.B
 
-  // io.debug := mmio.io.debug
+  io.debug := mmio.io.debug
 
 }

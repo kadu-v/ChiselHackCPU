@@ -60,7 +60,6 @@ class Rx(freq: Int, baudRate: Int) extends Module {
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
         busy := true.B
-        rts := true.B
       }.elsewhen(detedge0.io.negdet) {
         state := sWAIT
         buff := "b0000000000000000".U // clear buffer
