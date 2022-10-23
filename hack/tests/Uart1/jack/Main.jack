@@ -1,0 +1,8 @@
+class Main {
+   function void main() {
+        var int c;
+        let c = Uart.receiveChar();
+        do Memory.poke(1024, c);
+        return;
+   }
+}
