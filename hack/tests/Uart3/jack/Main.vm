@@ -1,0 +1,40 @@
+function Main.main 2
+call Uart.receiveChar 0
+pop local 0
+push local 0
+push constant 10
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+call Uart.receiveChar 0
+pop local 0
+push local 0
+push constant 20
+eq
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 8192
+call Memory.peek 1
+pop local 1
+push constant 1024
+push constant 2
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE1
+push constant 1024
+push local 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+label IF_FALSE0
+push constant 1024
+push local 0
+call Memory.poke 2
+pop temp 0
+push constant 0
+return

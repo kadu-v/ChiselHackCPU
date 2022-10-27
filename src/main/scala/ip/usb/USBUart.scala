@@ -66,6 +66,7 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
     uartStCtlReg(4) := io.inM(4) // Rx clear
     uartStCtlReg(12) := io.inM(12) // Tx run
   }.otherwise {
+    uartStCtlReg(4) := false.B
     uartStCtlReg(12) := false.B // Tx
   }
 
