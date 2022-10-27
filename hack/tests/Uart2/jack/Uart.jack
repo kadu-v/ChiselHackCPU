@@ -1,0 +1,42 @@
+class Uart {
+    static int stCtlRegAddr;
+    static int rxRegAddr;
+    static int txRegAddr;
+
+    function void init() {
+        let stCtlRegAddr = 8192;
+        let rxRegAddr = 8193;
+        let txRegAddr = 8194;
+        return;
+    }
+
+    function void sendChar(int c) {
+        var int status;
+        let status = 256;
+
+        // wait until Uart Tx is not busy
+        while ((status & 256) = 256) { // status & 0000_0001_0000_0000
+            let status = Memory.peek(stCtlRegAddr);
+        }
+
+        // Write a trasmitted character
+        do Memory.poke(txRegAddr, c);
+
+        // start sending a chracter
+        do Memory.poke(stCtlRegAddr, 4096); // 0001_0000_0000_0000
+
+        return;
+    }
+
+    function int receiveChar() {
+        var int status;
+        let status = 1;
+
+        // wait until Uart Rx is not busy
+        while ((status & 1) = 1) { // status & 0000_0000_0000_0010
+            let status = Memory.peek(stCtlRegAddr);
+        }
+
+        return Memory.peek(rxRegAddr);
+    }
+}

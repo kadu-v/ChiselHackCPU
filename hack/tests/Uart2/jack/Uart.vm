@@ -1,0 +1,54 @@
+function Uart.init 0
+push constant 8192
+pop static 0
+push constant 8193
+pop static 1
+push constant 8194
+pop static 2
+push constant 0
+return
+function Uart.sendChar 1
+push constant 256
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 256
+and
+push constant 256
+eq
+not
+if-goto WHILE_END0
+push static 0
+call Memory.peek 1
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push static 2
+push argument 0
+call Memory.poke 2
+pop temp 0
+push static 0
+push constant 4096
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Uart.receiveChar 1
+push constant 1
+pop local 0
+label WHILE_EXP0
+push local 0
+push constant 1
+and
+push constant 1
+eq
+not
+if-goto WHILE_END0
+push static 0
+call Memory.peek 1
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push static 1
+call Memory.peek 1
+return
