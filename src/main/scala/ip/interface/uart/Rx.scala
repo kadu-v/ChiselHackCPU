@@ -25,7 +25,7 @@ class Rx(freq: Int, baudRate: Int) extends Module {
   val halfTime =
     ((freq * 1000000) / baudRate / 2).asUInt // 50 MHz / 115200 / 2 = 50 * 10**6 / 115200
   // inner register for state machine
-  val sIDLE :: sWAIT :: sRDATA :: sEND :: Nil = Enum(4)
+  val sIDLE :: sWAIT :: sRDATA :: sEND :: sRBUFF :: Nil = Enum(5)
   val rxData = RegInit(0.U(9.W))
   val state = RegInit(sIDLE)
   val clkCnt = RegInit(0.U(15.W))
@@ -55,6 +55,7 @@ class Rx(freq: Int, baudRate: Int) extends Module {
   detedge0.io.sigin := io.rx
 
   switch(state) {
+
     is(sIDLE) {
       when(detedge0.io.negdet) {
         state := sWAIT
@@ -62,10 +63,6 @@ class Rx(freq: Int, baudRate: Int) extends Module {
         recieved := false.B
         busy := true.B
         rts := true.B
-      }.elsewhen(io.cbf) {
-        buff := "b0000000000000000".U // clear buffer
-        recieved := false.B
-        busy := true.B
       }.otherwise {
         busy := false.B
         rts := false.B
@@ -91,13 +88,19 @@ class Rx(freq: Int, baudRate: Int) extends Module {
       }
     }
     is(sEND) {
-      state := sIDLE
+      state := sRBUFF
       clkCnt := 0.asUInt
       dataCnt := 0.asUInt
       buff := "b00000000".U ## rxData(7, 0) // change data to valid data!!
-      busy := false.B
       recieved := true.B
-      rts := false.B
+      busy := false.B
+    }
+    is(sRBUFF) {
+      when(io.cbf) {
+        state := sIDLE
+        buff := "b0000000000000000".U // clear buffer
+        recieved := false.B
+      }
     }
   }
 }

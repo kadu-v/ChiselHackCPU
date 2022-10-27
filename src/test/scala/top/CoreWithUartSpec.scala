@@ -29,6 +29,7 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
     val core = Module(new Top(filename, init, words))
     // clock: 100 MHz
     val uartTx = Module(new Tx(100, boudRate))
+    // val uartRx = Module(new Rx(100, boudRate))
 
     core.io.rx := uartTx.io.tx
     uartTx.io.cts := core.io.rts
@@ -49,7 +50,6 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
 
 
 behavior of "Uart Rx(25 MHz, 115200 bps)"
-// Uart1.vmの受信街のループが足りていないので、受信する前にレジスタの値を読み取ってしまっている
  it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
     test(new CoreWithUart("./hack/tests/Uart1/jack.hack", "./hack/init.bin", words, freq, boudRate))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>

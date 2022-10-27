@@ -1,10 +1,7 @@
 class Main {
    function void main() {
         var int c;
-        var int reg;
         let c = Uart.receiveChar();
-        let reg = Memory.peek(8192);
-        do Memory.poke(1024, reg);
         return;
    }
 }

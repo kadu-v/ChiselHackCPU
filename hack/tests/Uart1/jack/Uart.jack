@@ -30,13 +30,24 @@ class Uart {
 
     function int receiveChar() {
         var int status;
+        var int c;
+        
+        // get a current status of Uart
         let status = 1;
 
         // wait until Uart Rx is not busy
-        while ((status & 1) = 1) { // status & 0000_0000_0000_0010
+        // busy or not recieved
+        while (((status & 1) = 1) | ~((status & 2) = 2)) { // status & 0000_0000_0000_0010
             let status = Memory.peek(stCtlRegAddr);
         }
 
-        return Memory.peek(rxRegAddr);
+        // recieved char
+        let c = Memory.peek(rxRegAddr);
+
+
+        // clear buffer
+        do Memory.poke(stCtlRegAddr, 16); // 0000_0000_0001_0000
+
+        return c;
     }
 }
