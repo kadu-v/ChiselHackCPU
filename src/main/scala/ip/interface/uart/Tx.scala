@@ -16,7 +16,7 @@ class Tx(freq: Int, baudRate: Int) extends Module {
     ((freq * 1000000) / baudRate).asUInt // 50 MHz / 115200 = 50 * 10**6 / 115200
 
   val sIDLE :: sSTART :: sSEND :: sEND :: Nil = Enum(4)
-  val txData = RegInit(1023.U(10.W))
+  val txData = RegInit(1023.U(10.W)) // We cannot initialize this register as 1023, because of Chisel bug.
   val state = RegInit(sIDLE)
   val clkCnt = RegInit(0.U(15.W))
   val dataCnt = RegInit(0.U(4.W))
