@@ -21,6 +21,12 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
       val run = Input(Bool())
       val busy = Output(Bool())
 
+      // Rx
+
+      // control flag
+      val cbf = Input(Bool()) // clear buffer
+      val dout = Output(UInt(16.W)) // recieved data
+
       val debug = Output(UInt(16.W))
     })
 
@@ -29,17 +35,21 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
     val core = Module(new Top(filename, init, words))
     // clock: 100 MHz
     val uartTx = Module(new Tx(100, boudRate))
-    // val uartRx = Module(new Rx(100, boudRate))
+    val uartRx = Module(new Rx(100, boudRate))
 
     core.io.rx := uartTx.io.tx
     uartTx.io.cts := core.io.rts
 
 
+    core.io.rx := uartTx.io.tx
     uartTx.io.din := io.din
     uartTx.io.run := io.run
     io.busy := uartTx.io.busy
     
-    core.io.cts := true.B
+    core.io.cts := uartRx.io.rts
+    uartRx.io.rx := core.io.tx
+    uartRx.io.cbf := io.cbf
+    io.dout := uartRx.io.dout
 
     core.io.miso := false.B
 
@@ -89,7 +99,7 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
         c.io.run.poke(true.B)
         c.clock.step(10)
         c.io.run.poke(false.B)
-        c.clock.step(30000)
+        c.clock.step(25000)
 
         c.io.din.poke(20)
         c.clock.step(100)
@@ -103,29 +113,16 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
       }
   }
 
-  behavior of "Uart Tx(12 MHz, 115200 bps)"
-  it should "send 0b01010101" in {
-    test(new Top("./hack/tests/Uart5/vm.hack", "./hack/init.bin", words))
+  behavior of "Uart Tx(25 MHz, 115200 bps)"
+  it should "send 81" in {
+    test(new CoreWithUart("./hack/tests/Uart5/jack.hack", "./hack/init.bin", words, freq, boudRate))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.io.cts.poke(true.B)
-        c.clock.step(10000)
+        c.clock.step(25000)
+        c.io.dout.expect(81)
         c.io.debug.expect(256.asUInt)
       }
   }
 
-  it should "send 0b01010101, reset" in {
-    test(new Top("./hack/tests/Uart5/vm.hack", "./hack/init.bin", words))
-      .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
-        c.clock.setTimeout(0)
-        c.io.cts.poke(true.B)
-        c.clock.step(5000)
-        c.reset.poke(true.B)
-        c.clock.step(50)
-        c.reset.poke(false.B)
-        c.io.cts.poke(true.B)
-        c.clock.step(5000)
-        c.io.debug.expect(256.asUInt)
-      }
-  }
+  behavior of "SPI"
 }

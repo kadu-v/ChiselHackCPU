@@ -13,6 +13,7 @@ class PC extends Module {
   })
 
   val inner = withClock((~clock.asBool()).asClock()) { RegInit(0.asUInt) }
+  // val inner = RegInit(0.asUInt) 
   io.out := inner
   when(io.run) {
     inner := 0.asUInt

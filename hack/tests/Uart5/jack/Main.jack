@@ -1,0 +1,9 @@
+class Main {
+   function void main() {
+        var int c;
+        var int reg;
+        do Uart.sendChar(81);
+        do Memory.poke(1024, 256);
+        return;
+   }
+}

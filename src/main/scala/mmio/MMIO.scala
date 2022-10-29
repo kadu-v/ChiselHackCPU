@@ -52,6 +52,8 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     Module(new EBRAM(init))
   }
+  // val ram = Module(new EBRAM(init))
+  
   ram.io.addrM := io.addrRam
   ram.io.inM := io.inRam
   ram.io.writeM := Mux(
