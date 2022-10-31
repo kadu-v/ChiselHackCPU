@@ -1,6 +1,5 @@
 package top
 
-
 import chiseltest._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -8,13 +7,21 @@ import chisel3._
 import chiseltest.WriteVcdAnnotation
 import ip.interface.uart.{Rx, Tx}
 
-
-class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
+class CoreWithUartSpec
+    extends AnyFlatSpec
+    with ChiselScalatestTester
+    with Matchers {
   val words = 2048
   val freq = 25
   val boudRate = 115200
 
-  class CoreWithUart(filename: String, init: String, words: Int, freq: Int, boudRate: Int) extends Module {
+  class CoreWithUart(
+      filename: String,
+      init: String,
+      words: Int,
+      freq: Int,
+      boudRate: Int
+  ) extends Module {
     val io = IO(new Bundle {
       // Tx
       val din = Input(UInt(8.W))
@@ -30,7 +37,6 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
       val debug = Output(UInt(16.W))
     })
 
-
     // clock: 100 MHz div4Clock: 25 MHz
     val core = Module(new Top(filename, init, words))
     // clock: 100 MHz
@@ -40,12 +46,11 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
     core.io.rx := uartTx.io.tx
     uartTx.io.cts := core.io.rts
 
-
     core.io.rx := uartTx.io.tx
     uartTx.io.din := io.din
     uartTx.io.run := io.run
     io.busy := uartTx.io.busy
-    
+
     core.io.cts := uartRx.io.rts
     uartRx.io.rx := core.io.tx
     uartRx.io.cbf := io.cbf
@@ -53,15 +58,20 @@ class CoreWithUartSpec extends AnyFlatSpec with ChiselScalatestTester with Match
 
     core.io.miso := false.B
 
-
     io.debug := core.io.debug
   }
 
-
-
-behavior of "Uart Rx(25 MHz, 115200 bps)"
- it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
-    test(new CoreWithUart("./hack/tests/Uart1/jack.hack", "./hack/init.bin", words, freq, boudRate))
+  behavior of "Uart Rx(25 MHz, 115200 bps)"
+  it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
+    test(
+      new CoreWithUart(
+        "./hack/tests/Uart1/jack.hack",
+        "./hack/init.bin",
+        words,
+        freq,
+        boudRate
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.io.din.poke("b01010101".U(8.W))
@@ -76,7 +86,15 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
   }
 
   it should "recieve 0b01010101, and status and control register = b00000000000010" in {
-    test(new CoreWithUart("./hack/tests/Uart2/jack.hack", "./hack/init.bin", words, freq, boudRate))
+    test(
+      new CoreWithUart(
+        "./hack/tests/Uart2/jack.hack",
+        "./hack/init.bin",
+        words,
+        freq,
+        boudRate
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.io.din.poke("b01010101".U(8.W))
@@ -91,7 +109,15 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
   }
 
   it should "recieve 0b01010101 and 0b10101010, " in {
-    test(new CoreWithUart("./hack/tests/Uart3/jack.hack", "./hack/init.bin", words, freq, boudRate))
+    test(
+      new CoreWithUart(
+        "./hack/tests/Uart3/jack.hack",
+        "./hack/init.bin",
+        words,
+        freq,
+        boudRate
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.io.din.poke(10)
@@ -115,7 +141,15 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
 
   behavior of "Uart Tx(25 MHz, 115200 bps)"
   it should "send 81" in {
-    test(new CoreWithUart("./hack/tests/Uart5/jack.hack", "./hack/init.bin", words, freq, boudRate))
+    test(
+      new CoreWithUart(
+        "./hack/tests/Uart5/jack.hack",
+        "./hack/init.bin",
+        words,
+        freq,
+        boudRate
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(25000)
@@ -123,6 +157,4 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
         c.io.debug.expect(256.asUInt)
       }
   }
-
-  behavior of "SPI"
 }

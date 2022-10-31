@@ -53,7 +53,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
     Module(new EBRAM(init))
   }
   // val ram = Module(new EBRAM(init))
-  
+
   ram.io.addrM := io.addrRam
   ram.io.inM := io.inRam
   ram.io.writeM := Mux(
@@ -134,20 +134,16 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   // io.outInst := rom.io.outInst
   // io.run := rom.io.run
 
-
   val rom = Module(
     new EBROM(
-        file,
-        words
+      file,
+      words
     )
   )
-
 
   rom.io.addrM := io.pc
   io.outInst := rom.io.outM
   io.run := false.B
-
-
 
   /*----------------------------------------------------------------------------
    *                         LED 7 Segments                                    *
@@ -171,8 +167,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
    *                         Multiplexer                                       *
    ----------------------------------------------------------------------------*/
 
-    
-    io.outRam := MuxCase(
+  io.outRam := MuxCase(
     ram.io.outM.asUInt,
     Seq(
       (io.addrRam === 8192.asUInt
