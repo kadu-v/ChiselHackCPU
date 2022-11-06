@@ -141,4 +141,16 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
     }
   }
   behavior of "SPI"
+
+  behavior of "Test"
+  it should "Test/bin.hack" in {
+    test(new CoreWithUart("./hack/tests/Tests/bin.hack", "./hack/init.bin", words, freq, boudRate))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
+        c.clock.setTimeout(0)
+        c.clock.step(25000)
+
+        c.io.dout.expect(98)
+        c.io.debug.expect(98)
+    }
+  }
 }

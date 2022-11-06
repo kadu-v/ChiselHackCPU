@@ -29,7 +29,9 @@ class Tx(freq: Int, baudRate: Int) extends Module {
   switch(state) {
     is(sIDLE) {
       txData := "b1111111111".U // This is needed for Chisel bugs. If we remove it, "send 81" test case fails.
-      when(io.run && ~io.cts) {
+      when(io.run 
+        && ~io.cts
+          ) {
         state := sSTART
         busy := true.B
         txData := true.B ## io.din ## false.B // stop bit (1) | tx data (8) | start bit (1)

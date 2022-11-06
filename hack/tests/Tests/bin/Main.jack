@@ -1,0 +1,18 @@
+class Main {
+   function void main() {
+         var int c;
+         var int cnt;
+         let cnt = 0;
+         while(cnt < 10) {
+            let cnt = cnt + 1;
+            do Uart.sendChar(98);
+         }
+            // do Uart.sendChar(98);
+
+
+         // let c = Uart.receiveChar();
+       
+
+         return;
+   }
+}
