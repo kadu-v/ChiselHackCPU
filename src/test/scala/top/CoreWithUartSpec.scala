@@ -124,5 +124,21 @@ behavior of "Uart Rx(25 MHz, 115200 bps)"
       }
   }
 
+  behavior of "Uart Tx and Rx(25 MHz, 115200 bps)"
+  it should "receive a character and send the same character" in {
+    test(new CoreWithUart("./hack/tests/Uart6/jack.hack", "./hack/init.bin", words, freq, boudRate))
+      .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
+        c.clock.setTimeout(0)
+        c.io.din.poke(98)
+        c.clock.step(100)
+        c.io.run.poke(true.B)
+        c.clock.step(10)
+        c.io.run.poke(false.B)
+        c.clock.step(25000)
+
+        c.io.dout.expect(98)
+        c.io.debug.expect(98)
+    }
+  }
   behavior of "SPI"
 }

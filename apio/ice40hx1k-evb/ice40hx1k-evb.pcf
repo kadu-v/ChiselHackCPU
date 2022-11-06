@@ -7,6 +7,7 @@ set_io clock 15
 set_io reset 41
 
 # Button
+# PUSH: L, PULL: H
 # set_io io_btn0 41
 # set_io io_btn1 42
 
