@@ -42,6 +42,10 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
     val outLED7seg = Output(UInt(7.W))
     val csLED7seg = Output(Bool())
 
+    // LED
+    val led0 = Output(Bool())
+    val led1 = Output(Bool())
+
     // Debug signal
     val debug = Output(UInt(16.W))
   })
@@ -162,6 +166,20 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
 
   io.outLED7seg := led7seg.io.out
   io.csLED7seg := led7seg.io.cs
+
+
+
+  /*----------------------------------------------------------------------------
+   *                         LED 7 Segments                                    *
+   ----------------------------------------------------------------------------*/
+
+
+   val ledReg = RegInit(0.U(16.W))
+   when(io.addrRam === 8201.asUInt && io.writeRam) {
+    ledReg := io.inRam
+   }
+   io.led0 := ledReg(0)
+   io.led1 := ledReg(1)
 
   /*----------------------------------------------------------------------------
    *                         Multiplexer                                       *

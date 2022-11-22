@@ -40,16 +40,34 @@ class Top(filename: String, init: String, words: Int) extends Module {
   })
 
   val div4Clk = RegInit(0.asUInt(2.W))
-  div4Clk := div4Clk + 1.asUInt
+  when(div4Clk === "b11".asUInt) {
+    div4Clk := 0.asUInt
+  }. otherwise {
+    div4Clk := div4Clk + 1.asUInt
+  }
+  val div8Clk = RegInit(0.U(3.W))
+  when(div8Clk === "b111".asUInt) {
+    div8Clk := 0.asUInt
+  }.otherwise {
+    div8Clk := div8Clk + 1.asUInt
+  }
+
+  val rst = RegInit(true.B)
+  val cnt = RegInit(0.U(3.W))
+  when(cnt === "b111".U) {
+    rst := false.B
+  }.otherwise {
+    cnt := cnt + 1.asUInt
+  }
 
   // Hack CPU core
-  val core = withClock(div4Clk(1).asBool.asClock) {
+  val core = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
     Module(new Core())
   }
 
   // MMIO
-  val mmio = withClock(div4Clk(1).asBool.asClock) {
-    Module(new MMIO(25, init, filename, words))
+  val mmio = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
+    Module(new MMIO(12, init, filename, words))
   }
 
 
@@ -90,12 +108,15 @@ class Top(filename: String, init: String, words: Int) extends Module {
 
 
   /*----------------------------------------------------------------------------
-   *                         Debug                                             *
+   *                         Debug LED                                         *
    ----------------------------------------------------------------------------*/
-  val debug = mmio.io.debug === 8.asUInt
+  io.led0 := mmio.io.led0
+  io.led1 := mmio.io.led1
 
-  io.led0 := mmio.io.debug
-  io.led1 := false.B
+  // val debug = mmio.io.debug === 8.asUInt
+
+  // io.led0 := mmio.io.debug
+  // io.led1 := false.B
 
   // io.debug := mmio.io.debug
 

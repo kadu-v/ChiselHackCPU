@@ -10,9 +10,26 @@ set_io              io_tx     8
 set_io              io_rts    7
 set_io              io_cts    4
 
+# SPI
+set_io io_miso 44
+set_io io_mosi 45
+set_io io_sclk 47
+set_io io_csx  48
+set_io io_dcx  56
+
+# LED 7 Segment
+set_io              io_outLED7Seg[6]    78 
+set_io              io_outLED7Seg[5]    79 
+set_io              io_outLED7Seg[4]    80  
+set_io              io_outLED7Seg[3]    81  
+set_io              io_outLED7Seg[2]    87  
+set_io              io_outLED7Seg[1]    88  
+set_io              io_outLED7Seg[0]    90  
+set_io              io_csLED7Seg        91
+
 # LEDs
-set_io              io_RLED1  99
-set_io              io_RLED2  98
-set_io              io_RLED3  97
-set_io              io_RLED4  96
-set_io              io_GLED   95
+set_io              io_led0  99
+set_io              io_led1  98
+#set_io              io_RLED3  97
+#set_io              io_RLED4  96
+#set_io              io_GLED   95

@@ -55,17 +55,16 @@ class Rx(freq: Int, baudRate: Int) extends Module {
   detedge0.io.sigin := io.rx
 
   switch(state) {
-
     is(sIDLE) {
-      when(detedge0.io.negdet) {
+      when(
+        detedge0.io.negdet
+        ) {
         state := sWAIT
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
         busy := true.B
-        rts := true.B
       }.otherwise {
         busy := false.B
-        rts := false.B
       }
     }
     is(sWAIT) {
@@ -94,12 +93,14 @@ class Rx(freq: Int, baudRate: Int) extends Module {
       buff := "b00000000".U ## rxData(7, 0) // change data to valid data!!
       recieved := true.B
       busy := false.B
+      rts := true.B // active Uart RX port
     }
     is(sRBUFF) {
       when(io.cbf) {
         state := sIDLE
         buff := "b0000000000000000".U // clear buffer
         recieved := false.B
+        rts := false.B // inactive Uart RX port
       }
     }
   }

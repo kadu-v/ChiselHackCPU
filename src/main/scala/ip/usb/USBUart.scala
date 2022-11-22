@@ -42,11 +42,12 @@ class USBUart(freq: Int, stCtlAddr: Int, rxAddr: Int, txAddr: Int)
     VecInit(Seq.fill(16)(false.B))
   )
 
+  val boudRate = 115200
   //  RX
-  val rx = Module(new Rx(freq, 115200))
+  val rx = Module(new Rx(freq, boudRate))
 
   // Tx
-  val tx = Module(new Tx(freq, 115200))
+  val tx = Module(new Tx(freq, boudRate))
   val txBuff = RegInit(0.asUInt) // buffer for Tx
 
   // Tx Buffer
