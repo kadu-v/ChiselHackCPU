@@ -34,7 +34,7 @@ class CoreWithUartSpec
       val cbf = Input(Bool()) // clear buffer
       val dout = Output(UInt(16.W)) // recieved data
 
-      val debug = Output(UInt(16.W))
+      val led0 = Output(UInt(16.W))
     })
 
     // clock: 100 MHz div4Clock: 25 MHz
@@ -58,7 +58,7 @@ class CoreWithUartSpec
 
     core.io.miso := false.B
 
-    io.debug := core.io.debug
+    io.led0 := core.io.led0
   }
 
   behavior of "Uart Rx(25 MHz, 115200 bps)"
@@ -81,7 +81,7 @@ class CoreWithUartSpec
         c.io.run.poke(false.B)
 
         c.clock.step(15000)
-        c.io.debug.expect("b01010101".U(8.W))
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -104,7 +104,7 @@ class CoreWithUartSpec
         c.io.run.poke(false.B)
 
         c.clock.step(25000)
-        c.io.debug.expect("b10".U(8.W))
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -135,7 +135,7 @@ class CoreWithUartSpec
         c.clock.step(25000)
 
         c.clock.step(1000)
-        c.io.debug.expect("b10".U(8.W))
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -154,7 +154,7 @@ class CoreWithUartSpec
         c.clock.setTimeout(0)
         c.clock.step(25000)
         c.io.dout.expect(81)
-        c.io.debug.expect(256.asUInt)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -171,10 +171,9 @@ class CoreWithUartSpec
         c.clock.step(25000)
 
         c.io.dout.expect(98)
-        c.io.debug.expect(98)
+        c.io.led0.expect(1.asUInt)
     }
   }
-  behavior of "SPI"
 
   behavior of "Test"
   it should "Test/bin.hack" in {
@@ -184,7 +183,7 @@ class CoreWithUartSpec
         c.clock.step(25000)
 
         c.io.dout.expect(98)
-        c.io.debug.expect(98)
+        c.io.led0.expect(1.asUInt)
     }
   }
 }

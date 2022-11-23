@@ -1,0 +1,10 @@
+class Main {
+   function void main() {
+      var int x;
+      let x = 1 + 9;
+      if (x = 10) {
+         do Memory.poke(8201, 1);
+      }
+      return ;
+   }
+}

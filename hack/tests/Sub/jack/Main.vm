@@ -1,0 +1,19 @@
+function Main.main 1
+push constant 9
+push constant 100
+sub
+pop local 0
+push local 0
+push constant 91
+neg
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 8201
+push constant 1
+call Memory.poke 2
+pop temp 0
+label IF_FALSE0
+push constant 0
+return

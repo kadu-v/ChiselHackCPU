@@ -1,0 +1,18 @@
+class Main {
+   function void main() {
+      var int x;
+      let x = Main.fib(2);
+      if (x = 2) {
+         do Memory.poke(8201, 1);
+      }
+      return ;
+   }
+
+   function int fib(int n) {
+      if ((n = 0) | (n = 1)) {
+         return 1;
+      }
+
+      return Main.fib(n-1) + Main.fib(n-2);
+   }
+}

@@ -13,35 +13,35 @@ class CoreSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
     test(new Top("./hack/tests/Const/vm.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(2000)
-        c.io.debug.expect(15.asUInt)
+        c.clock.step(4000)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
-  it should "add (8 + 8 = 16)" in {
-    test(new Top("./hack/tests/Add/vm.hack", "./hack/init.bin", words))
+  it should "add (1 + 9 = 10)" in {
+    test(new Top("./hack/tests/Add/jack.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(2000)
-        c.io.debug.expect(16.asUInt)
+        c.clock.step(5000)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
-  it should "sub (8 - 7 = 1)" in {
-    test(new Top("./hack/tests/Sub/vm.hack", "./hack/init.bin", words))
+  it should "sub (1 - 100 = -91)" in {
+    test(new Top("./hack/tests/Sub/jack.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(2000)
-        c.io.debug.expect(1.asUInt)
+        c.clock.step(5000)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
-  it should "do fib(2) = 1 (fib(0) = 0, fib(1) = 1)" in {
-    test(new Top("./hack/tests/Fib2/vm.hack", "./hack/init.bin", words))
+  it should "do fib(2) = 2 (fib(0) = 1, fib(1) = 1)" in {
+    test(new Top("./hack/tests/Fib2/jack.hack", "./hack/init.bin", words))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(2000)
-        c.io.debug.expect(1.asUInt)
+        c.clock.step(10000)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -50,7 +50,7 @@ class CoreSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(32000)
-        c.io.debug.expect(8.asUInt)
+        c.io.led0.expect(1.asUInt)
       }
   }
 
@@ -59,7 +59,7 @@ class CoreSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(5000)
-        c.io.debug.expect(1.asUInt)
+        c.io.led0.expect(1.asUInt)
 
       }
   }
