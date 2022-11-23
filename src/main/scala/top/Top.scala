@@ -67,7 +67,7 @@ class Top(filename: String, init: String, words: Int) extends Module {
 
   // MMIO
   val mmio = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
-    Module(new MMIO(12, init, filename, words))
+    Module(new MMIO(25, init, filename, words))
   }
 
 

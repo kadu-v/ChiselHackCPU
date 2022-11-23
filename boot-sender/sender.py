@@ -15,7 +15,7 @@ _serial.rtscts = True
 
 i = pack('B', 98)
 _serial.write(i)
-# result = _serial.read(1)
-# print(result)
+result = _serial.read(1)
+print(result)
 
 _serial.close()
