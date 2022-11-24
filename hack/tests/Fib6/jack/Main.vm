@@ -1,0 +1,41 @@
+function Main.main 1
+push constant 6
+call Main.fib 1
+pop local 0
+push local 0
+push constant 13
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 8201
+push constant 1
+call Memory.poke 2
+pop temp 0
+label IF_FALSE0
+push constant 0
+return
+function Main.fib 0
+push argument 0
+push constant 0
+eq
+push argument 0
+push constant 1
+eq
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 1
+return
+label IF_FALSE0
+push argument 0
+push constant 1
+sub
+call Main.fib 1
+push argument 0
+push constant 2
+sub
+call Main.fib 1
+add
+return
