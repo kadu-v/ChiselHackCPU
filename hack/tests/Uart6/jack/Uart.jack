@@ -31,6 +31,7 @@ class Uart {
     function int receiveChar() {
         var int status;
         var int c;
+        var int reg;
         
         // get a current status of Uart
         let status = 1;
@@ -43,6 +44,12 @@ class Uart {
 
         // recieved char
         let c = Memory.peek(rxRegAddr);
+
+        ///////////////////////////////
+        // This code is for test case!!
+        ///////////////////////////////
+        let reg = Memory.peek(8192);
+        do Memory.poke(1024, reg);
 
 
         // clear buffer

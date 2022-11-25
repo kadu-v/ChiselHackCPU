@@ -33,7 +33,7 @@ call Memory.poke 2
 pop temp 0
 push constant 0
 return
-function Uart.receiveChar 2
+function Uart.receiveChar 3
 push constant 1
 pop local 0
 label WHILE_EXP0
@@ -59,6 +59,13 @@ label WHILE_END0
 push static 1
 call Memory.peek 1
 pop local 1
+push constant 8192
+call Memory.peek 1
+pop local 2
+push constant 1024
+push local 2
+call Memory.poke 2
+pop temp 0
 push static 0
 push constant 16
 call Memory.poke 2

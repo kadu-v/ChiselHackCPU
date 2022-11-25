@@ -2,6 +2,9 @@ class Main {
    function void main() {
         var int c;
         let c = Uart.receiveChar();
+        if (c = 255) {
+            do Memory.poke(8201, 1);
+        }
         return;
    }
 }

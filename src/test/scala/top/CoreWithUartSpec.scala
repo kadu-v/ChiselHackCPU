@@ -62,7 +62,7 @@ class CoreWithUartSpec
   }
 
   behavior of "Uart Rx(25 MHz, 115200 bps)"
-  it should "recieve 0b01010101, and write a mem[1024] = 0b01010101" in {
+  it should "recieve 16" in {
     test(
       new CoreWithUart(
         "./hack/tests/Uart1/jack.hack",
@@ -74,18 +74,18 @@ class CoreWithUartSpec
     )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.io.din.poke("b01010101".U(8.W))
+        c.io.din.poke(16.U(8.W))
         c.clock.step(100)
         c.io.run.poke(true.B)
         c.clock.step(10)
         c.io.run.poke(false.B)
 
-        c.clock.step(15000)
+        c.clock.step(12000)
         c.io.led0.expect(1.asUInt)
       }
   }
 
-  it should "recieve 0b01010101, and status and control register = b00000000000010" in {
+  it should "recieve 255" in {
     test(
       new CoreWithUart(
         "./hack/tests/Uart2/jack.hack",
@@ -97,18 +97,18 @@ class CoreWithUartSpec
     )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.io.din.poke("b01010101".U(8.W))
+        c.io.din.poke(255.U(8.W))
         c.clock.step(100)
         c.io.run.poke(true.B)
         c.clock.step(10)
         c.io.run.poke(false.B)
 
-        c.clock.step(25000)
+        c.clock.step(13000)
         c.io.led0.expect(1.asUInt)
       }
   }
 
-  it should "recieve 0b01010101 and 0b10101010, " in {
+  it should "recieve 2 and 108, " in {
     test(
       new CoreWithUart(
         "./hack/tests/Uart3/jack.hack",
@@ -120,19 +120,19 @@ class CoreWithUartSpec
     )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.io.din.poke(10)
+        c.io.din.poke(2)
         c.clock.step(100)
         c.io.run.poke(true.B)
         c.clock.step(10)
         c.io.run.poke(false.B)
-        c.clock.step(25000)
+        c.clock.step(15000)
 
-        c.io.din.poke(20)
+        c.io.din.poke(108)
         c.clock.step(100)
         c.io.run.poke(true.B)
         c.clock.step(10)
         c.io.run.poke(false.B)
-        c.clock.step(25000)
+        c.clock.step(15000)
 
         c.clock.step(1000)
         c.io.led0.expect(1.asUInt)
@@ -143,7 +143,7 @@ class CoreWithUartSpec
   it should "send 81" in {
     test(
       new CoreWithUart(
-        "./hack/tests/Uart5/jack.hack",
+        "./hack/tests/Uart4/jack.hack",
         "./hack/init.bin",
         words,
         freq,
@@ -152,7 +152,7 @@ class CoreWithUartSpec
     )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
-        c.clock.step(25000)
+        c.clock.step(15000)
         c.io.dout.expect(81)
         c.io.led0.expect(1.asUInt)
       }
@@ -175,15 +175,15 @@ class CoreWithUartSpec
     }
   }
 
-  behavior of "Test"
-  it should "Test/bin.hack" in {
-    test(new CoreWithUart("./hack/tests/Tests/bin.hack", "./hack/init.bin", words, freq, boudRate))
-      .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
-        c.clock.setTimeout(0)
-        c.clock.step(25000)
+  // behavior of "Test"
+  // it should "Test/bin.hack" in {
+  //   test(new CoreWithUart("./hack/tests/Tests/bin.hack", "./hack/init.bin", words, freq, boudRate))
+  //     .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
+  //       c.clock.setTimeout(0)
+  //       c.clock.step(25000)
 
-        c.io.dout.expect(98)
-        c.io.led0.expect(1.asUInt)
-    }
-  }
+  //       c.io.dout.expect(98)
+  //       c.io.led0.expect(1.asUInt)
+  //   }
+  // }
 }

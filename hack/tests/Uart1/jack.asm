@@ -695,6 +695,8 @@
 	A=M
 	M=0
 	A=A+1
+	M=0
+	A=A+1
 	D=A
 	@SP
 	M=D
@@ -764,6 +766,60 @@
 	A=M-1
 	M=-1
 (ENDIF1)
+	@0
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D&M
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN2
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF2
+	0;JMP
+(THEN2)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF2)
+	@SP
+	A=M-1
+	M=!M
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D|M
 	@SP
 	A=M-1
 	M=!M
@@ -883,6 +939,87 @@
 	@Memory.peek
 	0;JMP
 (RETURN5)
+	@1
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@1
+	D=A
+	@LCL
+	M=M-D
+	@Uart.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@16
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@RETURN6
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@LCL
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@ARG
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	D=M
+	@LCL
+	M=D
+	@7
+	D=D-A
+	@ARG
+	M=D
+	@Memory.poke
+	0;JMP
+(RETURN6)
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@1
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
 	@5
 	D=A
 	@LCL
@@ -951,52 +1088,6 @@
 	D=M
 	@Sys.0
 	M=D
-	@RETURN6
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@5
-	D=D-A
-	@ARG
-	M=D
-	@Memory.init
-	0;JMP
-(RETURN6)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
 	@RETURN7
 	D=A
 	@SP
@@ -1035,7 +1126,7 @@
 	D=D-A
 	@ARG
 	M=D
-	@Uart.init
+	@Memory.init
 	0;JMP
 (RETURN7)
 	@SP
@@ -1081,7 +1172,7 @@
 	D=D-A
 	@ARG
 	M=D
-	@Main.main
+	@Uart.init
 	0;JMP
 (RETURN8)
 	@SP
@@ -1127,9 +1218,55 @@
 	D=D-A
 	@ARG
 	M=D
-	@Sys.halt
+	@Main.main
 	0;JMP
 (RETURN9)
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@RETURN10
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@LCL
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@ARG
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	D=M
+	@LCL
+	M=D
+	@5
+	D=D-A
+	@ARG
+	M=D
+	@Sys.halt
+	0;JMP
+(RETURN10)
 	@SP
 	AM=M-1
 	D=M
@@ -1258,7 +1395,7 @@
 	D=A
 	@SP
 	M=D
-	@RETURN10
+	@RETURN11
 	D=A
 	@SP
 	AM=M+1
@@ -1298,7 +1435,7 @@
 	M=D
 	@Sys.halt
 	0;JMP
-(RETURN10)
+(RETURN11)
 	@SP
 	AM=M-1
 	D=M
@@ -1357,7 +1494,7 @@
 	D=A
 	@SP
 	M=D
-	@RETURN11
+	@RETURN12
 	D=A
 	@SP
 	AM=M+1
@@ -1397,7 +1534,7 @@
 	M=D
 	@Uart.receiveChar
 	0;JMP
-(RETURN11)
+(RETURN12)
 	@0
 	D=A
 	@LCL
@@ -1412,12 +1549,6 @@
 	D=A
 	@LCL
 	M=M-D
-	@1024
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
 	@0
 	D=A
 	@LCL
@@ -1427,7 +1558,51 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN12
+	@16
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN3
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF3
+	0;JMP
+(THEN3)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF3)
+	@SP
+	AM=M-1
+	D=M
+	@Main.main$IF_TRUE0
+	D;JNE
+	@Main.main$IF_FALSE0
+	0;JMP
+(Main.main$IF_TRUE0)
+	@8201
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@RETURN13
 	D=A
 	@SP
 	AM=M+1
@@ -1467,12 +1642,13 @@
 	M=D
 	@Memory.poke
 	0;JMP
-(RETURN12)
+(RETURN13)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+(Main.main$IF_FALSE0)
 	@0
 	D=A
 	@SP

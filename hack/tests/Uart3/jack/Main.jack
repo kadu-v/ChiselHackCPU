@@ -1,20 +1,14 @@
 class Main {
    function void main() {
         var int c;
-        var int reg;
+        var int d;
         let c = Uart.receiveChar();
-        if (c = 10) {
-            let c = Uart.receiveChar();
-            if (c = 20) {
-               let reg = Memory.peek(8192);
-               do Memory.poke(1024, 2);
-               return;
-            }
-            do Memory.poke(1024, c);
-            return;
+        let d = Uart.receiveChar();
+        
+        
+        if ((c = 2) & (d = 108)) {
+            do Memory.poke(8201, 1);
         }
-
-        do Memory.poke(1024, c);
         return;
    }
 }

@@ -1,0 +1,7 @@
+class Main {
+   function void main() {
+        do Uart.sendChar(81);
+        do Memory.poke(8201, 1);
+        return;
+   }
+}

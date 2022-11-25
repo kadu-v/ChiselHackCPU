@@ -1675,6 +1675,106 @@
 	M=M-D
 	@0
 	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@255
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN3
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF3
+	0;JMP
+(THEN3)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF3)
+	@SP
+	AM=M-1
+	D=M
+	@Main.main$IF_TRUE0
+	D;JNE
+	@Main.main$IF_FALSE0
+	0;JMP
+(Main.main$IF_TRUE0)
+	@8201
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@RETURN15
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@LCL
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@ARG
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	D=M
+	@LCL
+	M=D
+	@7
+	D=D-A
+	@ARG
+	M=D
+	@Memory.poke
+	0;JMP
+(RETURN15)
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+(Main.main$IF_FALSE0)
+	@0
+	D=A
 	@SP
 	AM=M+1
 	A=A-1
