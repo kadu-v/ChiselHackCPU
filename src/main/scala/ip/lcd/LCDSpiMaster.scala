@@ -5,6 +5,7 @@ import chisel3._
 import chisel3.util._
 
 // Interface for MMIO
+// ILI9341_DS_V1.13_20110805 33p
 class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   val io = IO(new Bundle {
     val addrM = Input(UInt(16.W))
@@ -17,8 +18,8 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     val mosi = Output(Bool())
     val sclk = Output(Bool())
     val csx = Output(Bool()) // H: inactive, L: active
-    val dcx = Output(Bool())
-
+    val dcx = Output(Bool()) // H: Commadn, L: Data
+    val rstx = Output(Bool()) // H: Running, L: Reset, external reset signal, perhaps this is not necessary.
   })
   /* SPI */
   //  15       12  Tx       8  7       4   Rx        0
@@ -69,13 +70,14 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   master.io.cbf := spiStCtlReg(4)
   master.io.run := spiStCtlReg(5)
   master.io.inDcx := spiStCtlReg(6)
-  master.io.txData := io.inM
+  master.io.txData := txBuff
 
   master.io.miso := io.miso
   io.mosi := master.io.mosi
   io.sclk := master.io.sclk
   io.csx := master.io.csx
   io.dcx := master.io.dcx
+  io.rstx := true.B
 
   // Output
   io.outM := MuxCase(

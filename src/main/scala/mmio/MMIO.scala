@@ -32,6 +32,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
     val sclk = Output(Bool())
     val csx = Output(Bool())
     val dcx = Output(Bool()) // LCD monitor
+    val rstx = Output(Bool())
 
     /* Read Only Memory */
     val pc = Input(UInt(16.W))
@@ -106,9 +107,9 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   lcdSpiMaster.io.inM := io.inRam
   lcdSpiMaster.io.writeM := Mux(
     io.writeRam &&
-      (io.addrRam === 8194.U
-        || io.addrRam === 8195.U
-        || io.addrRam === 8196.U),
+      (io.addrRam === 8195.U
+        || io.addrRam === 8196.U
+        || io.addrRam === 8197.U),
     true.B,
     false.B
   )
@@ -117,6 +118,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   io.sclk := lcdSpiMaster.io.sclk
   io.csx := lcdSpiMaster.io.csx
   io.dcx := lcdSpiMaster.io.dcx
+  io.rstx := lcdSpiMaster.io.rstx
 
   /*----------------------------------------------------------------------------
    *                         Read Only Memory for instructions                 *

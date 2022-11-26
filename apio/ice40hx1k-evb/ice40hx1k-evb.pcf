@@ -25,17 +25,19 @@ set_io io_mosi 8
 set_io io_sclk 9
 set_io io_csx  10
 set_io io_dcx  12
+set_io io_rstx 13
+set_io io_ledback 16
 
 
 # LED 7 Segment
-set_io              io_outLED7Seg[6]    13 
-set_io              io_outLED7Seg[5]    16 
-set_io              io_outLED7Seg[4]    18  
-set_io              io_outLED7Seg[3]    19  
-set_io              io_outLED7Seg[2]    20  
-set_io              io_outLED7Seg[1]    21  
-set_io              io_outLED7Seg[0]    24  
-set_io              io_csLED7Seg        25  
+set_io              io_outLED7Seg[6]    18 
+set_io              io_outLED7Seg[5]    19 
+set_io              io_outLED7Seg[4]    20  
+set_io              io_outLED7Seg[3]    21  
+set_io              io_outLED7Seg[2]    24  
+set_io              io_outLED7Seg[1]    25  
+set_io              io_outLED7Seg[0]    26  
+set_io              io_csLED7Seg        27  
 
 
 # Debug LED

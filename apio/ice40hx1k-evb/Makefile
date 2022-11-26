@@ -31,5 +31,5 @@ time:
 
 .PHONY: clean
 clean:
-	rm Top.v init.bin bin.hack
+	rm Top.v init.bin *.hack
 	rm hardware.json hardware.asc hardware.bin *.dblite

@@ -21,6 +21,8 @@ class Top(filename: String, init: String, words: Int) extends Module {
     val sclk = Output(Bool())
     val csx = Output(Bool())
     val dcx = Output(Bool()) // LCD monitor
+    val rstx = Output(Bool())
+    val ledback = Output(Bool())
 
     // LED 7 Segment
     val outLED7Seg = Output(UInt(7.W))
@@ -99,6 +101,8 @@ class Top(filename: String, init: String, words: Int) extends Module {
   io.sclk := mmio.io.sclk
   io.csx := mmio.io.csx
   io.dcx := mmio.io.dcx // LCD monitor
+  io.rstx := mmio.io.rstx
+  io.ledback := true.B
 
   /*----------------------------------------------------------------------------
    *                         LED 7 Segments                                    *

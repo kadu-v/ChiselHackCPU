@@ -1,0 +1,50 @@
+class Spi {
+    static int stCtlRegAddr;
+    static int rxRegAddr;
+    static int txRegAddr;
+
+    function void init() {
+        let stCtlRegAddr = 8195;
+        let rxRegAddr = 8196;
+        let txRegAddr = 8197;
+        return;
+    }
+
+    function void _send(bool isCmd, int d) {
+        var int status;
+        var int cmdOrData;
+        let status = 1;
+        let cmdOrData = 32; // 0000_0000_0010_0000
+
+
+        // wait until Spi Mastet is not busy
+        while(
+            (status & 1) = 1
+        ) {
+            let status = Memory.peek(stCtlRegAddr);
+        }
+
+        // Write a transmitted data
+        do Memory.poke(txRegAddr, d);
+
+        if (isCmd) {
+            let cmdOrData = 96; // 0000_0000_0110_0000
+        }
+
+        // start to send data of a data
+        do Memory.poke(stCtlRegAddr, cmdOrData);
+        return;
+    }
+
+    function void sendCmd(int d) {
+        do Spi._send(true, d);
+        return;
+    }
+
+    function void sendData(int d) {
+        do Spi._send(false, d);
+        return;
+    }
+
+
+}

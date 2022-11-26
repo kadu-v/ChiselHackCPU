@@ -10,7 +10,7 @@ class Master extends Module {
   val io = IO(new Bundle {
     val cbf = Input(Bool()) // clear buffer flag
     val run = Input(Bool()) // H: start runnning, L: idle
-    val inDcx = Input(Bool())
+    val inDcx = Input(Bool()) // 
     val txData = Input(UInt(8.W)) // trasmitted data
     val rxData = Output(UInt(8.W)) // recived data
     val busy = Output(Bool()) // busy flag
@@ -37,8 +37,8 @@ class Master extends Module {
   val csxReg = RegInit(true.B)
   val busy = RegInit(false.B)
   val rxBuff = RegInit(0.asUInt) // inner buffer
-  val completed = RegInit(false.B)
-  val dcx = RegInit(false.B)
+  val completed = RegInit(true.B)
+  val dcx = RegInit(false.B) // H: Data, L: Command
 
   // counter
   val count = RegInit(0.U(5.W))
@@ -53,7 +53,6 @@ class Master extends Module {
   io.mosi := txReg(7)
   io.sclk := sclkReg
   io.csx := csxReg
-
   io.dcx := dcx
 
   // SCLK
@@ -88,13 +87,15 @@ class Master extends Module {
         stateCsx := sRUN
         rxReg := "b0000000000000000".U // clear buffer
         completed := false.B
-        dcx := io.inDcx
+        dcx := ~io.inDcx
         csxReg := false.B
         busy := true.B
       }
     }
     is(sRUN) {
       when(countCsx === 15.asUInt) {
+        csxReg := true.B
+        dcx := false.B 
         stateCsx := sEND
       }.otherwise {
         countCsx := countCsx + 1.asUInt
@@ -102,8 +103,8 @@ class Master extends Module {
     }
     is(sEND) {
       stateCsx := sIDLE
-      csxReg := true.B
       busy := false.B
+
       countCsx := 0.asUInt
     }
   }

@@ -1,0 +1,59 @@
+function Spi.init 0
+push constant 8195
+pop static 0
+push constant 8196
+pop static 1
+push constant 8197
+pop static 2
+push constant 0
+return
+function Spi._send 2
+push constant 1
+pop local 0
+push constant 32
+pop local 1
+label WHILE_EXP0
+push local 0
+push constant 1
+and
+push constant 1
+eq
+not
+if-goto WHILE_END0
+push static 0
+call Memory.peek 1
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push static 2
+push argument 1
+call Memory.poke 2
+pop temp 0
+push argument 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 96
+pop local 1
+label IF_FALSE0
+push static 0
+push local 1
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Spi.sendCmd 0
+push constant 0
+not
+push argument 0
+call Spi._send 2
+pop temp 0
+push constant 0
+return
+function Spi.sendData 0
+push constant 0
+push argument 0
+call Spi._send 2
+pop temp 0
+push constant 0
+return
