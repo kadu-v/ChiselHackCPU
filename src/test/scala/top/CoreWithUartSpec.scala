@@ -11,14 +11,15 @@ class CoreWithUartSpec
     extends AnyFlatSpec
     with ChiselScalatestTester
     with Matchers {
-  val words = 2048
+  val romWords = 2048
+  val ramWords = 2048
   val freq = 25
   val boudRate = 115200
 
   class CoreWithUart(
       filename: String,
       init: String,
-      words: Int,
+      romWords: Int, ramWords: Int,
       freq: Int,
       boudRate: Int
   ) extends Module {
@@ -38,7 +39,7 @@ class CoreWithUartSpec
     })
 
     // clock: 100 MHz div4Clock: 25 MHz
-    val core = Module(new Top(filename, init, words))
+    val core = Module(new Top(filename, init, romWords, ramWords))
     // clock: 100 MHz
     val uartTx = Module(new Tx(100, boudRate))
     val uartRx = Module(new Rx(100, boudRate))
@@ -67,7 +68,7 @@ class CoreWithUartSpec
       new CoreWithUart(
         "./hack/tests/Uart1/jack.hack",
         "./hack/init.bin",
-        words,
+        romWords, ramWords,
         freq,
         boudRate
       )
@@ -90,7 +91,7 @@ class CoreWithUartSpec
       new CoreWithUart(
         "./hack/tests/Uart2/jack.hack",
         "./hack/init.bin",
-        words,
+        romWords, ramWords,
         freq,
         boudRate
       )
@@ -113,7 +114,7 @@ class CoreWithUartSpec
       new CoreWithUart(
         "./hack/tests/Uart3/jack.hack",
         "./hack/init.bin",
-        words,
+        romWords, ramWords,
         freq,
         boudRate
       )
@@ -145,7 +146,7 @@ class CoreWithUartSpec
       new CoreWithUart(
         "./hack/tests/Uart4/jack.hack",
         "./hack/init.bin",
-        words,
+        romWords, ramWords,
         freq,
         boudRate
       )
@@ -160,7 +161,7 @@ class CoreWithUartSpec
 
   behavior of "Uart Tx and Rx(25 MHz, 115200 bps)"
   it should "receive a character and send the same character" in {
-    test(new CoreWithUart("./hack/tests/Uart6/jack.hack", "./hack/init.bin", words, freq, boudRate))
+    test(new CoreWithUart("./hack/tests/Uart6/jack.hack", "./hack/init.bin", romWords, ramWords, freq, boudRate))
       .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
         c.clock.setTimeout(0)
         c.io.din.poke(98)
@@ -177,7 +178,7 @@ class CoreWithUartSpec
 
   // behavior of "Test"
   // it should "Test/bin.hack" in {
-  //   test(new CoreWithUart("./hack/tests/Tests/bin.hack", "./hack/init.bin", words, freq, boudRate))
+  //   test(new CoreWithUart("./hack/tests/Tests/bin.hack", "./hack/init.bin", romWords, ramWords, freq, boudRate))
   //     .withAnnotations(Seq(WriteVcdAnnotation)) { c => 
   //       c.clock.setTimeout(0)
   //       c.clock.step(25000)
