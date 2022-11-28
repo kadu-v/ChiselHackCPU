@@ -1,31 +1,35 @@
 class Main {
     // Assume clock of the borad is 25MHz
-    function void delayTms(int x, int y) {
-        var int cnt;
-        var int i;
-        let i = 0;
-        while(i < x) {
-            let i = i + 1;
-            let cnt = 0;
-            while(cnt < y) {
-                let cnt = cnt + 1;
-            }
-        }
-        return ;
-    }
+    // function void delayTms(int x, int y) {
+    //     var int cnt;
+    //     var int i;
+    //     let i = 0;
+    //     while(i < x) {
+    //         let i = i + 1;
+    //         let cnt = 0;
+    //         while(cnt < y) {
+    //             let cnt = cnt + 1;
+    //         }
+    //     }
+    //     return ;
+    // }
     function void main() {
+        do Memory.poke(8201, 2);
+        
         do Spi.sendCmd(54); // 0x36 Memory access control
-        do Spi.sendData(72); // 0x48 RGB mode
+        do Spi.send8Data(72); // 0x48 RGB mode
         
         do Spi.sendCmd(58); // 0x3A format set
-        do Spi.sendData(85); // 0x55 RGB mode 16bit
+        do Spi.send8Data(85); // 0x55 RGB mode 16bit
 
         do Spi.sendCmd(17); // 0x11 Sleep out
-        do Main.delayTms(0, 0); // delay 120ms 
+        // do Main.delayTms(2000, 4000); // delay 120ms 
 
 
         do Spi.sendCmd(41); // 0x29 Display on
-        do Main.delayTms(0, 0); // 120ms
+        // do Main.delayTms(2000, 4000); // 120ms
+
+        do Spi.send16Data(21845);
 
         do Memory.poke(8201, 1);
         return;

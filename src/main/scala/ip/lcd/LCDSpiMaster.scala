@@ -26,12 +26,12 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   // |-----------------------------------------------|
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   // |-----------------------------------------------|
-  //                             C  R  C         C B
-  //                             M  U  L         O U
-  //                             D  N  E         M S
-  //                             /     A         P Y
-  //                             D     R         L
-  //                             A               E
+  //                         16  C  R  C         C B
+  //                          /  M  U  L         O U
+  //                          8  D  N  E         M S
+  //                          b  /     A         P Y
+  //                          i  D     R         L
+  //                          t  A               E
   //                             T     B         T
   //                             A     U         E
   //                                   F
@@ -48,7 +48,7 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
 
   // MOSI Buffer
   when(io.addrM === txAddr.asUInt && io.writeM) {
-    txBuff := io.inM(7, 0)
+    txBuff := io.inM
   }
 
   /* status register */
@@ -60,16 +60,19 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     spiStCtlReg(4) := io.inM(4)
     spiStCtlReg(5) := io.inM(5)
     spiStCtlReg(6) := io.inM(6)
+    spiStCtlReg(7) := io.inM(7)
   }.otherwise {
     spiStCtlReg(4) := false.B
     spiStCtlReg(5) := false.B
     spiStCtlReg(6) := false.B
+    spiStCtlReg(7) := false.B
   }
 
   /* connect IO */
   master.io.cbf := spiStCtlReg(4)
   master.io.run := spiStCtlReg(5)
   master.io.inDcx := spiStCtlReg(6)
+  master.io.lenOfData := spiStCtlReg(7)
   master.io.txData := txBuff
 
   master.io.miso := io.miso

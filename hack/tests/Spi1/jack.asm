@@ -597,6 +597,8 @@
 	A=A+1
 	M=0
 	A=A+1
+	M=0
+	A=A+1
 	D=A
 	@SP
 	M=D
@@ -764,7 +766,7 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@1
+	@2
 	D=A
 	@ARG
 	A=D+M
@@ -857,6 +859,59 @@
 	@LCL
 	M=M-D
 (Spi._send$IF_FALSE0)
+	@1
+	D=A
+	@ARG
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@Spi._send$IF_TRUE1
+	D;JNE
+	@Spi._send$IF_FALSE1
+	0;JMP
+(Spi._send$IF_TRUE1)
+	@1
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@128
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@1
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@1
+	D=A
+	@LCL
+	M=M-D
+(Spi._send$IF_FALSE1)
 	@Spi.0
 	D=M
 	@SP
@@ -980,6 +1035,12 @@
 	M=!M
 	@0
 	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
 	@ARG
 	A=D+M
 	D=M
@@ -1021,7 +1082,7 @@
 	D=M
 	@LCL
 	M=D
-	@7
+	@8
 	D=D-A
 	@ARG
 	M=D
@@ -1078,11 +1139,17 @@
 	@R13
 	A=M
 	0;JMP
-(Spi.sendData)
+(Spi.send8Data)
 	@SP
 	A=M
 	D=A
 	@SP
+	M=D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
 	M=D
 	@0
 	D=A
@@ -1133,7 +1200,7 @@
 	D=M
 	@LCL
 	M=D
-	@7
+	@8
 	D=D-A
 	@ARG
 	M=D
@@ -1190,13 +1257,9 @@
 	@R13
 	A=M
 	0;JMP
-(Main.delayTms)
+(Spi.send16Data)
 	@SP
 	A=M
-	M=0
-	A=A+1
-	M=0
-	A=A+1
 	D=A
 	@SP
 	M=D
@@ -1206,30 +1269,15 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@1
+	@0
 	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@1
-	D=A
-	@LCL
-	M=M-D
-(Main.delayTms$WHILE_EXP0)
-	@1
-	D=A
-	@LCL
-	A=D+M
-	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
+	@SP
+	A=M-1
+	M=!M
 	@0
 	D=A
 	@ARG
@@ -1239,173 +1287,52 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	D=M-D
-	@THEN1
-	D;JLT
-	@SP
-	A=M-1
-	M=0
-	@ENDIF1
-	0;JMP
-(THEN1)
-	@SP
-	A=M-1
-	M=-1
-(ENDIF1)
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@Main.delayTms$WHILE_END0
-	D;JNE
-	@1
-	D=A
-	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@1
+	@RETURN9
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D+M
-	@1
-	D=A
 	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@1
-	D=A
-	@LCL
-	M=M-D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-(Main.delayTms$WHILE_EXP1)
-	@0
-	D=A
-	@LCL
-	A=D+M
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@1
-	D=A
 	@ARG
-	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
 	D=M
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
 	@SP
-	AM=M-1
 	D=M
-	@SP
-	A=M-1
-	D=M-D
-	@THEN2
-	D;JLT
-	@SP
-	A=M-1
-	M=0
-	@ENDIF2
-	0;JMP
-(THEN2)
-	@SP
-	A=M-1
-	M=-1
-(ENDIF2)
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@Main.delayTms$WHILE_END1
-	D;JNE
-	@0
-	D=A
 	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
 	M=D
-	@1
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
+	@8
+	D=D-A
+	@ARG
 	M=D
+	@Spi._send
+	0;JMP
+(RETURN9)
 	@SP
 	AM=M-1
 	D=M
-	@SP
-	A=M-1
-	M=D+M
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
+	@R5
 	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-	@Main.delayTms$WHILE_EXP1
-	0;JMP
-(Main.delayTms$WHILE_END1)
-	@Main.delayTms$WHILE_EXP0
-	0;JMP
-(Main.delayTms$WHILE_END0)
 	@0
 	D=A
 	@SP
@@ -1457,59 +1384,13 @@
 	D=A
 	@SP
 	M=D
-	@54
+	@8201
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN9
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@6
-	D=D-A
-	@ARG
-	M=D
-	@Spi.sendCmd
-	0;JMP
-(RETURN9)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@72
+	@2
 	D=A
 	@SP
 	AM=M+1
@@ -1549,11 +1430,11 @@
 	D=M
 	@LCL
 	M=D
-	@6
+	@7
 	D=D-A
 	@ARG
 	M=D
-	@Spi.sendData
+	@Memory.poke
 	0;JMP
 (RETURN10)
 	@SP
@@ -1561,7 +1442,7 @@
 	D=M
 	@R5
 	M=D
-	@58
+	@54
 	D=A
 	@SP
 	AM=M+1
@@ -1613,7 +1494,7 @@
 	D=M
 	@R5
 	M=D
-	@85
+	@72
 	D=A
 	@SP
 	AM=M+1
@@ -1657,7 +1538,7 @@
 	D=D-A
 	@ARG
 	M=D
-	@Spi.sendData
+	@Spi.send8Data
 	0;JMP
 (RETURN12)
 	@SP
@@ -1665,7 +1546,7 @@
 	D=M
 	@R5
 	M=D
-	@17
+	@58
 	D=A
 	@SP
 	AM=M+1
@@ -1717,13 +1598,7 @@
 	D=M
 	@R5
 	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
+	@85
 	D=A
 	@SP
 	AM=M+1
@@ -1763,11 +1638,11 @@
 	D=M
 	@LCL
 	M=D
-	@7
+	@6
 	D=D-A
 	@ARG
 	M=D
-	@Main.delayTms
+	@Spi.send8Data
 	0;JMP
 (RETURN14)
 	@SP
@@ -1775,7 +1650,7 @@
 	D=M
 	@R5
 	M=D
-	@41
+	@17
 	D=A
 	@SP
 	AM=M+1
@@ -1827,13 +1702,7 @@
 	D=M
 	@R5
 	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
+	@41
 	D=A
 	@SP
 	AM=M+1
@@ -1873,11 +1742,11 @@
 	D=M
 	@LCL
 	M=D
-	@7
+	@6
 	D=D-A
 	@ARG
 	M=D
-	@Main.delayTms
+	@Spi.sendCmd
 	0;JMP
 (RETURN16)
 	@SP
@@ -1885,13 +1754,7 @@
 	D=M
 	@R5
 	M=D
-	@8201
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@1
+	@21845
 	D=A
 	@SP
 	AM=M+1
@@ -1931,13 +1794,71 @@
 	D=M
 	@LCL
 	M=D
+	@6
+	D=D-A
+	@ARG
+	M=D
+	@Spi.send16Data
+	0;JMP
+(RETURN17)
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@8201
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@RETURN18
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@LCL
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@ARG
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THIS
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@THAT
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	D=M
+	@LCL
+	M=D
 	@7
 	D=D-A
 	@ARG
 	M=D
 	@Memory.poke
 	0;JMP
-(RETURN17)
+(RETURN18)
 	@SP
 	AM=M-1
 	D=M

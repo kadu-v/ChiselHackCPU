@@ -9,10 +9,11 @@ import chisel3.util._
 class Master extends Module {
   val io = IO(new Bundle {
     val cbf = Input(Bool()) // clear buffer flag
+    val lenOfData = Input(Bool()) // H: 16bit, L: 8bit
     val run = Input(Bool()) // H: start runnning, L: idle
-    val inDcx = Input(Bool()) // 
-    val txData = Input(UInt(8.W)) // trasmitted data
-    val rxData = Output(UInt(8.W)) // recived data
+    val inDcx = Input(Bool()) // H: Data, L: Command
+    val txData = Input(UInt(16.W)) // trasmitted data
+    val rxData = Output(UInt(16.W)) // recived data
     val busy = Output(Bool()) // busy flag
     val completed = Output(Bool())
 
@@ -32,25 +33,26 @@ class Master extends Module {
   val stateCsx = RegInit(sIDLE) // inner register for CSX
 
   val rxReg = RegInit(0.asUInt)
-  val txReg = RegInit(0.U(8.W))
+  val txReg = RegInit(0.U(16.W))
+  val lenOfData = RegInit(false.B) // H: 16bit, L: 8bit
   val sclkReg = RegInit(false.B)
-  val csxReg = RegInit(true.B)
-  val busy = RegInit(false.B)
+  val csxReg = RegInit(true.B) // H: inactionve, L: active
+  val busy = RegInit(false.B) // H: busy, L: idle
   val rxBuff = RegInit(0.asUInt) // inner buffer
-  val completed = RegInit(true.B)
+  val completed = RegInit(true.B) // H: complete reciveing data, L: incomplete reciveing data
   val dcx = RegInit(false.B) // H: Data, L: Command
 
   // counter
-  val count = RegInit(0.U(5.W))
-  val countSclk = RegInit(0.U(5.W))
-  val countCsx = RegInit(0.U(4.W))
+  val count = RegInit(0.U(6.W))
+  val countSclk = RegInit(0.U(6.W))
+  val countCsx = RegInit(0.U(6.W))
 
   // connect io
   io.rxData := rxReg
   io.busy := busy
   io.completed := completed
 
-  io.mosi := txReg(7)
+  io.mosi := Mux(lenOfData, txReg(15), txReg(7))
   io.sclk := sclkReg
   io.csx := csxReg
   io.dcx := dcx
@@ -64,7 +66,9 @@ class Master extends Module {
     }
     is(sRUN) {
       sclkReg := ~sclkReg
-      when(countSclk === 15.asUInt) {
+      when(countSclk === 15.asUInt && ~lenOfData) {
+        stateSclk := sEND
+      }.elsewhen(countSclk === 31.asUInt && lenOfData) {
         stateSclk := sEND
       }.otherwise {
         countSclk := countSclk + 1.asUInt
@@ -93,7 +97,11 @@ class Master extends Module {
       }
     }
     is(sRUN) {
-      when(countCsx === 15.asUInt) {
+      when(countCsx === 15.asUInt && ~lenOfData) { // length of data is 8bit
+        csxReg := true.B
+        dcx := false.B 
+        stateCsx := sEND
+      }.elsewhen(countCsx === 31.asUInt && lenOfData) { // length of data is 16bit
         csxReg := true.B
         dcx := false.B 
         stateCsx := sEND
@@ -114,21 +122,30 @@ class Master extends Module {
     is(sIDLE) {
       when(io.run) {
         state := sRUN
+        lenOfData := io.lenOfData // set a length of data
         txReg := io.txData // set trasmitted data
       }
     }
     is(sRUN) {
       count := count + 1.asUInt
-      when(count === 16.asUInt) {
+      when(count === 16.asUInt && ~lenOfData) {
+        state := sEND
+      }.elsewhen(count === 32.asUInt && lenOfData) {
         state := sEND
       }.elsewhen(count(0) === 1.asUInt) { // posedge of sclk
-        txReg := txReg(6, 0) ## false.B
-        rxBuff := rxBuff(6, 0) ## io.miso
+        when(lenOfData) { // length of data is 16bit
+          txReg := txReg(14, 0) ## false.B
+          rxBuff := rxBuff(14, 0) ## io.miso
+        }.otherwise { // length of data is 8bit
+          txReg := txReg(6, 0) ## false.B
+          rxBuff := rxBuff(6, 0) ## io.miso
+        }
       }
     }
     is(sEND) {
       state := sIDLE
       count := 0.asUInt
+      lenOfData := false.B
       txReg := 0.asUInt
       rxReg := "b00000000".U ## rxBuff
     }

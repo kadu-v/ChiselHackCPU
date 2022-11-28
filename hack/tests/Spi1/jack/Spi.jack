@@ -10,12 +10,12 @@ class Spi {
         return;
     }
 
-    function void _send(bool isCmd, int d) {
+    function void _send(bool isCmd, bool is16bit, int d) {
         var int status;
-        var int cmdOrData;
+        var int cmdOrDataOr16bit;
+        var int is16bit;
         let status = 1;
-        let cmdOrData = 32; // 0000_0000_0010_0000
-
+        let cmdOrDataOr16bit = 32; // 0000_0000_0010_0000
 
         // wait until Spi Mastet is not busy
         while(
@@ -28,23 +28,30 @@ class Spi {
         do Memory.poke(txRegAddr, d);
 
         if (isCmd) {
-            let cmdOrData = 96; // 0000_0000_0110_0000
+            let cmdOrDataOr16bit = 96; // 0000_0000_0110_0000
+        }
+
+        if(is16bit) {
+            let cmdOrDataOr16bit = cmdOrDataOr16bit + 128; // 0000_0000_1000_0000
         }
 
         // start to send data of a data
-        do Memory.poke(stCtlRegAddr, cmdOrData);
+        do Memory.poke(stCtlRegAddr, cmdOrDataOr16bit);
         return;
     }
 
     function void sendCmd(int d) {
-        do Spi._send(true, d);
+        do Spi._send(true, false, d);
         return;
     }
 
-    function void sendData(int d) {
-        do Spi._send(false, d);
+    function void send8Data(int d) {
+        do Spi._send(false, false, d);
         return;
     }
 
-
+    function void send16Data(int d) {
+        do Spi._send(false, true, d);
+        return;
+    }
 }
