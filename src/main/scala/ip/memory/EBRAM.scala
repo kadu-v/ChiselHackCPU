@@ -6,7 +6,7 @@ import chisel3.experimental.{annotate, ChiselAnnotation}
 import firrtl.annotations.MemorySynthInit
 import firrtl.annotations.MemoryLoadFileType
 
-class EBRAM(init: String) extends Module {
+class EBRAM(init: String, ramWords: Int) extends Module {
   val io = IO(new Bundle {
     val inM = Input(UInt(16.W))
     val addrM = Input(UInt(16.W))
@@ -20,7 +20,7 @@ class EBRAM(init: String) extends Module {
     override def toFirrtl = MemorySynthInit
   })
 
-  val mem = Mem(2048, UInt(16.W))
+  val mem = Mem(ramWords, UInt(16.W))
   when(io.writeM) {
     mem(io.addrM) := io.inM
   }

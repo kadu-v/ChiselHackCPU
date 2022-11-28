@@ -1,0 +1,154 @@
+function Spi.init 0
+push constant 8195
+pop static 0
+push constant 8196
+pop static 1
+push constant 8197
+pop static 2
+push constant 2048
+neg
+pop static 3
+push constant 0
+return
+function Spi._send 3
+push constant 1
+pop local 0
+push constant 32
+pop local 1
+label WHILE_EXP0
+push local 0
+push constant 1
+and
+push constant 1
+eq
+not
+if-goto WHILE_END0
+push static 0
+call Memory.peek 1
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push static 2
+push argument 2
+call Memory.poke 2
+pop temp 0
+push argument 0
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 96
+pop local 1
+label IF_FALSE0
+push argument 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 1
+push constant 128
+add
+pop local 1
+label IF_FALSE1
+push static 0
+push local 1
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Spi.sendCmd 0
+push constant 0
+not
+push constant 0
+push argument 0
+call Spi._send 3
+pop temp 0
+push constant 0
+return
+function Spi.send8Data 0
+push constant 0
+push constant 0
+push argument 0
+call Spi._send 3
+pop temp 0
+push constant 0
+return
+function Spi.send16Data 0
+push constant 0
+push constant 0
+not
+push argument 0
+call Spi._send 3
+pop temp 0
+push constant 0
+return
+function Spi.initWindow 2
+push constant 0
+push constant 0
+push argument 0
+push argument 1
+call Spi.setAddrWindow 4
+pop temp 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+push argument 1
+lt
+not
+if-goto WHILE_END0
+push constant 0
+pop local 0
+label WHILE_EXP1
+push local 0
+push argument 0
+lt
+not
+if-goto WHILE_END1
+push static 3
+call Spi.send16Data 1
+pop temp 0
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function Spi.setAddrWindow 0
+push constant 42
+call Spi.sendCmd 1
+pop temp 0
+push argument 0
+call Spi.send16Data 1
+pop temp 0
+push argument 0
+push argument 2
+add
+push constant 1
+sub
+call Spi.send16Data 1
+pop temp 0
+push constant 43
+call Spi.sendCmd 1
+pop temp 0
+push argument 1
+call Spi.send16Data 1
+pop temp 0
+push argument 1
+push argument 3
+add
+push constant 1
+sub
+call Spi.send16Data 1
+pop temp 0
+push constant 44
+call Spi.sendCmd 1
+pop temp 0
+push constant 0
+return

@@ -7,7 +7,7 @@ import ip.lcd.LCDSpiMaster
 import ip.led.LED7Seg
 import chisel3.util.MuxCase
 
-class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
+class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) extends Module {
   val io = IO(new Bundle {
     /* Random Access Memory */
     // Input from core
@@ -55,7 +55,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
    *                         Random Access Memory                              *
    ----------------------------------------------------------------------------*/
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
-    Module(new EBRAM(init))
+    Module(new EBRAM(init, ramWords))
   }
   // val ram = Module(new EBRAM(init))
 
@@ -143,7 +143,7 @@ class MMIO(freq: Int, init: String, file: String, words: Int) extends Module {
   val rom = Module(
     new EBROM(
       file,
-      words
+      romWords
     )
   )
 

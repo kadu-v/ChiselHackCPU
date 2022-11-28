@@ -5,7 +5,7 @@ import core.Core
 import chisel3._
 import mmio.MMIO
 
-class Top(filename: String, init: String, words: Int) extends Module {
+class Top(filename: String, init: String, romWords: Int, ramWords: Int) extends Module {
   val io = IO(new Bundle {
     // UART RX Input
     val rx = Input(Bool())
@@ -69,9 +69,11 @@ class Top(filename: String, init: String, words: Int) extends Module {
 
   // MMIO
   val mmio = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
-    Module(new MMIO(25, init, filename, words))
+    Module(new MMIO(25, init, filename, romWords, ramWords))
   }
 
+  // val core = Module(new Core())
+  // val mmio = Module(new MMIO(100, init, filename, words))
 
   // core
   core.io.inst := mmio.io.outInst

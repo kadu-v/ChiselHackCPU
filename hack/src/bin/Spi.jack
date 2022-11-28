@@ -1,0 +1,88 @@
+class Spi {
+    static int stCtlRegAddr;
+    static int rxRegAddr;
+    static int txRegAddr;
+    static int color;
+
+    function void init() {
+        let stCtlRegAddr = 8195;
+        let rxRegAddr = 8196;
+        let txRegAddr = 8197;
+        let color = -2048;
+        return;
+    }
+
+    function void _send(bool isCmd, bool is16bit, int d) {
+        var int status;
+        var int cmdOrDataOr16bit;
+        var int is16bit;
+        let status = 1;
+        let cmdOrDataOr16bit = 32; // 0000_0000_0010_0000
+
+        // wait until Spi Mastet is not busy
+        while(
+            (status & 1) = 1
+        ) {
+            let status = Memory.peek(stCtlRegAddr);
+        }
+
+        // Write a transmitted data
+        do Memory.poke(txRegAddr, d);
+
+        if (isCmd) {
+            let cmdOrDataOr16bit = 96; // 0000_0000_0110_0000
+        }
+
+        if(is16bit) {
+            let cmdOrDataOr16bit = cmdOrDataOr16bit + 128; // 0000_0000_1000_0000
+        }
+
+        // start to send data of a data
+        do Memory.poke(stCtlRegAddr, cmdOrDataOr16bit);
+        return;
+    }
+
+    function void sendCmd(int d) {
+        do Spi._send(true, false, d);
+        return;
+    }
+
+    function void send8Data(int d) {
+        do Spi._send(false, false, d);
+        return;
+    }
+
+    function void send16Data(int d) {
+        do Spi._send(false, true, d);
+        return;
+    }
+
+    function void initWindow(int w, int h) {
+		var int i;
+		var int j;
+        // do Memory.poke(8201, 1);
+    	do Spi.setAddrWindow(0, 0, w, h);
+		let j = 0;
+		while (j < h){
+			let i = 0;
+			while (i < w){
+				do Spi.send16Data(color);
+				let i = i + 1;
+			}
+			let j = j + 1;
+		}
+		return;
+	}
+
+    function void setAddrWindow(int x, int y, int w, int h) {
+        do Spi.sendCmd(42);
+        do Spi.send16Data(x);
+        do Spi.send16Data(x + w - 1);
+        do Spi.sendCmd(43);
+        do Spi.send16Data(y);
+        do Spi.send16Data(y + h - 1);
+        do Spi.sendCmd(44);
+        return;
+    }
+
+}

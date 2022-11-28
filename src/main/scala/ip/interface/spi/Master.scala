@@ -112,7 +112,6 @@ class Master extends Module {
     is(sEND) {
       stateCsx := sIDLE
       busy := false.B
-
       countCsx := 0.asUInt
     }
   }

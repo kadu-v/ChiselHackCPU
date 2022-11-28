@@ -10,7 +10,7 @@ import firrtl.annotations.MemoryLoadFileType
   * https://www.chisel-lang.org/chisel3/docs/appendix/experimental-features#loading-memories
   */
 
-class EBROM(file: String, words: Int) extends Module {
+class EBROM(file: String, romWords: Int) extends Module {
   val io = IO(new Bundle {
     val addrM = Input(UInt(16.W))
 
@@ -21,7 +21,7 @@ class EBROM(file: String, words: Int) extends Module {
     override def toFirrtl = MemorySynthInit
   })
 
-  val mem = Mem(words, UInt(16.W))
+  val mem = Mem(romWords, UInt(16.W))
   loadMemoryFromFileInline(mem, file, MemoryLoadFileType.Binary)
-  io.outM := mem(io.addrM(10, 0))
+  io.outM := mem(io.addrM)
 }
