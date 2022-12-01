@@ -3,6 +3,8 @@ package ip.memory
 import chisel3._
 import ip.memory._
 import chisel3.util.MuxCase
+import chisel3.experimental.Analog
+import chisel3.experimental.attach
 
 // TODO: runレジスタのドメインが立ち下がりエッジになっている
 // モジュール全体のレジスタのドメインを立ち上がりエッジに統一する
@@ -11,7 +13,8 @@ class ROM(
     addrAddr: Int,
     inAddr: Int,
     file: String,
-    words: Int
+    words: Int,
+    doTest: Boolean
 ) extends Module {
   val io = IO(new Bundle {
     /* Read Only Memory for instructions */
@@ -24,6 +27,9 @@ class ROM(
     val pc = Input(UInt(16.W))
     val outInst = Output(UInt(16.W))
     val run = Output(Bool())
+
+    val sromAddrM = Output(UInt(16.W))
+    val pin = Analog(16.W)
   })
 
   /* ROM */
@@ -31,11 +37,11 @@ class ROM(
   // |-----------------------------------------------|
   // |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
   // |-----------------------------------------------|
-  //                                 W S            S
-  //                                 R P            P
-  //                                 I R            R
-  //                                 T O            O
-  //                                 E M            M
+  //                                 W S            E
+  //                                 R R            B
+  //                                 I O            R
+  //                                 T M            O
+  //                                 E              M
 
   // addr register
   //  15       12           8  7       4            0
@@ -60,11 +66,6 @@ class ROM(
   // in register
   val inReg = RegInit(0.asUInt)
 
-  // EBROM and SPRAM
-  val ebrom = Module(new EBROM(file, words))
-  val spram = Module(new SPRAM())
-  // val spram = Module(new SPRAMStub())
-
   // inner register
   val run = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     RegInit(false.B)
@@ -75,7 +76,7 @@ class ROM(
   romStCtlReg(0) := run
 
   /* control register */
-  // switch instruction memory from EBROM to SPRAM
+  // switch instruction memory from EBROM to SROM
   // negative edge
   when(io.addrM === stCtlAddr.asUInt && io.writeM) {
     run := io.inM(4)
@@ -110,13 +111,18 @@ class ROM(
     )
   )
 
+  // EBROM and SPRAM
+  val ebrom = Module(new EBROM(file, words))
+  if (doTest) {
+    io.outInst := ebrom.io.outM
+  } else {
+    val srom = Module(new BlackBoxSROM())
+    srom.io.inM := inReg
+    srom.io.writeM := romStCtlReg(5)
+    attach(srom.io.pin, io.pin)
+    io.outInst := Mux(run, srom.io.outM, ebrom.io.outM)  
+  }
+
   ebrom.io.addrM := Mux(run, 0.asUInt, io.pc)
-
-  spram.io.inM := inReg
-  spram.io.addrM := Mux(run, io.pc, addrReg)
-  spram.io.writeM := romStCtlReg(5)
-
-  val buffInst = RegInit(0.asUInt)
-  buffInst := Mux(run, spram.io.outM, ebrom.io.outM)
-  io.outInst := buffInst
+  io.sromAddrM := Mux(run, io.pc, addrReg)
 }

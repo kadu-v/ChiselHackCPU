@@ -6,8 +6,10 @@ import ip.usb.USBUart
 import ip.lcd.LCDSpiMaster
 import ip.led.LED7Seg
 import chisel3.util.MuxCase
+import chisel3.experimental.Analog
+import chisel3.experimental.attach
 
-class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) extends Module {
+class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, doTest: Boolean) extends Module {
   val io = IO(new Bundle {
     /* Random Access Memory */
     // Input from core
@@ -38,6 +40,9 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) 
     val pc = Input(UInt(16.W))
     val run = Output(Bool())
     val outInst = Output(UInt(16.W)) // Output to core
+
+    val sromAddr = Output(UInt(16.W))
+    // val pin = Analog(16.W)
 
     /* LED 7 Segment */
     val outLED7seg = Output(UInt(7.W))
@@ -123,33 +128,52 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) 
   /*----------------------------------------------------------------------------
    *                         Read Only Memory for instructions                 *
    ----------------------------------------------------------------------------*/
-  // val rom = Module(
-  //   new ROM(
-  //     8197, // address of status and control register
-  //     8198, // address of address register
-  //     8199, // address of in register
-  //     file,
-  //     words
-  //   )
-  // )
-  //   rom.io.addrM := io.addrRam
-  // rom.io.writeM := io.writeRam
-  // rom.io.inM := io.inRam
-
-  // rom.io.pc := io.pc
-  // io.outInst := rom.io.outInst
-  // io.run := rom.io.run
-
   val rom = Module(
-    new EBROM(
+    new ROM(
+      8198, // address of status and control register
+      8199, // address of address register
+      8200, // address of in register
       file,
-      romWords
+      romWords,
+      doTest
     )
   )
+  rom.io.addrM := io.addrRam
+  rom.io.writeM := io.writeRam
+  rom.io.inM := io.inRam
 
-  rom.io.addrM := io.pc
-  io.outInst := rom.io.outM
-  io.run := false.B
+  rom.io.pc := io.pc
+  io.outInst := rom.io.outInst
+  io.run := rom.io.run
+
+  // attach(Wire(io.pin), Wire(rom.io.pin))
+  io.sromAddr := rom.io.addrM
+
+  // val rom = Module(
+  //   new EBROM(
+  //     file,
+  //     romWords
+  //   )
+  // )
+
+  // rom.io.addrM := io.pc
+  // io.outInst := rom.io.outM
+  // io.run := false.B
+
+
+  /*----------------------------------------------------------------------------
+   *                         Debug LED                                         *
+   ----------------------------------------------------------------------------*/
+
+
+   val ledReg = RegInit(0.U(16.W))
+   when(io.addrRam === 8201.asUInt && io.writeRam) {
+    ledReg := io.inRam
+   }
+   io.led0 := ledReg(0)
+   io.led1 := ledReg(1)
+
+
 
   /*----------------------------------------------------------------------------
    *                         LED 7 Segments                                    *
@@ -158,7 +182,7 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) 
   val led7seg = Module(
     new LED7Seg(
       freq, // frequency of clock
-      8200
+      8202
     )
   )
 
@@ -169,19 +193,6 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) 
   io.outLED7seg := led7seg.io.out
   io.csLED7seg := led7seg.io.cs
 
-
-
-  /*----------------------------------------------------------------------------
-   *                         LED 7 Segments                                    *
-   ----------------------------------------------------------------------------*/
-
-
-   val ledReg = RegInit(0.U(16.W))
-   when(io.addrRam === 8201.asUInt && io.writeRam) {
-    ledReg := io.inRam
-   }
-   io.led0 := ledReg(0)
-   io.led1 := ledReg(1)
 
   /*----------------------------------------------------------------------------
    *                         Multiplexer                                       *
@@ -196,10 +207,10 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int) 
       (io.addrRam === 8195.asUInt
         || io.addrRam === 8196.asUInt
         || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.outM,
-      // (io.addrRam === 8197.asUInt
-      //   || io.addrRam === 8198.asUInt
-      //   || io.addrRam === 8199.asUInt) -> rom.io.outM,
-      (io.addrRam === 8200.asUInt) -> led7seg.io.outM
+      (io.addrRam === 8198.asUInt
+        || io.addrRam === 8199.asUInt
+        || io.addrRam === 8200.asUInt) -> rom.io.outM,
+      (io.addrRam > 8200.asUInt) -> 0.asUInt
     )
   )
 

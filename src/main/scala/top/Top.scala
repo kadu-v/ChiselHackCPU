@@ -4,8 +4,10 @@ import core.Core
 
 import chisel3._
 import mmio.MMIO
+import chisel3.experimental.Analog
+import chisel3.experimental.attach
 
-class Top(filename: String, init: String, romWords: Int, ramWords: Int) extends Module {
+class Top(filename: String, init: String, romWords: Int, ramWords: Int, doTest: Boolean) extends Module {
   val io = IO(new Bundle {
     // UART RX Input
     val rx = Input(Bool())
@@ -31,6 +33,10 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int) extends 
     // Debug LED
     val led0 = Output(Bool())
     val led1 = Output(Bool())
+
+    // SROM
+    val sromAddr = Output(UInt(16.W))
+    // val pin = Analog(16.W)
 
     // Buttun
     // val btn0 = Input(Bool())
@@ -69,7 +75,7 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int) extends 
 
   // MMIO
   val mmio = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
-    Module(new MMIO(25, init, filename, romWords, ramWords))
+    Module(new MMIO(25, init, filename, romWords, ramWords, doTest))
   }
 
   // val core = Module(new Core())
@@ -118,6 +124,12 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int) extends 
    ----------------------------------------------------------------------------*/
   io.led0 := mmio.io.led0
   io.led1 := mmio.io.led1
+
+  /*----------------------------------------------------------------------------
+   *                         SROM                                              *
+   ----------------------------------------------------------------------------*/
+  // attach(Wire(io.pin), Wire(mmio.io.pin))
+  io.sromAddr := mmio.io.sromAddr
 
   // val debug = mmio.io.debug === 8.asUInt
 

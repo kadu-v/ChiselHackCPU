@@ -39,7 +39,7 @@ class CoreWithUartSpec
     })
 
     // clock: 100 MHz div4Clock: 25 MHz
-    val core = Module(new Top(filename, init, romWords, ramWords))
+    val core = Module(new Top(filename, init, romWords, ramWords, true))
     // clock: 100 MHz
     val uartTx = Module(new Tx(100, boudRate))
     val uartRx = Module(new Rx(100, boudRate))
