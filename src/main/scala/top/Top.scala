@@ -104,6 +104,7 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int, doTest: 
   /*----------------------------------------------------------------------------
    *                         LCD SPI Master                                    *
    ----------------------------------------------------------------------------*/
+  mmio.io.clk_100MHz := clock.asBool
   mmio.io.miso := io.miso
   io.mosi := mmio.io.mosi
   io.sclk := mmio.io.sclk

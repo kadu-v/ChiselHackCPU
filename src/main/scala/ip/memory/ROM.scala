@@ -124,5 +124,7 @@ class ROM(
   }
 
   ebrom.io.addrM := Mux(run, 0.asUInt, io.pc)
+
+
   io.sromAddrM := Mux(run, io.pc, addrReg)
 }

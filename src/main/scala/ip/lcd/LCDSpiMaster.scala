@@ -8,6 +8,7 @@ import chisel3.util._
 // ILI9341_DS_V1.13_20110805 33p
 class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   val io = IO(new Bundle {
+    val clk_100MHz = Input(Bool())
     val addrM = Input(UInt(16.W))
     val writeM = Input(Bool())
     val inM = Input(UInt(16.W))
@@ -43,7 +44,9 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
   )
 
   // Master of SPI
-  val master = Module(new Master())
+  val master = withClock(io.clk_100MHz.asClock) { 
+    Module(new Master())
+  }
   val txBuff = RegInit(0.asUInt)
 
   // MOSI Buffer

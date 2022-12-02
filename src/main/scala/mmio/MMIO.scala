@@ -29,6 +29,7 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
     val tx = Output(Bool())
 
     /* LCD SPI Master */
+    val clk_100MHz = Input(Bool())
     val miso = Input(Bool())
     val mosi = Output(Bool())
     val sclk = Output(Bool())
@@ -119,6 +120,7 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
     false.B
   )
   lcdSpiMaster.io.miso := io.miso
+  lcdSpiMaster.io.clk_100MHz := io.clk_100MHz
   io.mosi := lcdSpiMaster.io.mosi
   io.sclk := lcdSpiMaster.io.sclk
   io.csx := lcdSpiMaster.io.csx
@@ -207,9 +209,9 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
       (io.addrRam === 8195.asUInt
         || io.addrRam === 8196.asUInt
         || io.addrRam === 8197.asUInt) -> lcdSpiMaster.io.outM,
-      (io.addrRam === 8198.asUInt
-        || io.addrRam === 8199.asUInt
-        || io.addrRam === 8200.asUInt) -> rom.io.outM,
+      // (io.addrRam === 8198.asUInt
+      //   || io.addrRam === 8199.asUInt
+      //   || io.addrRam === 8200.asUInt) -> rom.io.outM,
       (io.addrRam > 8200.asUInt) -> 0.asUInt
     )
   )
