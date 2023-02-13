@@ -7,7 +7,13 @@ import mmio.MMIO
 import chisel3.experimental.Analog
 import chisel3.experimental.attach
 
-class Top(filename: String, init: String, romWords: Int, ramWords: Int, doTest: Boolean) extends Module {
+class Top(
+    filename: String,
+    init: String,
+    romWords: Int,
+    ramWords: Int,
+    doTest: Boolean
+) extends Module {
   val io = IO(new Bundle {
     // UART RX Input
     val rx = Input(Bool())
@@ -50,7 +56,7 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int, doTest: 
   val div4Clk = RegInit(0.asUInt(2.W))
   when(div4Clk === "b11".asUInt) {
     div4Clk := 0.asUInt
-  }. otherwise {
+  }.otherwise {
     div4Clk := div4Clk + 1.asUInt
   }
   val div8Clk = RegInit(0.U(3.W))
@@ -117,7 +123,6 @@ class Top(filename: String, init: String, romWords: Int, ramWords: Int, doTest: 
    ----------------------------------------------------------------------------*/
   io.outLED7Seg := mmio.io.outLED7seg
   io.csLED7Seg := mmio.io.csLED7seg
-
 
   /*----------------------------------------------------------------------------
    *                         Debug LED                                         *

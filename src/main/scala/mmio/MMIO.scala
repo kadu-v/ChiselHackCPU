@@ -9,7 +9,14 @@ import chisel3.util.MuxCase
 import chisel3.experimental.Analog
 import chisel3.experimental.attach
 
-class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, doTest: Boolean) extends Module {
+class MMIO(
+    freq: Int,
+    init: String,
+    file: String,
+    romWords: Int,
+    ramWords: Int,
+    doTest: Boolean
+) extends Module {
   val io = IO(new Bundle {
     /* Random Access Memory */
     // Input from core
@@ -160,20 +167,16 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
   // io.outInst := rom.io.outM
   // io.run := false.B
 
-
   /*----------------------------------------------------------------------------
    *                         Debug LED                                         *
    ----------------------------------------------------------------------------*/
 
-
-   val ledReg = RegInit(0.U(16.W))
-   when(io.addrRam === 8201.asUInt && io.writeRam) {
+  val ledReg = RegInit(0.U(16.W))
+  when(io.addrRam === 8201.asUInt && io.writeRam) {
     ledReg := io.inRam
-   }
-   io.led0 := ledReg(0)
-   io.led1 := ledReg(1)
-
-
+  }
+  io.led0 := ledReg(0)
+  io.led1 := ledReg(1)
 
   /*----------------------------------------------------------------------------
    *                         LED 7 Segments                                    *
@@ -192,7 +195,6 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
 
   io.outLED7seg := led7seg.io.out
   io.csLED7seg := led7seg.io.cs
-
 
   /*----------------------------------------------------------------------------
    *                         Multiplexer                                       *
@@ -213,8 +215,6 @@ class MMIO(freq: Int, init: String, file: String, romWords: Int, ramWords: Int, 
       (io.addrRam > 8200.asUInt) -> 0.asUInt
     )
   )
-
-  
 
   /*----------------------------------------------------------------------------
    *                         Debug signal                                      *

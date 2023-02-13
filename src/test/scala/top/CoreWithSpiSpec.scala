@@ -15,7 +15,15 @@ class CoreWithSpiSpec
   val freq = 25
   behavior of "SPI Master"
   it should "send initial commands" in {
-    test(new Top("./hack/tests/Spi1/jack.hack", "./hack/init.bin", romWords, ramWords, true))
+    test(
+      new Top(
+        "./hack/tests/Spi1/jack.hack",
+        "./hack/init.bin",
+        romWords,
+        ramWords,
+        true
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(50000)
@@ -24,7 +32,15 @@ class CoreWithSpiSpec
   }
 
   it should "send clear an initial screen" in {
-    test(new Top("./hack/tests/Spi2/bin.hack", "./hack/init.bin", romWords, ramWords, true))
+    test(
+      new Top(
+        "./hack/tests/Spi2/bin.hack",
+        "./hack/init.bin",
+        romWords,
+        ramWords,
+        true
+      )
+    )
       .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
         c.clock.setTimeout(0)
         c.clock.step(60000)

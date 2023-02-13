@@ -17,7 +17,6 @@ class ALU extends Module {
     val zr = Output(Bool())
     val ng = Output(Bool())
   })
-  
 
   val x0 = Mux(io.zx, 0.asUInt, io.in1)
   val x1 = Mux(io.nx, ~x0, x0)

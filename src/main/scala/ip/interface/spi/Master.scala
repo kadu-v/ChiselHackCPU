@@ -39,7 +39,9 @@ class Master extends Module {
   val csxReg = RegInit(true.B) // H: inactionve, L: active
   val busy = RegInit(false.B) // H: busy, L: idle
   val rxBuff = RegInit(0.asUInt) // inner buffer
-  val completed = RegInit(true.B) // H: complete reciveing data, L: incomplete reciveing data
+  val completed = RegInit(
+    true.B
+  ) // H: complete reciveing data, L: incomplete reciveing data
   val dcx = RegInit(false.B) // H: Data, L: Command
 
   // counter
@@ -99,11 +101,11 @@ class Master extends Module {
     is(sRUN) {
       when(countCsx === 15.asUInt && ~lenOfData) { // length of data is 8bit
         csxReg := true.B
-        dcx := false.B 
+        dcx := false.B
         stateCsx := sEND
       }.elsewhen(countCsx === 31.asUInt && lenOfData) { // length of data is 16bit
         csxReg := true.B
-        dcx := false.B 
+        dcx := false.B
         stateCsx := sEND
       }.otherwise {
         countCsx := countCsx + 1.asUInt

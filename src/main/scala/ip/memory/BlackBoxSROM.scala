@@ -13,7 +13,7 @@ class BlackBoxSROM extends BlackBox with HasBlackBoxInline {
     val pin = Analog(16.W)
   })
 
-    setInline(
+  setInline(
     "BlackBoxSROM.v",
     """
       module BlackBoxSROM(

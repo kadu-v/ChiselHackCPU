@@ -120,7 +120,7 @@ class ROM(
     srom.io.inM := inReg
     srom.io.writeM := romStCtlReg(5)
     attach(srom.io.pin, io.pin)
-    io.outInst := Mux(run, srom.io.outM, ebrom.io.outM)  
+    io.outInst := Mux(run, srom.io.outM, ebrom.io.outM)
   }
 
   ebrom.io.addrM := Mux(run, 0.asUInt, io.pc)

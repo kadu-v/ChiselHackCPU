@@ -19,7 +19,9 @@ class LCDSpiMaster(stCtlAddr: Int, rxAddr: Int, txAddr: Int) extends Module {
     val sclk = Output(Bool())
     val csx = Output(Bool()) // H: inactive, L: active
     val dcx = Output(Bool()) // H: Commadn, L: Data
-    val rstx = Output(Bool()) // H: Running, L: Reset, external reset signal, perhaps this is not necessary.
+    val rstx = Output(
+      Bool()
+    ) // H: Running, L: Reset, external reset signal, perhaps this is not necessary.
   })
   /* SPI */
   //  15       12  Tx       8  7       4   Rx        0
