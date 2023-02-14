@@ -48,7 +48,7 @@ class MMIO(
     val run = Output(Bool())
     val outInst = Output(UInt(16.W)) // Output to core
 
-    val sromAddr = Output(UInt(16.W))
+    // val sromAddr = Output(UInt(16.W))
     // val pin = Analog(16.W)
 
     /* LED 7 Segment */
@@ -154,7 +154,7 @@ class MMIO(
   io.run := rom.io.run
 
   // attach(Wire(io.pin), Wire(rom.io.pin))
-  io.sromAddr := rom.io.addrM
+  // io.sromAddr := rom.io.addrM
 
   // val rom = Module(
   //   new EBROM(

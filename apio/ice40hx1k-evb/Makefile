@@ -15,7 +15,8 @@ build: $(SRC)/init.bin $(SRC)/bin.hack $(SRC)/Top.v
 	cp $(SRC)/init.bin ./ 
 	cp $(SRC)/bin.hack ./ 
 	cp $(SRC)/Top.v ./
-	$(YOSYS) -p "synth_ice40 -json hardware.json" -q $(SRC)/Top.v
+	cp $(SRC)/BlackBoxSROM.v ./
+	$(YOSYS) -p "synth_ice40 -json hardware.json" -q $(SRC)/Top.v $(SRC)/BlackBoxSROM.v
 	$(NEXTPNR) --hx1k --package vq100 --json hardware.json --asc hardware.asc --pcf ice40hx1k-evb.pcf --pre-pack ./sdc.py
 	$(ICEPACK) hardware.asc hardware.bin
 

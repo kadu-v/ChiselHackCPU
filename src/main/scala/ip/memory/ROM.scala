@@ -5,6 +5,7 @@ import ip.memory._
 import chisel3.util.MuxCase
 import chisel3.experimental.Analog
 import chisel3.experimental.attach
+import os.write
 
 // TODO: runレジスタのドメインが立ち下がりエッジになっている
 // モジュール全体のレジスタのドメインを立ち上がりエッジに統一する
@@ -28,8 +29,8 @@ class ROM(
     val outInst = Output(UInt(16.W))
     val run = Output(Bool())
 
-    val sromAddrM = Output(UInt(16.W))
-    val pin = Analog(16.W)
+    // val sromAddrM = Output(UInt(16.W))
+    // val DATA = Analog(16.W)
   })
 
   /* ROM */
@@ -113,16 +114,28 @@ class ROM(
 
   // EBROM and SPRAM
   val ebrom = Module(new EBROM(file, words))
+  /* EBROM を内蔵RAMに割り当てるために必要なコード */
+  val pc = RegInit(0.asUInt)
+  pc := io.pc
+  when(run) {
+    pc := 0.asUInt
+  }
+  /*------------------------------------------*/
+  ebrom.io.addrM := pc
   if (doTest) {
-    io.outInst := ebrom.io.outM
+    val rom_mock = Module(new EBRAM(file, 1024 * 10 /* 10 KB*/ ))
+    rom_mock.io.inM := inReg
+    rom_mock.io.writeM := romStCtlReg(5)
+    rom_mock.io.addrM := Mux(run, io.pc, addrReg)
+    io.outInst := Mux(run, rom_mock.io.outM, ebrom.io.outM)
   } else {
     val srom = Module(new BlackBoxSROM())
+    srom.io.clock := clock
     srom.io.inM := inReg
     srom.io.writeM := romStCtlReg(5)
-    attach(srom.io.pin, io.pin)
+    srom.io.addrM := Mux(run, io.pc, addrReg)
+    // attach(srom.io.DATA, io.DATA)
     io.outInst := Mux(run, srom.io.outM, ebrom.io.outM)
   }
 
-  ebrom.io.addrM := Mux(run, 0.asUInt, io.pc)
-  io.sromAddrM := Mux(run, io.pc, addrReg)
 }

@@ -41,7 +41,7 @@ class Top(
     val led1 = Output(Bool())
 
     // SROM
-    val sromAddr = Output(UInt(16.W))
+    // val sromAddr = Output(UInt(16.W))
     // val pin = Analog(16.W)
 
     // Buttun
@@ -134,7 +134,7 @@ class Top(
    *                         SROM                                              *
    ----------------------------------------------------------------------------*/
   // attach(Wire(io.pin), Wire(mmio.io.pin))
-  io.sromAddr := mmio.io.sromAddr
+  // io.sromAddr := mmio.io.sromAddr
 
   // val debug = mmio.io.debug === 8.asUInt
 
