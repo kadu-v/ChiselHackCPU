@@ -13,6 +13,7 @@ class Register extends Module {
   })
 
   val reg = withClock((~clock.asBool()).asClock()) { RegInit(0.asUInt) }
+  // val reg = RegInit(0.asUInt)
   when(io.load) {
     reg := io.in
   }

@@ -1,0 +1,26 @@
+class Main {
+   function void main() {
+        var int addr;
+
+        // Write instrcutions for tests
+        do Main.writeToSRAM(0, 8201);
+        do Main.writeToSRAM(1, (30384 + 31000));
+        do Main.writeToSRAM(2, 2);
+        do Main.writeToSRAM(3, (30000 + 30039));
+
+        // Switch From EBROM to SROM
+        do Memory.poke(8198, 16 /* 0000_0000_0001_0000*/);
+
+        
+        return;
+   }
+
+   function void writeToSRAM(int addr, int inst) {
+        do Memory.poke(8200, inst);
+        do Memory.poke(8199, addr); 
+        // Write
+        do Memory.poke(8198, 32 /* 0000_0000_0010_0000 */);
+        return;
+        
+   }
+}

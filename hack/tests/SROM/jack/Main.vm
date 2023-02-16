@@ -1,0 +1,42 @@
+function Main.main 1
+push constant 0
+push constant 8201
+call Main.writeToSRAM 2
+pop temp 0
+push constant 1
+push constant 30384
+push constant 31000
+add
+call Main.writeToSRAM 2
+pop temp 0
+push constant 2
+push constant 2
+call Main.writeToSRAM 2
+pop temp 0
+push constant 3
+push constant 30000
+push constant 30039
+add
+call Main.writeToSRAM 2
+pop temp 0
+push constant 8198
+push constant 16
+call Memory.poke 2
+pop temp 0
+push constant 0
+return
+function Main.writeToSRAM 0
+push constant 8200
+push argument 1
+call Memory.poke 2
+pop temp 0
+push constant 8199
+push argument 0
+call Memory.poke 2
+pop temp 0
+push constant 8198
+push constant 32
+call Memory.poke 2
+pop temp 0
+push constant 0
+return

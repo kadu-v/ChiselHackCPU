@@ -69,7 +69,7 @@ class MMIO(
   val ram = withClock((~clock.asBool()).asClock()) { // negedge clock!!!
     Module(new EBRAM(init, ramWords))
   }
-  // val ram = Module(new EBRAM(init))
+  // val ram = Module(new EBRAM(init, ramWords))
 
   ram.io.addrM := io.addrRam
   ram.io.inM := io.inRam

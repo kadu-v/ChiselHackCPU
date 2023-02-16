@@ -113,13 +113,13 @@ class ROM(
   )
 
   // EBROM and SPRAM
+  // val ebrom = withClock((~clock.asBool()).asClock()) {
+  //   Module(new EBROM(file, words))
+  // }
   val ebrom = Module(new EBROM(file, words))
+
   /* EBROM を内蔵RAMに割り当てるために必要なコード */
-  val pc = RegInit(0.asUInt)
-  pc := io.pc
-  when(run) {
-    pc := 0.asUInt
-  }
+  val pc = Mux(run, 0.asUInt, io.pc)
   /*------------------------------------------*/
   ebrom.io.addrM := pc
   if (doTest) {
