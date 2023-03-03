@@ -116,7 +116,6 @@ class ROM(
     )
   )
 
-  /*  */
   val ebrom = Module(new EBROM(file, words))
   ebrom.io.addrM := io.pc
   if (doTest) {
@@ -125,7 +124,7 @@ class ROM(
     rom_mock.io.writeM := romStCtlReg(5)
     rom_mock.io.addrM := Mux(run, io.pc, addrReg)
 
-    /* SROM I/O */
+    io.SRAM_ADDR := 0.asUInt(18.W)
     io.SRAM_CSX := true.B // inactive
     io.SRAM_OEX := true.B // inactive
     io.SRAM_WEX := true.B // inactive

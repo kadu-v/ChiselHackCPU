@@ -41,6 +41,10 @@ class Top(
     val led1 = Output(Bool())
 
     /* SROM I/O */
+    /////////////////////////////////////////////////////////
+    /* When you want to exec test cases,                   */
+    /* please comment out the following analog  port       */
+    /////////////////////////////////////////////////////////
     val SRAM_DATA = Analog(16.W)
     val SRAM_ADDR = Output(UInt(18.W))
     val SRAM_CSX = Output(Bool())
@@ -86,9 +90,6 @@ class Top(
   val mmio = withClockAndReset(div4Clk(1).asBool.asClock, rst) {
     Module(new MMIO(25, init, filename, romWords, ramWords, doTest))
   }
-
-  // val core = Module(new Core())
-  // val mmio = Module(new MMIO(100, init, filename, words))
 
   // core
   core.io.inst := mmio.io.outInst
@@ -136,10 +137,21 @@ class Top(
   /*----------------------------------------------------------------------------
    *                         SROM                                              *
    ----------------------------------------------------------------------------*/
-  attach(mmio.io.SRAM_DATA, io.SRAM_DATA)
-  io.SRAM_ADDR := mmio.io.SRAM_ADDR
-  io.SRAM_CSX := mmio.io.SRAM_CSX
-  io.SRAM_OEX := mmio.io.SRAM_OEX
-  io.SRAM_WEX := mmio.io.SRAM_WEX
+  if (doTest) {
+    io.SRAM_ADDR := mmio.io.SRAM_ADDR
+    io.SRAM_CSX := mmio.io.SRAM_CSX
+    io.SRAM_OEX := mmio.io.SRAM_OEX
+    io.SRAM_WEX := mmio.io.SRAM_WEX
+  } else {
+    /////////////////////////////////////////////////////////
+    /* When you want to exec test cases,                   */
+    /* please comment out the following analog  port       */
+    /////////////////////////////////////////////////////////
+    attach(mmio.io.SRAM_DATA, io.SRAM_DATA)
+    io.SRAM_ADDR := mmio.io.SRAM_ADDR
+    io.SRAM_CSX := mmio.io.SRAM_CSX
+    io.SRAM_OEX := mmio.io.SRAM_OEX
+    io.SRAM_WEX := mmio.io.SRAM_WEX
+  }
 
 }
