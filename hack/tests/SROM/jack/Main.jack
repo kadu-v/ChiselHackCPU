@@ -3,10 +3,10 @@ class Main {
         var int addr;
 
         // Write instrcutions for tests
-        do Main.writeToSRAM(0, 8201);
-        do Main.writeToSRAM(1, (30384 + 31000));
-        do Main.writeToSRAM(2, 2);
-        do Main.writeToSRAM(3, (30000 + 30039));
+        do Main.writeToSRAM(0, 8201);               // @8201
+        do Main.writeToSRAM(1, (30384 + 31000));    // M=1
+        do Main.writeToSRAM(2, 2);                  // (END) @END
+        do Main.writeToSRAM(3, (30000 + 30039));    // 0;JMP
 
         // Switch From EBROM to SROM
         do Memory.poke(8198, 16 /* 0000_0000_0001_0000*/);

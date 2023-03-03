@@ -12,7 +12,12 @@ class BlackBoxSROM extends BlackBox with HasBlackBoxInline {
     val writeM = Input(Bool())
     val addrM = Input(UInt(18.W))
 
-    // val DATA = Analog(16.W)
+    /* SROM I/O */
+    val SRAM_DATA = Analog(16.W)
+    val SRAM_ADDR = Output(UInt(18.W))
+    val SRAM_CSX = Output(Bool())
+    val SRAM_OEX = Output(Bool())
+    val SRAM_WEX = Output(Bool())
   })
 
   setInline(
@@ -37,6 +42,7 @@ class BlackBoxSROM extends BlackBox with HasBlackBoxInline {
       |
       |always @(posedge clock) begin
       |   inner <= inM;
+      |   inner_csx <= 0;
       |   if (writeM) begin
       |     inner_oex <= 1;
       |     inner_wex <= 0;

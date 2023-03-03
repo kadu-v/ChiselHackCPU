@@ -40,9 +40,12 @@ class Top(
     val led0 = Output(Bool())
     val led1 = Output(Bool())
 
-    // SROM
-    // val sromAddr = Output(UInt(16.W))
-    // val pin = Analog(16.W)
+    /* SROM I/O */
+    val SRAM_DATA = Analog(16.W)
+    val SRAM_ADDR = Output(UInt(18.W))
+    val SRAM_CSX = Output(Bool())
+    val SRAM_OEX = Output(Bool())
+    val SRAM_WEX = Output(Bool())
 
     // Buttun
     // val btn0 = Input(Bool())
@@ -133,14 +136,10 @@ class Top(
   /*----------------------------------------------------------------------------
    *                         SROM                                              *
    ----------------------------------------------------------------------------*/
-  // attach(Wire(io.pin), Wire(mmio.io.pin))
-  // io.sromAddr := mmio.io.sromAddr
-
-  // val debug = mmio.io.debug === 8.asUInt
-
-  // io.led0 := mmio.io.debug
-  // io.led1 := false.B
-
-  // io.debug := mmio.io.debug
+  attach(mmio.io.SRAM_DATA, io.SRAM_DATA)
+  io.SRAM_ADDR := mmio.io.SRAM_ADDR
+  io.SRAM_CSX := mmio.io.SRAM_CSX
+  io.SRAM_OEX := mmio.io.SRAM_OEX
+  io.SRAM_WEX := mmio.io.SRAM_WEX
 
 }

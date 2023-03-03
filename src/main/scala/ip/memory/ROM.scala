@@ -29,8 +29,12 @@ class ROM(
     val outInst = Output(UInt(16.W))
     val run = Output(Bool())
 
-    // val sromAddrM = Output(UInt(16.W))
-    // val DATA = Analog(16.W)
+    /* SROM I/O */
+    val SRAM_DATA = Analog(16.W)
+    val SRAM_ADDR = Output(UInt(18.W))
+    val SRAM_CSX = Output(Bool())
+    val SRAM_OEX = Output(Bool())
+    val SRAM_WEX = Output(Bool())
   })
 
   /* ROM */
@@ -112,21 +116,20 @@ class ROM(
     )
   )
 
-  // EBROM and SPRAM
-  // val ebrom = withClock((~clock.asBool()).asClock()) {
-  //   Module(new EBROM(file, words))
-  // }
+  /*  */
   val ebrom = Module(new EBROM(file, words))
-
-  /* EBROM を内蔵RAMに割り当てるために必要なコード */
-  val pc = Mux(run, 0.asUInt, io.pc)
-  /*------------------------------------------*/
-  ebrom.io.addrM := pc
+  ebrom.io.addrM := io.pc
   if (doTest) {
     val rom_mock = Module(new EBRAM(file, 1024 * 10 /* 10 KB*/ ))
     rom_mock.io.inM := inReg
     rom_mock.io.writeM := romStCtlReg(5)
     rom_mock.io.addrM := Mux(run, io.pc, addrReg)
+
+    /* SROM I/O */
+    io.SRAM_CSX := true.B // inactive
+    io.SRAM_OEX := true.B // inactive
+    io.SRAM_WEX := true.B // inactive
+
     io.outInst := Mux(run, rom_mock.io.outM, ebrom.io.outM)
   } else {
     val srom = Module(new BlackBoxSROM())
@@ -134,7 +137,13 @@ class ROM(
     srom.io.inM := inReg
     srom.io.writeM := romStCtlReg(5)
     srom.io.addrM := Mux(run, io.pc, addrReg)
-    // attach(srom.io.DATA, io.DATA)
+
+    /* SROM I/O */
+    attach(srom.io.SRAM_DATA, io.SRAM_DATA)
+    io.SRAM_ADDR := srom.io.SRAM_ADDR
+    io.SRAM_CSX := srom.io.SRAM_CSX
+    io.SRAM_OEX := srom.io.SRAM_OEX
+    io.SRAM_WEX := srom.io.SRAM_WEX
     io.outInst := Mux(run, srom.io.outM, ebrom.io.outM)
   }
 

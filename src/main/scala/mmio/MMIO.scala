@@ -8,6 +8,7 @@ import ip.led.LED7Seg
 import chisel3.util.MuxCase
 import chisel3.experimental.Analog
 import chisel3.experimental.attach
+import chisel3.experimental._
 
 class MMIO(
     freq: Int,
@@ -48,8 +49,12 @@ class MMIO(
     val run = Output(Bool())
     val outInst = Output(UInt(16.W)) // Output to core
 
-    // val sromAddr = Output(UInt(16.W))
-    // val pin = Analog(16.W)
+    /* SROM I/O */
+    val SRAM_DATA = Analog(16.W)
+    val SRAM_ADDR = Output(UInt(18.W))
+    val SRAM_CSX = Output(Bool())
+    val SRAM_OEX = Output(Bool())
+    val SRAM_WEX = Output(Bool())
 
     /* LED 7 Segment */
     val outLED7seg = Output(UInt(7.W))
@@ -153,6 +158,17 @@ class MMIO(
   io.outInst := rom.io.outInst
   io.run := rom.io.run
 
+  /* SROM I/O */
+
+  if (doTest) {
+    attach(rom.io.SRAM_DATA, io.SRAM_DATA)
+  } else {
+    attach(rom.io.SRAM_DATA, io.SRAM_DATA)
+  }
+  io.SRAM_ADDR := rom.io.SRAM_ADDR
+  io.SRAM_CSX := rom.io.SRAM_CSX
+  io.SRAM_OEX := rom.io.SRAM_OEX
+  io.SRAM_WEX := rom.io.SRAM_WEX
   // attach(Wire(io.pin), Wire(rom.io.pin))
   // io.sromAddr := rom.io.addrM
 
