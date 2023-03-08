@@ -19,10 +19,19 @@ i = pack('B', 98)
 lst = []
 for i in tqdm(range(cnt)):
     time.sleep(0.05)
-    i = pack('B', i)
-    _serial.write(i)    
+    x = pack('B', 98)
+    _serial.write(x)    
     result = _serial.read(1)
     lst.append(result)
+
+    time.sleep(0.1)
+    x = pack('B', 99)
+    _serial.write(x)    
+    result = _serial.read(1)
+    lst.append(result)
+    print(lst)
+
+    print(len(lst))
 # time.sleep(1)
 # result = _serial.read(1)
 # print(result)
