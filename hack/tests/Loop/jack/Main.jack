@@ -1,0 +1,39 @@
+class Main {
+   function void main() {
+         var int fst, snd;
+         var int cnt;
+         var int upper;
+         let cnt = 0;
+         let upper = 100;
+         while(cnt < upper) {
+
+            let fst = 16;
+
+            let fst = fst + fst; // 1
+            let fst = fst + fst; // 2 
+            let fst = fst + fst; // 3
+            let fst = fst + fst; // 4
+            let fst = fst + fst; // 5
+            let fst = fst + fst; // 6
+            let fst = fst + fst; // 7
+            let fst = fst + fst; // 8
+            
+            /* recieve the second 8bit of an instruction */
+            let snd = 8;
+            // do Uart.sendChar(cnt);
+            let fst = fst + snd;
+
+            /* store the instranction to RAM */
+            do Memory.poke(8199, cnt); // set the address
+            do Memory.poke(8200, fst); // set the instruction 
+            do Memoru.poke(8198, 32);  // write the instrcuton to RAM[address]  
+
+            let cnt = cnt + 1;
+         }
+
+         if (cnt = 100) {
+            do Memory.poke(8201, 1);
+         }
+         return;
+   }
+}

@@ -116,11 +116,18 @@ class CoreSpec extends AnyFlatSpec with ChiselScalatestTester with Matchers {
       }
   }
 
-  // it should "switch instruction's memory from EBRAM to SPRAM" in {
-  //   test(new Top("./hack/tests/SPRAM1/vm.hack", "./hack/init.bin", romWords, ramWords, true))
+  // it should "loop 100 times" in {
+  //   test(
+  //     new Core(
+  //       "./hack/tests/Loop/jack.hack",
+  //       "./hack/init.bin",
+  //       romWords,
+  //       ramWords
+  //     )
+  //   )
   //     .withAnnotations(Seq(WriteVcdAnnotation)) { c =>
   //       c.clock.setTimeout(0)
-  //       c.clock.step(5000)
+  //       c.clock.step(55000)
   //       c.io.led0.expect(1.asUInt)
 
   //     }
