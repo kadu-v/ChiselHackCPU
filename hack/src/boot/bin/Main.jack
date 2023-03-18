@@ -1,0 +1,54 @@
+class Main {
+   function void main() {
+         var int fst, snd;
+         var int cnt;
+         var int upper;
+         let cnt = 0;
+         let upper = 1000;
+         do Memory.poke(8201, 1);
+         while(cnt < upper) {
+            do Memory.poke(8201, 2);
+
+            /* recieve the first 8bit of an instruction */
+            let fst = Uart.receiveChar();
+            do Uart.sendChar(fst);
+
+            /* 8bit　left-shift */
+            let fst = fst + fst; // 1
+            let fst = fst + fst; // 2 
+            let fst = fst + fst; // 3
+            let fst = fst + fst; // 4
+            let fst = fst + fst; // 5
+            let fst = fst + fst; // 6
+            let fst = fst + fst; // 7
+            let fst = fst + fst; // 8
+            
+            /* recieve the second 8bit of an instruction */
+            let snd = Uart.receiveChar();
+            // do Uart.sendChar(cnt);
+            let fst = fst + snd;
+
+            do Uart.sendChar(fst);
+
+            /* store the instranction to RAM */
+            do Memory.poke(8199, cnt); // set the address
+            do Memory.poke(8200, fst); // set the instruction 
+            do Memory.poke(8198, 32);  // write the instrcuton to RAM[address]  
+
+            let cnt = cnt + 1;
+         }
+         do Memory.poke(8201, 3);
+
+         let cnt = 0;
+         while (cnt < 100) {
+            let cnt = cnt + 1;
+         }
+
+         // switch EBRAM to SRAM
+         do Memory.poke(8198, 16);
+
+  
+         // do Uart.sendChar(98);
+         return;
+   }
+}

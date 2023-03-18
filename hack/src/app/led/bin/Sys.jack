@@ -1,0 +1,25 @@
+class Sys {
+	
+    /** Performs all the initializations required by the OS. */
+    function void init() {
+		var int cnt, led;
+		let cnt = 0;
+
+
+		do Memory.init();
+		do Memory.poke(8201, 0);
+		while (true) {
+			let cnt = cnt + 1;
+			if (cnt = 15000) {
+				do Memory.poke(8201, 1);
+			}
+
+			if (cnt = 30000) {
+				let cnt = 0;
+				do Memory.poke(8201, 2);
+			}
+		}
+
+		return;
+    }
+}
