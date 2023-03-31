@@ -1,17 +1,24 @@
 class Main {
+   static Array RAM;
+   static Array UART;
    function void main() {
          var int fst, snd;
          var int cnt;
          var int upper;
+
+
          let cnt = 0;
-         let upper = 1000;
-         do Memory.poke(8201, 1);
+         let upper = 10000;
+         let UART = 8192;
+
+
+         let RAM[8201] =  1;
          while(cnt < upper) {
-            do Memory.poke(8201, 2);
+            let RAM[8201] =  2;
 
             /* recieve the first 8bit of an instruction */
-            let fst = Uart.receiveChar();
-            do Uart.sendChar(fst);
+            let fst = Main.receiveChar();
+            do Main.sendChar(fst);
 
             /* 8bit　left-shift */
             let fst = fst + fst; // 1
@@ -24,20 +31,20 @@ class Main {
             let fst = fst + fst; // 8
             
             /* recieve the second 8bit of an instruction */
-            let snd = Uart.receiveChar();
+            let snd = Main.receiveChar();
             // do Uart.sendChar(cnt);
             let fst = fst + snd;
 
-            do Uart.sendChar(fst);
+            do Main.sendChar(fst);
 
             /* store the instranction to RAM */
-            do Memory.poke(8199, cnt); // set the address
-            do Memory.poke(8200, fst); // set the instruction 
-            do Memory.poke(8198, 32);  // write the instrcuton to RAM[address]  
+            let RAM[8199] =  cnt; // set the address
+            let RAM[8200] =  fst; // set the instruction 
+            let RAM[8198] =  32;  // write the instrcuton to RAM[address]
 
             let cnt = cnt + 1;
          }
-         do Memory.poke(8201, 3);
+         let RAM[8201] =  3;
 
          let cnt = 0;
          while (cnt < 100) {
@@ -45,10 +52,49 @@ class Main {
          }
 
          // switch EBRAM to SRAM
-         do Memory.poke(8198, 16);
-
+         let RAM[8198] =  16;
   
          // do Uart.sendChar(98);
          return;
    }
+
+       function void sendChar(int c) {
+        var int status;
+        let status = 256;
+
+        // wait until Uart Tx is not busy
+        while ((status & 256) = 256) { // status & 0000_0001_0000_0000
+            let status = UART[0];
+        }
+
+        // Write a trasmitted character
+        let UART[2] = c;
+
+        // start sending a chracter
+        let UART[0] = 4096; // 0001_0000_0000_0000
+
+        return;
+    }
+
+    function int receiveChar() {
+        var int status;
+        var int c;
+        
+        // get a current status of Uart
+        let status = 1;
+
+        // wait until Uart Rx is not busy
+        // busy or not recieved
+        while (((status & 1) = 1) | ~((status & 2) = 2)) { // status & 0000_0000_0000_0010
+            let status = UART[0];
+        }
+
+        // recieved char
+        let c = UART[1];
+
+        // clear buffer
+        let UART[0] = 16; // 0000_0000_0001_0000
+
+        return c;
+    }
 }

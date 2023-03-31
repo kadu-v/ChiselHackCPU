@@ -43,1121 +43,13 @@
 	@Sys.init
 	0;JMP
 (RETURN0)
-(Memory.init)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@Memory.0
-	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Memory.peek)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-	@0
-	D=A
-	@ARG
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@Memory.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@R4
-	M=D
-	@0
-	D=A
-	@THAT
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Memory.poke)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-	@0
-	D=A
-	@ARG
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@Memory.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D+M
-	@1
-	D=A
-	@ARG
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@R4
-	M=D
-	@R5
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
-	D=A
-	@THAT
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@THAT
-	A=M
-	M=D
-	@0
-	D=A
-	@THAT
-	M=M-D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Uart.init)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-	@8192
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@Uart.0
-	M=D
-	@8193
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@Uart.1
-	M=D
-	@8194
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@Uart.2
-	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Uart.sendChar)
-	@SP
-	A=M
-	M=0
-	A=A+1
-	D=A
-	@SP
-	M=D
-	@256
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-(Uart.sendChar$WHILE_EXP0)
-	@0
-	D=A
-	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@256
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D&M
-	@256
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	D=M-D
-	@THEN0
-	D;JEQ
-	@SP
-	A=M-1
-	M=0
-	@ENDIF0
-	0;JMP
-(THEN0)
-	@SP
-	A=M-1
-	M=-1
-(ENDIF0)
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@Uart.sendChar$WHILE_END0
-	D;JNE
-	@Uart.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN1
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@6
-	D=D-A
-	@ARG
-	M=D
-	@Memory.peek
-	0;JMP
-(RETURN1)
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-	@Uart.sendChar$WHILE_EXP0
-	0;JMP
-(Uart.sendChar$WHILE_END0)
-	@Uart.2
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
-	D=A
-	@ARG
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN2
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN2)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@Uart.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@4096
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN3
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN3)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Uart.receiveChar)
-	@SP
-	A=M
-	M=0
-	A=A+1
-	M=0
-	A=A+1
-	D=A
-	@SP
-	M=D
-	@1
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-(Uart.receiveChar$WHILE_EXP0)
-	@0
-	D=A
-	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@1
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D&M
-	@1
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	D=M-D
-	@THEN1
-	D;JEQ
-	@SP
-	A=M-1
-	M=0
-	@ENDIF1
-	0;JMP
-(THEN1)
-	@SP
-	A=M-1
-	M=-1
-(ENDIF1)
-	@0
-	D=A
-	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@2
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D&M
-	@2
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	D=M-D
-	@THEN2
-	D;JEQ
-	@SP
-	A=M-1
-	M=0
-	@ENDIF2
-	0;JMP
-(THEN2)
-	@SP
-	A=M-1
-	M=-1
-(ENDIF2)
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@SP
-	A=M-1
-	M=D|M
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@Uart.receiveChar$WHILE_END0
-	D;JNE
-	@Uart.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN4
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@6
-	D=D-A
-	@ARG
-	M=D
-	@Memory.peek
-	0;JMP
-(RETURN4)
-	@0
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@0
-	D=A
-	@LCL
-	M=M-D
-	@Uart.receiveChar$WHILE_EXP0
-	0;JMP
-(Uart.receiveChar$WHILE_END0)
-	@Uart.1
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN5
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@6
-	D=D-A
-	@ARG
-	M=D
-	@Memory.peek
-	0;JMP
-(RETURN5)
-	@1
-	D=A
-	@LCL
-	M=D+M
-	@SP
-	AM=M-1
-	D=M
-	@LCL
-	A=M
-	M=D
-	@1
-	D=A
-	@LCL
-	M=M-D
-	@Uart.0
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@16
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@RETURN6
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN6)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@1
-	D=A
-	@LCL
-	A=D+M
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
 (Sys.init)
 	@SP
 	A=M
 	D=A
 	@SP
 	M=D
-	@RETURN7
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@5
-	D=D-A
-	@ARG
-	M=D
-	@Memory.init
-	0;JMP
-(RETURN7)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@RETURN8
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@5
-	D=D-A
-	@ARG
-	M=D
-	@Uart.init
-	0;JMP
-(RETURN8)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@RETURN9
+	@RETURN1
 	D=A
 	@SP
 	AM=M+1
@@ -1197,222 +89,7 @@
 	M=D
 	@Main.main
 	0;JMP
-(RETURN9)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@RETURN10
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@5
-	D=D-A
-	@ARG
-	M=D
-	@Sys.halt
-	0;JMP
-(RETURN10)
-	@SP
-	AM=M-1
-	D=M
-	@R5
-	M=D
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Sys.halt)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-(Sys.halt$WHILE_EXP0)
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	A=M-1
-	M=!M
-	@SP
-	AM=M-1
-	D=M
-	@Sys.halt$WHILE_END0
-	D;JNE
-	@Sys.halt$WHILE_EXP0
-	0;JMP
-(Sys.halt$WHILE_END0)
-	@0
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@5
-	D=A
-	@LCL
-	A=M-D
-	D=M
-	@R13
-	M=D
-	@SP
-	A=M-1
-	D=M
-	@ARG
-	A=M
-	M=D
-	D=A+1
-	@SP
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THAT
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@THIS
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@ARG
-	M=D
-	@LCL
-	AM=M-1
-	D=M
-	@LCL
-	M=D
-	@R13
-	A=M
-	0;JMP
-(Sys.error)
-	@SP
-	A=M
-	D=A
-	@SP
-	M=D
-	@RETURN11
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@5
-	D=D-A
-	@ARG
-	M=D
-	@Sys.halt
-	0;JMP
-(RETURN11)
+(RETURN1)
 	@SP
 	AM=M-1
 	D=M
@@ -1497,7 +174,7 @@
 	D=A
 	@LCL
 	M=M-D
-	@1000
+	@10000
 	D=A
 	@SP
 	AM=M+1
@@ -1517,64 +194,71 @@
 	D=A
 	@LCL
 	M=M-D
+	@8192
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@Main.1
+	M=D
 	@8201
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@1
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN12
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN12)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
 (Main.main$WHILE_EXP0)
 	@2
 	D=A
@@ -1600,18 +284,18 @@
 	@SP
 	A=M-1
 	D=M-D
-	@THEN3
+	@THEN0
 	D;JLT
 	@SP
 	A=M-1
 	M=0
-	@ENDIF3
+	@ENDIF0
 	0;JMP
-(THEN3)
+(THEN0)
 	@SP
 	A=M-1
 	M=-1
-(ENDIF3)
+(ENDIF0)
 	@SP
 	A=M-1
 	M=!M
@@ -1626,59 +310,55 @@
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@2
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN13
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN13)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
-	@RETURN14
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@RETURN2
 	D=A
 	@SP
 	AM=M+1
@@ -1716,9 +396,9 @@
 	D=D-A
 	@ARG
 	M=D
-	@Uart.receiveChar
+	@Main.receiveChar
 	0;JMP
-(RETURN14)
+(RETURN2)
 	@0
 	D=A
 	@LCL
@@ -1742,7 +422,7 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN15
+	@RETURN3
 	D=A
 	@SP
 	AM=M+1
@@ -1780,9 +460,9 @@
 	D=D-A
 	@ARG
 	M=D
-	@Uart.sendChar
+	@Main.sendChar
 	0;JMP
-(RETURN15)
+(RETURN3)
 	@SP
 	AM=M-1
 	D=M
@@ -2092,7 +772,7 @@
 	D=A
 	@LCL
 	M=M-D
-	@RETURN16
+	@RETURN4
 	D=A
 	@SP
 	AM=M+1
@@ -2130,9 +810,9 @@
 	D=D-A
 	@ARG
 	M=D
-	@Uart.receiveChar
+	@Main.receiveChar
 	0;JMP
-(RETURN16)
+(RETURN4)
 	@1
 	D=A
 	@LCL
@@ -2194,7 +874,7 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN17
+	@RETURN5
 	D=A
 	@SP
 	AM=M+1
@@ -2232,9 +912,9 @@
 	D=D-A
 	@ARG
 	M=D
-	@Uart.sendChar
+	@Main.sendChar
 	0;JMP
-(RETURN17)
+(RETURN5)
 	@SP
 	AM=M-1
 	D=M
@@ -2246,6 +926,18 @@
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@2
 	D=A
 	@LCL
@@ -2255,58 +947,54 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN18
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN18)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
 	@8200
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@0
 	D=A
 	@LCL
@@ -2316,110 +1004,90 @@
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN19
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN19)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
 	@8198
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@32
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN20
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN20)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
 	@2
 	D=A
 	@LCL
@@ -2464,58 +1132,54 @@
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@3
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN21
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN21)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
 	@0
 	D=A
 	@SP
@@ -2558,18 +1222,18 @@
 	@SP
 	A=M-1
 	D=M-D
-	@THEN4
+	@THEN1
 	D;JLT
 	@SP
 	A=M-1
 	M=0
-	@ENDIF4
+	@ENDIF1
 	0;JMP
-(THEN4)
+(THEN1)
 	@SP
 	A=M-1
 	M=-1
-(ENDIF4)
+(ENDIF1)
 	@SP
 	A=M-1
 	M=!M
@@ -2622,60 +1286,678 @@
 	AM=M+1
 	A=A-1
 	M=D
+	@Main.0
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
 	@16
 	D=A
 	@SP
 	AM=M+1
 	A=A-1
 	M=D
-	@RETURN22
-	D=A
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@LCL
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@ARG
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THIS
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@THAT
-	D=M
-	@SP
-	AM=M+1
-	A=A-1
-	M=D
-	@SP
-	D=M
-	@LCL
-	M=D
-	@7
-	D=D-A
-	@ARG
-	M=D
-	@Memory.poke
-	0;JMP
-(RETURN22)
 	@SP
 	AM=M-1
 	D=M
 	@R5
 	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
 	@0
 	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@5
+	D=A
+	@LCL
+	A=M-D
+	D=M
+	@R13
+	M=D
+	@SP
+	A=M-1
+	D=M
+	@ARG
+	A=M
+	M=D
+	D=A+1
+	@SP
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THAT
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THIS
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@ARG
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@LCL
+	M=D
+	@R13
+	A=M
+	0;JMP
+(Main.sendChar)
+	@SP
+	A=M
+	M=0
+	A=A+1
+	D=A
+	@SP
+	M=D
+	@256
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@0
+	D=A
+	@LCL
+	M=M-D
+(Main.sendChar$WHILE_EXP0)
+	@0
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@256
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D&M
+	@256
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN2
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF2
+	0;JMP
+(THEN2)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF2)
+	@SP
+	A=M-1
+	M=!M
+	@SP
+	AM=M-1
+	D=M
+	@Main.sendChar$WHILE_END0
+	D;JNE
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@0
+	D=A
+	@THAT
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@0
+	D=A
+	@LCL
+	M=M-D
+	@Main.sendChar$WHILE_EXP0
+	0;JMP
+(Main.sendChar$WHILE_END0)
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@0
+	D=A
+	@ARG
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@4096
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@5
+	D=A
+	@LCL
+	A=M-D
+	D=M
+	@R13
+	M=D
+	@SP
+	A=M-1
+	D=M
+	@ARG
+	A=M
+	M=D
+	D=A+1
+	@SP
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THAT
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@THIS
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@ARG
+	M=D
+	@LCL
+	AM=M-1
+	D=M
+	@LCL
+	M=D
+	@R13
+	A=M
+	0;JMP
+(Main.receiveChar)
+	@SP
+	A=M
+	M=0
+	A=A+1
+	M=0
+	A=A+1
+	D=A
+	@SP
+	M=D
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@0
+	D=A
+	@LCL
+	M=M-D
+(Main.receiveChar$WHILE_EXP0)
+	@0
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D&M
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN3
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF3
+	0;JMP
+(THEN3)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF3)
+	@0
+	D=A
+	@LCL
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D&M
+	@2
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	D=M-D
+	@THEN4
+	D;JEQ
+	@SP
+	A=M-1
+	M=0
+	@ENDIF4
+	0;JMP
+(THEN4)
+	@SP
+	A=M-1
+	M=-1
+(ENDIF4)
+	@SP
+	A=M-1
+	M=!M
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D|M
+	@SP
+	A=M-1
+	M=!M
+	@SP
+	AM=M-1
+	D=M
+	@Main.receiveChar$WHILE_END0
+	D;JNE
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@0
+	D=A
+	@THAT
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@0
+	D=A
+	@LCL
+	M=M-D
+	@Main.receiveChar$WHILE_EXP0
+	0;JMP
+(Main.receiveChar$WHILE_END0)
+	@1
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@0
+	D=A
+	@THAT
+	A=D+M
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@1
+	D=A
+	@LCL
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@LCL
+	A=M
+	M=D
+	@1
+	D=A
+	@LCL
+	M=M-D
+	@0
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@Main.1
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@SP
+	A=M-1
+	M=D+M
+	@16
+	D=A
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R5
+	M=D
+	@SP
+	AM=M-1
+	D=M
+	@R4
+	M=D
+	@R5
+	D=M
+	@SP
+	AM=M+1
+	A=A-1
+	M=D
+	@0
+	D=A
+	@THAT
+	M=D+M
+	@SP
+	AM=M-1
+	D=M
+	@THAT
+	A=M
+	M=D
+	@0
+	D=A
+	@THAT
+	M=M-D
+	@1
+	D=A
+	@LCL
+	A=D+M
+	D=M
 	@SP
 	AM=M+1
 	A=A-1
