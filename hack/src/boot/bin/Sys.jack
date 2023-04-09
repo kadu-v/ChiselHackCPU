@@ -1,7 +1,0 @@
-class Sys {	
-    /** Performs all the initializations required by the OS. */
-    function void init() {
-		do Main.main();
-		return;
-    }
-}

@@ -5,7 +5,7 @@ object Elaborater extends App {
     args :+ "--target-dir" :+ "apio" :+ "--emission-options=disableMemRandomization,disableRegisterRandomization"
   (new chisel3.stage.ChiselStage)
     .emitVerilog(
-      new Top("bin.hack", "init.bin", 2048 + 1024, 1024, false),
+      new Top("bin.hack", "init.bin", 256, 4096 - 256, false),
       argsx
     )
 }

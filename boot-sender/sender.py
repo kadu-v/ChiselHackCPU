@@ -32,15 +32,20 @@ def send_insts(insts: list[(int, int)], num_inst: int):
         time.sleep(t)
         fst = pack('B', fst)
         _serial.write(fst)    
-        y0 = _serial.read(1)
-        lst0.append(y0)
+        # y0 = _serial.read(1)
+        # lst0.append((format(int.from_bytes(y0, 'big'), 'b'), format(int.from_bytes(fst, 'big'), 'b')))
+        # lst0.append(y0)
 
         time.sleep(t)
         snd = pack('B', snd)
         _serial.write(snd)    
-        y1 = _serial.read(1)
-        lst1.append((fst == y0, snd == y1, ))
-
+        # y0 = _serial.read(1)
+        # lst0.append((format(int.from_bytes(y0, 'big'), 'b'), format(int.from_bytes(fst, 'big'), 'b'), format(int.from_bytes(snd, 'big'), 'b')))
+        # y1 = _serial.read(1)
+        # lst0.append(y1)
+        # print(y1, snd)
+        # lst1.append((fst == y0, snd == y1, ))
+    print(lst0)
     _serial.close()
 
 
@@ -60,7 +65,7 @@ def load_inst_from_file(path: str) -> None:
 
 def main():
     content = load_inst_from_file("./bin.hack")
-    send_insts(content, 10000)
+    send_insts(content, 25000)
     return 0
 
 if __name__ == '__main__':
